@@ -1,4 +1,4 @@
-olo2
+olo
 ====
 
 Automation Framework
