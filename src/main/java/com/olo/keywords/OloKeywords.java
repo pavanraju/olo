@@ -183,9 +183,9 @@ public class OloKeywords{
 		browser.uncheck(step.getPropertyValue());
 	}
 	
-	@Keyword(name="SelectText")
-	public void selectText(KeywordPropObject step) throws Exception{
-		browser.selectText(step.getPropertyValue(),step.getValue());
+	@Keyword(name="SelectByText")
+	public void selectByText(KeywordPropObject step) throws Exception{
+		browser.selectByText(step.getPropertyValue(),step.getValue());
 	}
 	
 	@Keyword(name="ContextMenu")

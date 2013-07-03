@@ -703,7 +703,7 @@ public class OloBrowserBot{
 		new Actions(driver).doubleClick(element).perform();
 	}
 	
-	public void selectText(String locator, String visibleText){
+	public void selectByText(String locator, String visibleText){
 		new Select(driver.findElement(byLocator(locator))).selectByVisibleText(visibleText);
 	}
 	
