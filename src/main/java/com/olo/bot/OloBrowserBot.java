@@ -35,15 +35,12 @@ public class OloBrowserBot{
 	
 	private final WebDriver driver;
 	
-	private long explicitWait=30;
+	private long waitTimeOut=30;
 
 	public OloBrowserBot(WebDriver driver) {
 		this.driver = driver;
-		if(configProp.containsKey("explicitWait")){
-			explicitWait=Integer.parseInt(configProp.getProperty("explicitWait"));
-		}
 		if(configProp.containsKey("implicitWait")){
-			driver.manage().timeouts().implicitlyWait(Integer.parseInt(configProp.getProperty("implicitWait")), TimeUnit.SECONDS);
+			waitTimeOut=Integer.parseInt(configProp.getProperty("implicitWait"));
 		}
 	}
 	
@@ -75,9 +72,9 @@ public class OloBrowserBot{
 	
 	public void waitForPageToLoad() throws Exception {
 		if(((RemoteWebDriver) driver).getCapabilities().getBrowserName().equals("chrome")){
-			driver.manage().timeouts().setScriptTimeout(explicitWait, TimeUnit.SECONDS);
+			driver.manage().timeouts().setScriptTimeout(waitTimeOut, TimeUnit.SECONDS);
 		}else{
-			driver.manage().timeouts().pageLoadTimeout(explicitWait, TimeUnit.SECONDS);
+			driver.manage().timeouts().pageLoadTimeout(waitTimeOut, TimeUnit.SECONDS);
 		}
 	}
 	
@@ -86,15 +83,15 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForFrameToBeAvailableAndSwitchToIt(String frameLocator){
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameLocator));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameLocator));
 	}
 	
 	public void waitForElementPresent(String locator) throws Exception{
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.presenceOfElementLocated(byLocator(locator)));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.presenceOfElementLocated(byLocator(locator)));
 	}
 	
 	public void waitForElementNotPresent(String locator){
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.stalenessOf(driver.findElement(byLocator(locator))));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.stalenessOf(driver.findElement(byLocator(locator))));
 	}
 	
 	public void waitForElementPresent(String locator,long timeOutInSeconds) throws Exception{
@@ -106,7 +103,7 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForElementPresent(final WebElement element) throws Exception{
-		new WebDriverWait(driver, explicitWait)
+		new WebDriverWait(driver, waitTimeOut)
     		.until(new ExpectedCondition<Boolean>() {
     			public Boolean apply(WebDriver driver) {
     				return isElementPresent(element);
@@ -115,7 +112,7 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForElementNotPresent(WebElement element){
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.stalenessOf(element));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.stalenessOf(element));
 	}
 	
 	public void waitForElementPresent(final WebElement element,long timeOutInSeconds) throws Exception{
@@ -132,11 +129,11 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForVisible(String locator){
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.visibilityOfElementLocated(byLocator(locator)));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.visibilityOfElementLocated(byLocator(locator)));
 	}
 	
 	public void waitForNotVisible(String locator){
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.invisibilityOfElementLocated(byLocator(locator)));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.invisibilityOfElementLocated(byLocator(locator)));
 	}
 	
 	public void waitForVisible(String locator,long timeOutInSeconds){
@@ -148,11 +145,11 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForVisible(WebElement element){
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.visibilityOf(element));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.visibilityOf(element));
 	}
 	
 	public void waitForNotVisible(final WebElement element) throws Exception{
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.not(ExpectedConditions.visibilityOf(element)));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.not(ExpectedConditions.visibilityOf(element)));
 	}
 	
 	public void waitForVisible(WebElement element,long timeOutInSeconds){
@@ -164,11 +161,11 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForValue(String locator,String value) throws Exception{
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.textToBePresentInElementValue(byLocator(locator), value));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.textToBePresentInElementValue(byLocator(locator), value));
 	}
 	
 	public void waitForNotValue(final String locator, final String value) throws Exception{
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementValue(byLocator(locator), value)));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementValue(byLocator(locator), value)));
 	}
 	
 	public void waitForValue(String locator,String value,long timeOutInSeconds) throws Exception{
@@ -180,7 +177,7 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForValue(final WebElement element, final String value) throws Exception{
-		new WebDriverWait(driver, explicitWait) {
+		new WebDriverWait(driver, waitTimeOut) {
     	}.until(new ExpectedCondition<Boolean>() {
     		public Boolean apply(WebDriver driver) {
     			return getValue(element).equals(value);
@@ -189,7 +186,7 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForNotValue(final WebElement element, final String value) throws Exception{
-		new WebDriverWait(driver, explicitWait) {
+		new WebDriverWait(driver, waitTimeOut) {
     	}.until(new ExpectedCondition<Boolean>() {
     		public Boolean apply(WebDriver driver) {
     			return !getValue(element).equals(value);
@@ -216,11 +213,11 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForEditable(final String locator) throws Exception{
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.elementToBeClickable(byLocator(locator)));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.elementToBeClickable(byLocator(locator)));
 	}
 	
 	public void waitForNotEditable(final String locator) throws Exception{
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.not(ExpectedConditions.elementToBeClickable(byLocator(locator))));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.not(ExpectedConditions.elementToBeClickable(byLocator(locator))));
 	}
 	
 	public void waitForEditable(final String locator,long timeOutInSeconds) throws Exception{
@@ -232,7 +229,7 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForEditable(final WebElement element) throws Exception{
-		new WebDriverWait(driver, explicitWait) {
+		new WebDriverWait(driver, waitTimeOut) {
     	}.until(new ExpectedCondition<Boolean>() {
     		public Boolean apply(WebDriver driver) {
     			return isElementPresent(element) && isVisible(element) && isEnabled(element);
@@ -241,7 +238,7 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForNotEditable(final WebElement element) throws Exception{
-		new WebDriverWait(driver, explicitWait) {
+		new WebDriverWait(driver, waitTimeOut) {
     	}.until(new ExpectedCondition<Boolean>() {
     		public Boolean apply(WebDriver driver) {
     			return isElementPresent(element) && isVisible(element) && !isEnabled(element);
@@ -268,11 +265,11 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForText(String locator, String value) throws Exception{
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.textToBePresentInElement(byLocator(locator), value));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.textToBePresentInElement(byLocator(locator), value));
 	}
 	
 	public void waitForNotText(final String locator, final String value) throws Exception{
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(byLocator(locator),value)));
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(byLocator(locator),value)));
 	}
 	
 	public void waitForText(String locator, String value,long timeOutInSeconds) throws Exception{
@@ -284,7 +281,7 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForText(final WebElement element, final String value) throws Exception{
-		new WebDriverWait(driver, explicitWait) {
+		new WebDriverWait(driver, waitTimeOut) {
     	}.until(new ExpectedCondition<Boolean>() {
     		public Boolean apply(WebDriver driver) {
     			return getText(element).equals(value);
@@ -293,7 +290,7 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForNotText(final WebElement element, final String value) throws Exception{
-		new WebDriverWait(driver, explicitWait) {
+		new WebDriverWait(driver, waitTimeOut) {
     	}.until(new ExpectedCondition<Boolean>() {
     		public Boolean apply(WebDriver driver) {
     			return !getText(element).equals(value);
@@ -320,7 +317,7 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForAlert(final String pattern){
-		new WebDriverWait(driver, explicitWait).until(new ExpectedCondition<Boolean>() {
+		new WebDriverWait(driver, waitTimeOut).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
             	return d.switchTo().alert().getText().equals(pattern);
             }
@@ -336,7 +333,7 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForAlertPresent(){
-		new WebDriverWait(driver, explicitWait).until(ExpectedConditions.alertIsPresent());
+		new WebDriverWait(driver, waitTimeOut).until(ExpectedConditions.alertIsPresent());
 	}
 	
 	public void waitForAlertPresent(long timeOutInSeconds){
@@ -344,7 +341,7 @@ public class OloBrowserBot{
 	}
 	
 	public void waitForTitle(String pageTitle){
-		new WebDriverWait(driver,explicitWait).until(ExpectedConditions.titleIs(pageTitle));
+		new WebDriverWait(driver,waitTimeOut).until(ExpectedConditions.titleIs(pageTitle));
 	}
 	
 	public void waitForTitle(String pageTitle,long timeOutInSeconds){
@@ -441,7 +438,7 @@ public class OloBrowserBot{
 	
 	public void assertSelectOptions(String locator,String expectedOptions) throws Exception{
 		String expected[] = expectedOptions.split(",");
-		List<WebElement> dropDownElement = new Select(driver.findElement(byLocator(locator))).getOptions();
+		List<WebElement> dropDownElement = select(driver.findElement(byLocator(locator))).getOptions();
 		String actual[] = new String[dropDownElement.size()];
 		for (int i = 0; i < dropDownElement.size(); i++) {
 			actual[i]=dropDownElement.get(i).toString();
@@ -451,7 +448,7 @@ public class OloBrowserBot{
 	
 	public void assertNotSelectOptions(String locator,String unexpectedOptions) throws Exception{
 		String expected[] = unexpectedOptions.split(",");
-		List<WebElement> dropDownElement = new Select(driver.findElement(byLocator(locator))).getOptions();
+		List<WebElement> dropDownElement = select(driver.findElement(byLocator(locator))).getOptions();
 		String actual[] = new String[dropDownElement.size()];
 		for (int i = 0; i < dropDownElement.size(); i++) {
 			actual[i]=dropDownElement.get(i).toString();
@@ -461,7 +458,7 @@ public class OloBrowserBot{
 	
 	public void assertSelectOptions(WebElement element,String expectedOptions) throws Exception{
 		String expected[] = expectedOptions.split(",");
-		List<WebElement> dropDownElement = new Select(element).getOptions();
+		List<WebElement> dropDownElement = select(element).getOptions();
 		String actual[] = new String[dropDownElement.size()];
 		for (int i = 0; i < dropDownElement.size(); i++) {
 			actual[i]=dropDownElement.get(i).toString();
@@ -471,7 +468,7 @@ public class OloBrowserBot{
 	
 	public void assertNotSelectOptions(WebElement element,String unexpectedOptions) throws Exception{
 		String expected[] = unexpectedOptions.split(",");
-		List<WebElement> dropDownElement = new Select(element).getOptions();
+		List<WebElement> dropDownElement = select(element).getOptions();
 		String actual[] = new String[dropDownElement.size()];
 		for (int i = 0; i < dropDownElement.size(); i++) {
 			actual[i]=dropDownElement.get(i).toString();
@@ -480,11 +477,11 @@ public class OloBrowserBot{
 	}
 	
 	public void assertSelectOptionsSize(String locator,String expectedSize) throws Exception {
-		Assert.assertEquals(new Select(driver.findElement(byLocator(locator))).getOptions().size(),expectedSize);
+		Assert.assertEquals(select(driver.findElement(byLocator(locator))).getOptions().size(),expectedSize);
 	}
 	
 	public void assertSelectOptionsSize(WebElement element,String expectedSize) throws Exception {
-		Assert.assertEquals(new Select(element).getOptions().size(),expectedSize);
+		Assert.assertEquals(select(element).getOptions().size(),expectedSize);
 	}
 	
 	public void assertVisible(String locator) throws Exception {
@@ -543,6 +540,10 @@ public class OloBrowserBot{
 	
 	public void assertNotAttribute(WebElement element,String attributeName,String unexpectedAttributeValue) throws Exception{
 		Assert.assertNotEquals(getAttribute(element, attributeName), unexpectedAttributeValue);
+	}
+	
+	public Select select(WebElement element){
+		return new Select(element);
 	}
 	
 	public void get(String url){
@@ -704,11 +705,11 @@ public class OloBrowserBot{
 	}
 	
 	public void selectByText(String locator, String visibleText){
-		new Select(driver.findElement(byLocator(locator))).selectByVisibleText(visibleText);
+		select(driver.findElement(byLocator(locator))).selectByVisibleText(visibleText);
 	}
 	
 	public void selectByText(WebElement element, String visibleText){
-		new Select(element).selectByVisibleText(visibleText);
+		select(element).selectByVisibleText(visibleText);
 	}
 	
 	public void dragAndDrop(String locator,String value) throws Exception {

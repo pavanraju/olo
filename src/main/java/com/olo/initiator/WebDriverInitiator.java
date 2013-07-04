@@ -121,6 +121,7 @@ public class WebDriverInitiator {
 					browser.waitForPageToLoad();
 					browser.deleteAllVisibleCookies();
 				}
+				browser.implicitWait();
 				browser.windowMaximize();
 				browser.windowFocus();
 				Thread.sleep(1000);
