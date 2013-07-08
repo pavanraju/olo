@@ -27,7 +27,7 @@ PROJECT DIRECTORY STRUCTURE
           mac32/           Mac 32 bit driver.
 
 
-PROJECT RQUIRED LIBRARIES
+RQUIRED LIBRARIES BY OLO
 -------------------
       javamail-1.4.7       Required to send email.
       log4j-1.2.17         Required to write logs.
