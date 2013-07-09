@@ -1,6 +1,7 @@
 package com.olo.util;
 
 import static com.olo.util.PropertyReader.allProp;
+import static com.olo.util.PropertyReader.messages;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -240,7 +241,7 @@ public class Commons {
 						}
 					}
 					try {
-						prop.setValue(Commons.replacePropMatchers(prop.getValue()));
+						prop.setValue(Commons.replaceMessageMatchers(prop.getValue()));
 					} catch (KeywordConfigurationException e) {
 						throw new Exception(e.getMessage()+ " at Line Number "+(row.getRowNum()+1));
 					} catch (Exception e) {
@@ -610,7 +611,7 @@ public class Commons {
 		return sb.toString();
 	}
 	
-	public static String replacePropMatchers(String expectedValue) throws Exception{
+	public static String replaceMessageMatchers(String expectedValue) throws Exception{
 		StringBuffer sb = new StringBuffer(expectedValue);
 		Matcher matcher = pattern.matcher(sb);
 		
@@ -618,11 +619,11 @@ public class Commons {
 			int matchIndexStart=matcher.start();
 			int matchIndexEnd=matcher.end();
 			String matchedValue=matcher.group(1);
-			if(matchedValue.startsWith("prop.")){
+			if(matchedValue.startsWith("messages.")){
 				String propFileKey=matchedValue.substring(5, matchedValue.indexOf(".", 5));
 				String propValueKey=matchedValue.substring(matchedValue.indexOf(".", 5)+1);
-				if(allProp.containsKey(propFileKey) && allProp.get(propFileKey).containsKey(propValueKey)){
-					sb.replace(matchIndexStart, matchIndexEnd, allProp.get(propFileKey).getProperty(propValueKey));
+				if(messages.containsKey(propFileKey) && messages.get(propFileKey).containsKey(propValueKey)){
+					sb.replace(matchIndexStart, matchIndexEnd, messages.get(propFileKey).getProperty(propValueKey));
 					matcher = pattern.matcher(sb);
 				}else{
 					throw new KeywordConfigurationException("Property in Value column Not Found");
