@@ -22,7 +22,7 @@ public class ExecutionInitiator {
 		
 		try {
 			
-			if(args[0]==null){
+			if(args.length==0){
 				logger.error("No Suite Files to Run");
 				throw new Exception("No Suite Files specified");
 			}

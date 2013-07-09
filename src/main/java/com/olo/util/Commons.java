@@ -211,7 +211,7 @@ public class Commons {
 				if(prop.getAction().equalsIgnoreCase("Else") || prop.getAction().equalsIgnoreCase("EndIf")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
-				}else if(prop.getAction().equalsIgnoreCase("StartDataProvider")){
+				}else if(prop.getAction().equalsIgnoreCase("StartDataTable")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
 					try {
@@ -222,14 +222,14 @@ public class Commons {
 						throw e;
 					}
 					KeywordPropObject lprop = new KeywordPropObject();
-					lprop.setAction("EndDataProvider");
+					lprop.setAction("EndDataTable");
 					lprop.setSkip(true);
 					excelRowsAsProbObject.add(lprop);
 				}else if(prop.getAction().equalsIgnoreCase("IncludeFile")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
 					excelRowsAsProbObject.addAll(getExcelSteps(Commons.class.getResource(prop.getValue())));
-				}else if(prop.getAction().equalsIgnoreCase("EndDataProvider")){
+				}else if(prop.getAction().equalsIgnoreCase("EndDataTable")){
 					break;
 				}else{
 					if(!prop.getPropertyFile().isEmpty()){
@@ -640,13 +640,13 @@ public class Commons {
 			int matchIndexStart=matcher.start();
 			int matchIndexEnd=matcher.end();
 			String matchedValue=matcher.group(1);
-			if(matchedValue.startsWith("dataset.")){
+			if(matchedValue.startsWith("datatable.")){
 				String dataSetKey = matchedValue.substring(8, matchedValue.length());
 				if(dataSetHeader.containsKey(dataSetKey)){
 					sb.replace(matchIndexStart, matchIndexEnd, dataSetHeader.get(dataSetKey));
 					matcher = pattern.matcher(sb);
 				}else{
-					throw new KeywordConfigurationException("Missing Header in DataSet File: "+dataSetKey);
+					throw new KeywordConfigurationException("Missing Header in DataTable File: "+dataSetKey);
 				}
 				
 			}

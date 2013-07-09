@@ -145,7 +145,7 @@ public class Reporter implements IReporter{
 	    int totalTests=totalPassedTests+totalFailedTests+totalSkippedTests;
 	    
 	    StringBuffer suitesSummaryStartHtml = new StringBuffer();
-	    suitesSummaryStartHtml.append("<html><head><title>" + title + "</title><meta name='viewport' content='width=device-width, initial-scale=1.0'><link href='bootstrap/css/bootstrap.min.css' rel='stylesheet' media='screen'><link href='bootstrap/css/bootstrap-responsive.min.css' rel='stylesheet' media='screen'><script src='bootstrap/js/jquery-1.10.1.min.js'></script><script src='bootstrap/js/bootstrap.min.js'></script>");
+	    suitesSummaryStartHtml.append("<html><head><title>" + title + "</title><meta name='viewport' content='width=device-width, initial-scale=1.0'><link href='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet'>");
 	    suitesSummaryStartHtml.append("<script type='text/javascript' src='http://www.google.com/jsapi'></script>");
 	    suitesSummaryStartHtml.append("<script type='text/javascript'>google.load('visualization', '1', {packages: ['corechart']}); </script>");
 	    suitesSummaryStartHtml.append("<script type='text/javascript'>function drawVisualization() { var data = new google.visualization.DataTable(); data.addColumn('string', 'Topping'); data.addColumn('number', 'Slices'); data.addRows([['Passed', "+totalPassedTests+"],['Failed', "+totalFailedTests+"],['Skipped', "+totalSkippedTests+"]]); new google.visualization.PieChart(document.getElementById('visualization')).draw(data,{'width':400,'height':300,slices: [{color: '#109618'}, {color:'#dc3912'}, {color: '#ff9900'}]});} google.setOnLoadCallback(drawVisualization); </script> ");
@@ -165,9 +165,6 @@ public class Reporter implements IReporter{
 	    suitesSummaryStartHtml.append("<tr><th>Passed</th><td>"+totalPassedTests+"</td></tr>");
 	    suitesSummaryStartHtml.append("<tr><th>Failed</th><td>"+totalFailedTests+"</td></tr>");
 	    suitesSummaryStartHtml.append("<tr><th>Skipped</th><td>"+totalSkippedTests+"</td></tr>");
-	    //suitesSummaryStartHtml.append("<tr><th>Passed / Failed / Skipped</th><td>"+totalPassedTests+" / "+totalFailedTests+" / "+totalSkippedTests+"</td></tr>");
-	    //suitesSummaryStartHtml.append("<tr><th>Passed % / Failed %</th><td>"+Commons.percentageCalculator(totalTests,totalPassedTests)+" % / "+Commons.percentageCalculator(totalTests,totalFailedTests)+" %</td></tr>");
-	    //suitesSummaryStartHtml.append("<tr><th>Explicit Wait / Implicit Wait</th><td>"+(configProp.getProperty("explicitWait")==null? "30" : configProp.getProperty("explicitWait"))+" sec / "+(configProp.containsKey("implicitWait") ? configProp.getProperty("implicitWait")+" sec" : "-") +"</td></tr>");
 	    suitesSummaryStartHtml.append("</table>");
 	    suitesSummaryStartHtml.append("</div>");
 	    suitesSummaryStartHtml.append("<div id='visualization' class='span4'></div>");
