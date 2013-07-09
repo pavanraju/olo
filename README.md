@@ -24,7 +24,7 @@ PROJECT DIRECTORY STRUCTURE
             mail.properties          Mail configurations for olo.(Will be comming with default config placed in olo jar)
             log4j.properties         log4j configuration.(Will be comming with default config placed in olo jar)
           properties/webelements/    For KeywordDriven Tests put all your locator properties files in this folder.
-          properties/messages  /     Mesages(properties) used by KeywordDriven Tests should be put into this folder.
+          properties/messages/       Mesages(properties) used by KeywordDriven Tests should be put into this folder.
       drivers/             WebDrivers
           win32/           Windows 32 bit driver.
           win64/           Windows 64 bit driver.
