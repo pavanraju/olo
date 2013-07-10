@@ -33,9 +33,14 @@ PROJECT DIRECTORY STRUCTURE
           mac32/           Mac 32 bit driver.
 
 
-RQUIRED LIBRARIES BY OLO
+REQUIRED LIBRARIES BY OLO
 -------------------
       javamail-1.4.7       Required to send email.
       log4j-1.2.17         Required to write logs.
       apache-poi-3.9       Required to read/write excel files.
       selenium-server-standalone-2.33.0.jar  Required to use WebDriver, TestNG and other dependencies.
+      
+
+HOW TO START EXECUTION
+--------------------
+      Pass 1st argument as suitefiles(comma separated) where it is located to com.olo.initiator.ExecutionInitiator.
