@@ -72,7 +72,7 @@ public class PropertyReader {
 							String propName= fileName.substring(0,fileName.lastIndexOf("."));
 							
 							if(extension.equals("properties")){
-								logger.info("Loading "+fileName);
+								logger.info("Loading "+nextFile.getAbsolutePath());
 								Properties temp = new Properties();
 								temp.load(new FileInputStream(nextFile));
 								allProp.put(propName, temp);
@@ -99,7 +99,7 @@ public class PropertyReader {
 							String propFileName= fileName.substring(0,fileName.lastIndexOf("."));
 							
 							if(extension.equals("properties")){
-								logger.info("Loading "+fileName);
+								logger.info("Loading "+nextFile.getAbsolutePath());
 								Properties temp = new Properties();
 								temp.load(new FileInputStream(nextFile));
 								messages.put(propFileName, temp);
@@ -113,26 +113,6 @@ public class PropertyReader {
 					e.printStackTrace();
 				}
 			}
-			
-			
-			/*
-			File[] files = new File(PropertyReader.class.getResource("/properties").getPath()).listFiles();
-			for (File file : files) {
-				if (file.isFile() && !file.isHidden()) {
-					String fileName=file.getName();
-					String extension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-					String propName= fileName.substring(0,fileName.lastIndexOf("."));
-					
-					if(extension.equals("properties")){
-						System.out.println("Loading "+fileName);
-						Properties temp = new Properties();
-						temp.load(new FileInputStream(file));
-						allProp.put(propName, temp);
-					}
-					
-				}
-			}
-			*/
 			
 		} catch (FileNotFoundException e) {
 			logger.error("File Not Found in the specified location "+e.getMessage());

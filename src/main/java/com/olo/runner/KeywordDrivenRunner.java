@@ -124,28 +124,27 @@ public class KeywordDrivenRunner extends WebDriverInitiator implements ITest{
 			
 			if(!localStep.getSkip()){
 
-				boolean foundKeyword=true;
+				boolean foundKeyword=false;
 				
 				try {
 					localStep.setStartTime(System.currentTimeMillis());
 					try {
-						if(localStep.getAction().equalsIgnoreCase("StoreValueIn")){
-							storeData.put(localStep.getValue(), browser.getValue(localStep.getPropertyValue()));
-						}else if(localStep.getAction().equalsIgnoreCase("StoreTextIn")){
-							storeData.put(localStep.getValue(), browser.getText(localStep.getPropertyValue()));
-						}else{
-							foundKeyword=false;
-							
-							for (final Method method : keywordClass.getDeclaredMethods()) {
-								Keyword annotation = method.getAnnotation(com.olo.annotations.Keyword.class);
-								if(annotation!=null){
-									if(annotation.name().equals(localStep.getAction())){
-										foundKeyword=true;
-										logger.info(localStep);
+						
+						for (final Method method : keywordClass.getDeclaredMethods()) {
+							Keyword annotation = method.getAnnotation(com.olo.annotations.Keyword.class);
+							if(annotation!=null){
+								if(annotation.name().equals(localStep.getAction())){
+									foundKeyword=true;
+									logger.info(localStep);
+									if(!localStep.getAction().startsWith("Put")){
 										method.invoke(keywordConstructor.newInstance(browser),localStep);
-										if(localStep.getAction().startsWith("If") && localStep.getIfSkipped()){
-											skipIf++;
-										}
+									}else{
+										HashMap<String, String> storedData =  (HashMap<String, String>)method.invoke(keywordConstructor.newInstance(browser),localStep);
+										storeData.putAll(storedData);
+									}
+									
+									if(localStep.getAction().startsWith("If") && localStep.getIfSkipped()){
+										skipIf++;
 									}
 								}
 							}

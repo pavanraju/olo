@@ -2,6 +2,7 @@ package com.olo.keywords;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import org.json.JSONObject;
 
@@ -559,6 +560,20 @@ public class OloKeywords{
 			step.setIfSkipped(true);
 		}
 		browser.implicitWait();
+	}
+	
+	@Keyword(name="PutValueIn")
+	public HashMap<String, String> putValueIn(KeywordPropObject step) throws Exception{
+		HashMap<String, String> storeData = new HashMap<String, String>();
+		storeData.put(step.getValue(), browser.getValue(step.getPropertyValue()));
+		return storeData;
+	}
+	
+	@Keyword(name="PutTextIn")
+	public HashMap<String, String> putTextIn(KeywordPropObject step) throws Exception{
+		HashMap<String, String> storeData = new HashMap<String, String>();
+		storeData.put(step.getValue(), browser.getText(step.getPropertyValue()));
+		return storeData;
 	}
 	
 }

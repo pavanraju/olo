@@ -589,7 +589,7 @@ public class Commons {
         	return false;
 	}
 	
-	public static String replaceStoredMatchers(String expectedValue,HashMap<String,String> storeData) throws Exception{
+	public static String replaceStoredMatchers(String expectedValue,HashMap<String,String> storedData) throws Exception{
 		StringBuffer sb = new StringBuffer(expectedValue);
 		Matcher matcher = pattern.matcher(sb);
 		
@@ -597,10 +597,10 @@ public class Commons {
 			int matchIndexStart=matcher.start();
 			int matchIndexEnd=matcher.end();
 			String matchedValue=matcher.group(1);
-			if(matchedValue.startsWith("stored.")){
-				String StoredKey = matchedValue.substring(7, matchedValue.length());
-				if(storeData.containsKey(StoredKey)){
-					sb.replace(matchIndexStart, matchIndexEnd, storeData.get(StoredKey));
+			if(matchedValue.startsWith("get.")){
+				String StoredKey = matchedValue.substring(4, matchedValue.length());
+				if(storedData.containsKey(StoredKey)){
+					sb.replace(matchIndexStart, matchIndexEnd, storedData.get(StoredKey));
 					matcher = pattern.matcher(sb);
 				}else{
 					throw new KeywordConfigurationException("Haven't stored any value with : "+StoredKey);
@@ -620,8 +620,8 @@ public class Commons {
 			int matchIndexEnd=matcher.end();
 			String matchedValue=matcher.group(1);
 			if(matchedValue.startsWith("messages.")){
-				String propFileKey=matchedValue.substring(5, matchedValue.indexOf(".", 5));
-				String propValueKey=matchedValue.substring(matchedValue.indexOf(".", 5)+1);
+				String propFileKey=matchedValue.substring(9, matchedValue.indexOf(".", 9));
+				String propValueKey=matchedValue.substring(matchedValue.indexOf(".", 9)+1);
 				if(messages.containsKey(propFileKey) && messages.get(propFileKey).containsKey(propValueKey)){
 					sb.replace(matchIndexStart, matchIndexEnd, messages.get(propFileKey).getProperty(propValueKey));
 					matcher = pattern.matcher(sb);
@@ -642,7 +642,7 @@ public class Commons {
 			int matchIndexEnd=matcher.end();
 			String matchedValue=matcher.group(1);
 			if(matchedValue.startsWith("datatable.")){
-				String dataSetKey = matchedValue.substring(8, matchedValue.length());
+				String dataSetKey = matchedValue.substring(10, matchedValue.length());
 				if(dataSetHeader.containsKey(dataSetKey)){
 					sb.replace(matchIndexStart, matchIndexEnd, dataSetHeader.get(dataSetKey));
 					matcher = pattern.matcher(sb);
