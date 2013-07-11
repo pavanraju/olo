@@ -50,9 +50,9 @@ public class Commons {
 	public static final SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 	public static final SimpleDateFormat defaultFormat = new SimpleDateFormat("dd/MM/yyyy");
 	private static final Pattern pattern = Pattern.compile("\\{\\{(.*?)\\}\\}");
+	public static final String customStyle="<style type='text/css'>.ifskipped{background-color: #d6e1c9;} th.success,td.success{background-color: #dff0d8;} th.error,td.error{background-color: #f2dede;} th.warning,td.warning{background-color: #fcf8e3;}</style>";
 	public static final LinkedHashMap<String, String> testCaseReportColumns = new LinkedHashMap<String, String>(){
-
-	private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 
 			{
 					put("propertyFile", "Property File");
@@ -60,6 +60,7 @@ public class Commons {
 			        put("propertyValue", "Property Value");
 			        put("action", "Action");
 			        put("value", "Value");
+			        put("actualValue", "Actual Value");
 			        put("startTime", "Start Time");
 			        put("endTime", "End Time");
 			        put("timeTaken", "Time Taken");
@@ -241,7 +242,7 @@ public class Commons {
 						}
 					}
 					try {
-						prop.setValue(Commons.replaceMessageMatchers(prop.getValue()));
+						prop.setActualValue(Commons.replaceMessageMatchers(prop.getValue()));
 					} catch (KeywordConfigurationException e) {
 						throw new Exception(e.getMessage()+ " at Line Number "+(row.getRowNum()+1));
 					} catch (Exception e) {
@@ -283,6 +284,7 @@ public class Commons {
 			prop.setPropertyFile(locatorFile);
 			prop.setPropertyName(locatorName);
 			prop.setValue(value);
+			prop.setActualValue(value);
 			prop.setAction(action);
 			return prop;
 		}else{
@@ -316,7 +318,7 @@ public class Commons {
 			lTemplate = new ArrayList<KeywordPropObject>(mTemplate);
 			for (KeywordPropObject lPropObj : lTemplate) {
 				KeywordPropObject localStep = lPropObj.clone();
-				localStep.setValue(Commons.replaceDataSetHeaderMatchers(localStep.getValue(), localSteps));
+				localStep.setActualValue(Commons.replaceDataSetHeaderMatchers(localStep.getValue(), localSteps));
 				startDataProviderSteps.add(localStep);
 			}
 		}
@@ -334,7 +336,7 @@ public class Commons {
 			lTemplate = new ArrayList<KeywordPropObject>(mTemplate);
 			for (KeywordPropObject lPropObj : lTemplate) {
 				KeywordPropObject localStep = lPropObj.clone();
-				localStep.setValue(Commons.replaceDataSetHeaderMatchers(localStep.getValue(), localSteps));
+				localStep.setActualValue(Commons.replaceDataSetHeaderMatchers(localStep.getValue(), localSteps));
 				startDataProviderSteps.add(localStep);
 			}
 		}

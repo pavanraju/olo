@@ -44,14 +44,12 @@ public class ExecutionInitiator {
 			TestNG testng = new TestNG();
 			TestListener testListener = new TestListener();
 			SuiteListener suiteListner = new SuiteListener();
-			ExecutionListener execlistener = new ExecutionListener();
 			Reporter reporter = new Reporter();
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy_HH-mm-ss");
 			testng.setTestSuites(suiteFiles);
 			testng.setUseDefaultListeners(false);
 			testng.addListener(testListener);
 			testng.addListener(suiteListner);
-			testng.addListener(execlistener);
 			testng.addListener(reporter);
 			
 			String testOutputDirectoryAppend=File.separator+"ExecutionReport-"+formatter.format(Calendar.getInstance().getTime());

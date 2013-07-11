@@ -30,7 +30,7 @@ public class OloTestReporter {
 				case ITestResult.SUCCESS:
 				case ITestResult.FAILURE:
 					StringBuffer sb = new StringBuffer();
-					sb.append("<!DOCTYPE html><html><head><title>"+result.getName()+"</title><meta name='viewport' content='width=device-width, initial-scale=1.0'><link href='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet'><link rel='stylesheet' type='text/css' href='../../../olostyles.css'><script src='http://code.jquery.com/jquery-1.10.1.min.js'></script><script src='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js'></script><script type='text/javascript'>$( document ).ready(function() {   $('#checkboxform button').click(function(){ var checkboxId=this.id;  $('#tabledata thead tr th[id='+checkboxId+']').toggle();  var columnIndex=$('#tabledata thead tr th[id='+checkboxId+']').index();  $('#tabledata tbody tr td:nth-child('+(columnIndex+1)+')').toggle();      });     });</script></head><body>");
+					sb.append("<!DOCTYPE html><html><head><title>"+result.getName()+"</title><meta name='viewport' content='width=device-width, initial-scale=1.0'><link href='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet'>"+Commons.customStyle+"<script src='http://code.jquery.com/jquery-1.10.1.min.js'></script><script src='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js'></script><script type='text/javascript'>$( document ).ready(function() {   $('#checkboxform button').click(function(){ var checkboxId=this.id;  $('#tabledata thead tr th[id='+checkboxId+']').toggle();  var columnIndex=$('#tabledata thead tr th[id='+checkboxId+']').index();  $('#tabledata tbody tr td:nth-child('+(columnIndex+1)+')').toggle();      });     });</script></head><body>");
 					sb.append("<div class='container-fluid'><div class='row-fluid' style='margin-top:20px;'>");
 					String reporterFileName=result.getName()+".html";
 					String reporterFileDirectory = result.getTestContext().getCurrentXmlTest().getName()+File.separator+Commons.getStatusString(result.getStatus());
@@ -55,7 +55,7 @@ public class OloTestReporter {
 					sb.append("<div class='btn-group' data-toggle='buttons-checkbox'>");
 					
 					for (Map.Entry<String, String> column : reportColumns.entrySet()) {
-						if(column.getKey().equals("propertyFile") || column.getKey().equals("propertyValue") || column.getKey().equals("startTime") || column.getKey().equals("endTime") || column.getKey().equals("status")){
+						if(column.getKey().equals("propertyFile") || column.getKey().equals("propertyValue") || column.getKey().equals("value") || column.getKey().equals("startTime") || column.getKey().equals("endTime") || column.getKey().equals("status")){
 							sb.append("<button type='button' class='btn btn-primary' id='"+column.getKey()+"'>"+column.getValue()+"</button>");
 						}else{
 							sb.append("<button type='button' class='btn btn-primary active' id='"+column.getKey()+"'>"+column.getValue()+"</button>");
@@ -68,7 +68,7 @@ public class OloTestReporter {
 					sb.append("<th>S.No</th>");
 					
 					for (Map.Entry<String, String> column : reportColumns.entrySet()) {
-						if(column.getKey().equals("propertyFile") || column.getKey().equals("propertyValue") || column.getKey().equals("startTime") || column.getKey().equals("endTime") || column.getKey().equals("status")){
+						if(column.getKey().equals("propertyFile") || column.getKey().equals("propertyValue") || column.getKey().equals("value") || column.getKey().equals("startTime") || column.getKey().equals("endTime") || column.getKey().equals("status")){
 							sb.append("<th style='display:none' id='"+column.getKey()+"'> ");
 						}else{
 							sb.append("<th id='"+column.getKey()+"'> ");
@@ -81,7 +81,6 @@ public class OloTestReporter {
 						KeywordPropObject localStep = level3ReportArray.get(i);
 						String timeTaken=Commons.timeTaken(localStep.getEndTime()-localStep.getStartTime());
 						
-						//sb.append("<tr "+ (!localStep.isConditionSkip() ? (localStep.getHasError() ? (localStep.getIsVerification() ? (localStep.getIsAssertionError() ? "class='warning'" : "class='error'") : "class='error'") : (localStep.getThreshold() ? "class='threshold'" : "class='success'")) : "class='ifskipped'")+">");
 						sb.append("<tr "+ (!localStep.isConditionSkip() ? (localStep.getHasError() ? (localStep.getIsVerification() ? (localStep.getIsAssertionError() ? "class='warning'" : "class='error'") : "class='error'") : "class='success'" ) : "class='ifskipped'")+">");
 						
 						sb.append("<td>"+(i+1)+"</td>");
@@ -96,7 +95,9 @@ public class OloTestReporter {
 							}else if(column.getKey().equals("action")){
 								sb.append("<td>"+localStep.getAction()+"</td>");
 							}else if(column.getKey().equals("value")){
-								sb.append("<td>"+(localStep.getValue()!=null ? localStep.getValue().replace("\n", "<br/>") : "null")+"</td>");
+								sb.append("<td style='display:none'>"+(localStep.getValue()!=null ? localStep.getValue().replace("\n", "<br/>") : "null")+"</td>");
+							}else if(column.getKey().equals("actualValue")){
+								sb.append("<td>"+(localStep.getActualValue()!=null ? localStep.getActualValue().replace("\n", "<br/>") : "null")+"</td>");
 							}else if(column.getKey().equals("startTime")){
 								sb.append("<td style='display:none'>"+(!localStep.isConditionSkip() ? (localStep.getStartTime()!=0 ? Commons.hourFormat.format(localStep.getStartTime()) : "") : "-")  +"</td>");
 							}else if(column.getKey().equals("endTime")){

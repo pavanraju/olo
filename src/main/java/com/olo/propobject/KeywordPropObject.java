@@ -13,6 +13,7 @@ public class KeywordPropObject implements Cloneable {
 	private String propertyValue = "";
 	private String action = "";
 	private String value = "";
+	private String actualValue="";
 	private Boolean skip = false;
 	private Boolean hasError = false;
 	private String errorMessage = "";
@@ -66,6 +67,14 @@ public class KeywordPropObject implements Cloneable {
 		this.value = value;
 	}
 	
+	public String getActualValue() {
+		return actualValue;
+	}
+
+	public void setActualValue(String actualValue) {
+		this.actualValue = actualValue;
+	}
+
 	public Boolean getSkip() {
 		return skip;
 	}
@@ -164,7 +173,7 @@ public class KeywordPropObject implements Cloneable {
 
 	@Override
 	public String toString() {
-		return "PropObject [propertyName=" + propertyName + ", action=" + action+ ", value=" + value + "]";
+		return "PropObject [propertyName=" + propertyName + ", action=" + action+ ", actualValue=" + actualValue + "]";
 	}
 
 	public KeywordPropObject clone() {

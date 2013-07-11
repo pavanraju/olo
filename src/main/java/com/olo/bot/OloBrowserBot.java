@@ -39,7 +39,9 @@ public class OloBrowserBot{
 
 	public OloBrowserBot(WebDriver driver) {
 		this.driver = driver;
-		implicitWaitAndWaitTimeOut=Integer.parseInt(configProp.getProperty("implicitWaitAndWaitTimeOut"));
+		if(configProp.containsKey("implicitWaitAndWaitTimeOut")){
+			implicitWaitAndWaitTimeOut=Integer.parseInt(configProp.getProperty("implicitWaitAndWaitTimeOut"));
+		}
 	}
 	
 	public WebDriver getDriver(){

@@ -62,9 +62,14 @@ public class WebDriverInitiator {
 					throw new Exception("Un Supported Browser");
 				}
 				
-				Class<?> webPageBotClass = Class.forName(configProp.getProperty("browserBot"));
-				if(webPageBotClass==null){
-					throw new Exception("Could Not found Web Page Bot");
+				Class<?> webPageBotClass = null;
+				
+				try {
+					webPageBotClass = Class.forName(configProp.getProperty("browserBot"));
+				}catch (ClassNotFoundException e){
+					throw new Exception("browserBot class not found");
+				} catch (Exception e1) {
+					throw new Exception("Problem with browserBot Class");
 				}
 				
 				if(!ctx.getSuite().getParallel().equals("false")){
@@ -114,8 +119,13 @@ public class WebDriverInitiator {
 					}
 				}
 				
-				Constructor<?> botConstructor = webPageBotClass.getConstructor(new Class[]{WebDriver.class});
-				browser = (OloBrowserBot) botConstructor.newInstance(driver);
+				try {
+					Constructor<?> botConstructor = webPageBotClass.getConstructor(new Class[]{WebDriver.class});
+					browser = (OloBrowserBot) botConstructor.newInstance(driver);
+				} catch (Exception e) {
+					throw new Exception("Problem in creating instance for browserBot class");
+				}
+				
 				if(configProp.containsKey("url")){
 					browser.get(configProp.getProperty("url"));
 					browser.waitForPageToLoad();

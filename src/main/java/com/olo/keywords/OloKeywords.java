@@ -21,7 +21,7 @@ public class OloKeywords{
 	
 	@Keyword(name="Wait")
 	public void Wait(KeywordPropObject step) throws Exception{
-		browser.Wait(Integer.parseInt(step.getValue()));
+		browser.Wait(Integer.parseInt(step.getActualValue()));
 	}
 	
 	@Keyword(name="WaitForPageToLoad")
@@ -53,12 +53,12 @@ public class OloKeywords{
 	
 	@Keyword(name="WaitForValue")
 	public void waitForValue(KeywordPropObject step) throws Exception{
-		browser.waitForValue(step.getPropertyValue(),step.getValue());
+		browser.waitForValue(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="WaitForNotValue")
 	public void waitForNotValue(KeywordPropObject step) throws Exception{
-		browser.waitForNotValue(step.getPropertyValue(),step.getValue());
+		browser.waitForNotValue(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="WaitForEditable")
@@ -73,17 +73,17 @@ public class OloKeywords{
 	
 	@Keyword(name="WaitForText")
 	public void waitForText(KeywordPropObject step) throws Exception{
-		browser.waitForText(step.getPropertyValue(),step.getValue());
+		browser.waitForText(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="WaitForNotText")
 	public void waitForNotText(KeywordPropObject step) throws Exception{
-		browser.waitForNotText(step.getPropertyValue(),step.getValue());
+		browser.waitForNotText(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="WaitForAlert")
 	public void waitForAlert(KeywordPropObject step) throws Exception{
-		browser.waitForAlert(step.getValue());
+		browser.waitForAlert(step.getActualValue());
 	}
 	
 	@Keyword(name="WaitForAlertPresent")
@@ -93,12 +93,12 @@ public class OloKeywords{
 	
 	@Keyword(name="WaitForTitle")
 	public void waitForTitle(KeywordPropObject step) throws Exception{
-		browser.waitForTitle(step.getValue());
+		browser.waitForTitle(step.getActualValue());
 	}
 	
 	@Keyword(name="WaitForFrameAndSwitchToIt")
 	public void waitForFrameAndSwitchToIt(KeywordPropObject step) throws Exception{
-		browser.waitForFrameToBeAvailableAndSwitchToIt(step.getValue());
+		browser.waitForFrameToBeAvailableAndSwitchToIt(step.getActualValue());
 	}
 	
 	@Keyword(name="SwitchToDefault")
@@ -108,12 +108,12 @@ public class OloKeywords{
 	
 	@Keyword(name="Get")
 	public void get(KeywordPropObject step){
-		browser.get(step.getValue());
+		browser.get(step.getActualValue());
 	}
 	
 	@Keyword(name="Type")
 	public void type(KeywordPropObject step){
-		browser.type(step.getPropertyValue(),step.getValue());
+		browser.type(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="Clear")
@@ -123,24 +123,27 @@ public class OloKeywords{
 	
 	@Keyword(name="ClearAndType")
 	public void clearAndType(KeywordPropObject step){
-		browser.clearAndType(step.getPropertyValue(),step.getValue());
+		browser.clearAndType(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="TypeUnique")
 	public void typeUnique(KeywordPropObject step){
-		browser.type(step.getPropertyValue(),step.getValue()+Commons.getRandomNumber());
-		step.setValue(browser.getText(step.getPropertyValue()));
+		String typeValue = step.getActualValue()+Commons.getRandomNumber();
+		browser.type(step.getPropertyValue(),typeValue);
+		step.setActualValue(typeValue);
 	}
 	
 	@Keyword(name="ClearAndTypeUnique")
 	public void clearAndTypeUnique(KeywordPropObject step){
-		browser.clearAndTypeUnique(step.getPropertyValue(),step.getValue());
+		String typeValue = step.getActualValue()+Commons.getRandomNumber();
+		browser.clearAndTypeUnique(step.getPropertyValue(),typeValue);
+		step.setActualValue(typeValue);
 	}
 	
 	@Keyword(name="TypeDate")
 	public void typeDate(KeywordPropObject step) throws Exception{
 		Calendar cal = Calendar.getInstance();
-		String value =step.getValue();
+		String value = step.getActualValue();
 		if(value.equals(null) || value.equals("")){
 			cal.add(Calendar.DATE, 0);
 		}else{
@@ -148,15 +151,15 @@ public class OloKeywords{
 		}
 		if(step.getOptions()==null || step.getOptions().equals("")){
 			String newdate = Commons.defaultFormat.format(cal.getTime());
-			step.setValue(newdate);
+			step.setActualValue(newdate);
 		}else{
 			JSONObject options = new JSONObject(step.getOptions());
 			SimpleDateFormat datePattern = new SimpleDateFormat(options.get("pattern").toString());
 			String newdate = datePattern.format(cal.getTime());
-			step.setValue(newdate);
+			step.setActualValue(newdate);
 		}
 		
-		browser.type(step.getPropertyValue(),step.getValue());
+		browser.type(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="Click")
@@ -166,7 +169,7 @@ public class OloKeywords{
 	
 	@Keyword(name="ClickAt")
 	public void clickAt(KeywordPropObject step) throws Exception{
-		browser.clickAt(step.getPropertyValue(),step.getValue());
+		browser.clickAt(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="DoubleClick")
@@ -186,7 +189,7 @@ public class OloKeywords{
 	
 	@Keyword(name="SelectByText")
 	public void selectByText(KeywordPropObject step) throws Exception{
-		browser.selectByText(step.getPropertyValue(),step.getValue());
+		browser.selectByText(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="ContextMenu")
@@ -196,7 +199,7 @@ public class OloKeywords{
 	
 	@Keyword(name="ContextMenuAt")
 	public void contextMenuAt(KeywordPropObject step) throws Exception{
-		browser.contextMenuAt(step.getPropertyValue(),step.getValue());
+		browser.contextMenuAt(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="MouseDown")
@@ -206,7 +209,7 @@ public class OloKeywords{
 	
 	@Keyword(name="MouseDownAt")
 	public void mouseDownAt(KeywordPropObject step) throws Exception{
-		browser.mouseDownAt(step.getPropertyValue(),step.getValue());
+		browser.mouseDownAt(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="MouseUp")
@@ -216,7 +219,7 @@ public class OloKeywords{
 	
 	@Keyword(name="MouseUpAt")
 	public void mouseUpAt(KeywordPropObject step) throws Exception{
-		browser.mouseUpAt(step.getPropertyValue(),step.getValue());
+		browser.mouseUpAt(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="MouseOver")
@@ -231,12 +234,12 @@ public class OloKeywords{
 	
 	@Keyword(name="KeyDown")
 	public void keyDown(KeywordPropObject step) throws Exception{
-		browser.keyDown(step.getPropertyValue(),step.getValue());
+		browser.keyDown(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="KeyUp")
 	public void keyUp(KeywordPropObject step) throws Exception{
-		browser.keyUp(step.getPropertyValue(),step.getValue());
+		browser.keyUp(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="ControlKeyUp")
@@ -261,7 +264,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertTitle")
 	public void asertTitle(KeywordPropObject step) throws Exception{
-		browser.assertTitle(step.getValue());
+		browser.assertTitle(step.getActualValue());
 	}
 	
 	@Keyword(name="VerifyTitle")
@@ -272,7 +275,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertNotTitle")
 	public void asertNotTitle(KeywordPropObject step) throws Exception{
-		browser.assertNotTitle(step.getValue());
+		browser.assertNotTitle(step.getActualValue());
 	}
 	
 	@Keyword(name="VerifyNotTitle")
@@ -283,7 +286,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertSelectedText")
 	public void assertSelectedText(KeywordPropObject step) throws Exception{
-		browser.assertSelectedText(step.getPropertyValue(),step.getValue());
+		browser.assertSelectedText(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="VerifySelectedText")
@@ -294,7 +297,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertNotSelectedText")
 	public void assertNotSelectedText(KeywordPropObject step) throws Exception{
-		browser.assertNotSelectedText(step.getPropertyValue(),step.getValue());
+		browser.assertNotSelectedText(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="VerifyNotSelectedText")
@@ -327,7 +330,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertSelectOptions")
 	public void assertSelectOptions(KeywordPropObject step) throws Exception{
-		browser.assertSelectOptions(step.getPropertyValue(),step.getValue());
+		browser.assertSelectOptions(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="VerifySelectOptions")
@@ -338,7 +341,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertSelectOptionsSize")
 	public void assertSelectOptionsCount(KeywordPropObject step) throws Exception{
-		browser.assertSelectOptionsSize(step.getPropertyValue(),step.getValue());
+		browser.assertSelectOptionsSize(step.getPropertyValue(),step.getActualValue());
 	}
 	
 	@Keyword(name="VerifySelectOptionsSize")
@@ -360,7 +363,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertAlert")
 	public void assertAlert(KeywordPropObject step) throws Exception{
-		browser.assertAlert(step.getValue());
+		browser.assertAlert(step.getActualValue());
 	}
 	
 	@Keyword(name="VerifyAlert")
@@ -371,7 +374,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertNotAlert")
 	public void assertNotAlert(KeywordPropObject step) throws Exception{
-		browser.assertNotAlert(step.getValue());
+		browser.assertNotAlert(step.getActualValue());
 	}
 	
 	@Keyword(name="VerifyNotAlert")
@@ -382,7 +385,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertVisible")
 	public void assertVisible(KeywordPropObject step) throws Exception{
-		browser.assertVisible(step.getValue());
+		browser.assertVisible(step.getActualValue());
 	}
 	
 	@Keyword(name="VerifyVisible")
@@ -437,7 +440,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertAttribute")
 	public void assertAttribute(KeywordPropObject step) throws Exception{
-		browser.assertAttribute(step.getPropertyValue(), step.getValue());
+		browser.assertAttribute(step.getPropertyValue(), step.getActualValue());
 	}
 	
 	@Keyword(name="VerifyAttribute")
@@ -448,7 +451,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertValue")
 	public void assertValue(KeywordPropObject step) throws Exception{
-		browser.assertValue(step.getPropertyValue(), step.getValue());
+		browser.assertValue(step.getPropertyValue(), step.getActualValue());
 	}
 	
 	@Keyword(name="VerifyValue")
@@ -459,7 +462,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertNotValue")
 	public void assertNotValue(KeywordPropObject step) throws Exception{
-		browser.assertNotValue(step.getPropertyValue(), step.getValue());
+		browser.assertNotValue(step.getPropertyValue(), step.getActualValue());
 	}
 	
 	@Keyword(name="VerifyNotValue")
@@ -470,7 +473,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertText")
 	public void assertText(KeywordPropObject step) throws Exception{
-		browser.assertText(step.getPropertyValue(), step.getValue());
+		browser.assertText(step.getPropertyValue(), step.getActualValue());
 	}
 	
 	@Keyword(name="VerifyText")
@@ -481,7 +484,7 @@ public class OloKeywords{
 	
 	@Keyword(name="AssertNotText")
 	public void assertNotText(KeywordPropObject step) throws Exception{
-		browser.assertNotText(step.getPropertyValue(), step.getValue());
+		browser.assertNotText(step.getPropertyValue(), step.getActualValue());
 	}
 	
 	@Keyword(name="VerifyNotText")
@@ -492,87 +495,71 @@ public class OloKeywords{
 	
 	@Keyword(name="IfElementPresent")
 	public void ifElementPresent(KeywordPropObject step) throws Exception{
-		browser.implicitWait(0);
 		if(!browser.isElementPresent(step.getPropertyValue())){
 			step.setIfSkipped(true);
 		}
-		browser.implicitWait();
 	}
 	
 	@Keyword(name="IfElementNotPresent")
 	public void ifElementNotPresent(KeywordPropObject step) throws Exception{
-		browser.implicitWait(0);
 		if(browser.isElementPresent(step.getPropertyValue())){
 			step.setIfSkipped(true);
 		}
-		browser.implicitWait();
 	}
 	
 	@Keyword(name="IfElementVisible")
 	public void ifElementVisible(KeywordPropObject step) throws Exception{
-		browser.implicitWait(0);
 		if(!browser.isVisible(step.getPropertyValue())){
 			step.setIfSkipped(true);
 		}
-		browser.implicitWait();
 	}
 	
 	@Keyword(name="IfElementNotVisible")
 	public void ifElementNotVisible(KeywordPropObject step) throws Exception{
-		browser.implicitWait(0);
 		if(browser.isVisible(step.getPropertyValue())){
 			step.setIfSkipped(true);
 		}
-		browser.implicitWait();
 	}
 	
 	@Keyword(name="IfElementValueEquals")
 	public void ifElementValueEquals(KeywordPropObject step) throws Exception{
-		browser.implicitWait(0);
-		if(!browser.getValue(step.getPropertyValue()).equals(step.getValue())){
+		if(!browser.getValue(step.getPropertyValue()).equals(step.getActualValue())){
 			step.setIfSkipped(true);
 		}
-		browser.implicitWait();
 	}
 	
 	@Keyword(name="IfElementValueNotEquals")
 	public void ifElementValueNotEquals(KeywordPropObject step) throws Exception{
-		browser.implicitWait(0);
-		if(browser.getValue(step.getPropertyValue()).equals(step.getValue())){
+		if(browser.getValue(step.getPropertyValue()).equals(step.getActualValue())){
 			step.setIfSkipped(true);
 		}
-		browser.implicitWait();
 	}
 	
 	@Keyword(name="IfElementTextEquals")
 	public void ifElementTextEquals(KeywordPropObject step) throws Exception{
-		browser.implicitWait(0);
-		if(!browser.getText(step.getPropertyValue()).equals(step.getValue())){
+		if(!browser.getText(step.getPropertyValue()).equals(step.getActualValue())){
 			step.setIfSkipped(true);
 		}
-		browser.implicitWait();
 	}
 	
 	@Keyword(name="IfElementTextNotEquals")
 	public void ifElementTextNotEquals(KeywordPropObject step) throws Exception{
-		browser.implicitWait(0);
-		if(browser.getText(step.getPropertyValue()).equals(step.getValue())){
+		if(browser.getText(step.getPropertyValue()).equals(step.getActualValue())){
 			step.setIfSkipped(true);
 		}
-		browser.implicitWait();
 	}
 	
 	@Keyword(name="PutValueIn")
 	public HashMap<String, String> putValueIn(KeywordPropObject step) throws Exception{
 		HashMap<String, String> storeData = new HashMap<String, String>();
-		storeData.put(step.getValue(), browser.getValue(step.getPropertyValue()));
+		storeData.put(step.getActualValue(), browser.getValue(step.getPropertyValue()));
 		return storeData;
 	}
 	
 	@Keyword(name="PutTextIn")
 	public HashMap<String, String> putTextIn(KeywordPropObject step) throws Exception{
 		HashMap<String, String> storeData = new HashMap<String, String>();
-		storeData.put(step.getValue(), browser.getText(step.getPropertyValue()));
+		storeData.put(step.getActualValue(), browser.getText(step.getPropertyValue()));
 		return storeData;
 	}
 	
