@@ -618,19 +618,19 @@ public class OloBrowserBot{
 		return element.getTagName();
 	}
 	
-	public WebElement getWebElement(String locator){
+	public WebElement findElement(String locator){
 		return driver.findElement(byLocator(locator));
 	}
 	
-	public WebElement getWebElement(By by){
+	public WebElement findElement(By by){
 		return driver.findElement(by);
 	}
 	
-	public List<WebElement> getWebElements(String locator){
+	public List<WebElement> findElements(String locator){
 		return driver.findElements(byLocator(locator));
 	}
 	
-	public List<WebElement> getWebElements(By by){
+	public List<WebElement> findElements(By by){
 		return driver.findElements(by);
 	}
 	

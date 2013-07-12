@@ -126,9 +126,9 @@ public class WebDriverInitiator {
 					throw new Exception("Problem in creating instance for browserBot class");
 				}
 				
+				browser.waitForPageToLoad();
 				if(configProp.containsKey("url")){
 					browser.get(configProp.getProperty("url"));
-					browser.waitForPageToLoad();
 					browser.deleteAllVisibleCookies();
 				}
 				browser.implicitWait();

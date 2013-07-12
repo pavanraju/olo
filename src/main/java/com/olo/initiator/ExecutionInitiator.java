@@ -52,10 +52,8 @@ public class ExecutionInitiator {
 			testng.addListener(suiteListner);
 			testng.addListener(reporter);
 			
-			String testOutputDirectoryAppend=File.separator+"ExecutionReport-"+formatter.format(Calendar.getInstance().getTime());
-			String testOutputDirectory="test-output"+testOutputDirectoryAppend;
-			System.setProperty("reportsDirectory", testOutputDirectory);
-			configProp.setProperty("TestOutputDirectory", testOutputDirectory);
+			String testOutputDirectoryAppend="ExecutionReport-"+formatter.format(Calendar.getInstance().getTime());
+			String testOutputDirectory="test-output/"+testOutputDirectoryAppend;
 			testng.setOutputDirectory(testOutputDirectory);
 			testng.run();
 			logger.info("Execution Completed !!!");
