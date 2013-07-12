@@ -1,3 +1,25 @@
+0.4.0
+------------
+
+**Enhancements**
+
+* Added new property actualValue in KeywordDriven. It can seen in report.
+* Removed Dependency of setting property value of reportOutputDirectory. Removed ExecutionListener and olostyles.css
+* implicitWaitAndWaitTimeOut is default 30 sec. Optional in config.properties.
+* Setting waitForPageToLoad in WebDriverInitiator.
+
+
+**Bug Fixes**
+
+* Shows proper error message if browserBot class not found.
+* Removed implicit Wait in If keywords.
+
+
+**Breaking Changes**
+
+* Changed getWebElement to findElement and getWebElements to findElements.
+
+
 0.3.0
 ------------
 
