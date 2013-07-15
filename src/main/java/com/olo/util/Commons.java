@@ -55,12 +55,12 @@ public class Commons {
 		private static final long serialVersionUID = 1L;
 
 			{
-					put("propertyFile", "Property File");
 			        put("propertyName", "Property Name");
 			        put("propertyValue", "Property Value");
 			        put("action", "Action");
 			        put("value", "Value");
 			        put("actualValue", "Actual Value");
+			        put("options", "Options");
 			        put("startTime", "Start Time");
 			        put("endTime", "End Time");
 			        put("timeTaken", "Time Taken");
@@ -234,9 +234,16 @@ public class Commons {
 				}else if(prop.getAction().equalsIgnoreCase("EndDataTable")){
 					break;
 				}else{
-					if(!prop.getPropertyFile().isEmpty()){
-						if(allProp.get(prop.getPropertyFile()).containsKey(prop.getPropertyName())){
-							prop.setPropertyValue(allProp.get(prop.getPropertyFile()).getProperty(prop.getPropertyName()));
+					if(!prop.getPropertyName().isEmpty()){
+						String property = prop.getPropertyName();
+						String propFile = property.substring(0, property.indexOf("."));
+						String propName = property.substring(property.indexOf(".")+1);
+						if(allProp.containsKey(propFile)){
+							if(allProp.get(propFile).containsKey(propName)){
+								prop.setPropertyValue(allProp.get(propFile).getProperty(propName));
+							}else{
+								throw new KeywordConfigurationException("Missing Property Name at Line Number : "+(row.getRowNum()+1));
+							}
 						}else{
 							throw new KeywordConfigurationException("Missing Property Name at Line Number : "+(row.getRowNum()+1));
 						}
@@ -276,16 +283,16 @@ public class Commons {
 	
 	public KeywordPropObject getKeywordPropObject(Row row){
 		KeywordPropObject prop = new KeywordPropObject();
-		String locatorFile = row.getCell(0) == null ? "" : row.getCell(0).toString().trim();
-		String locatorName = row.getCell(1) == null ? "" : row.getCell(1).toString().trim();
-		String action = row.getCell(2) == null ? "" : row.getCell(2).toString().trim();
-		String value=getCellValue(row,3);
+		String locatorName = row.getCell(0) == null ? "" : row.getCell(0).toString().trim();
+		String action = row.getCell(1) == null ? "" : row.getCell(1).toString().trim();
+		String value = getCellValue(row,2);
+		String options = row.getCell(3) == null ? "" : row.getCell(3).toString().trim();
 		if (!(locatorName + value + action).trim().equals("")) {
-			prop.setPropertyFile(locatorFile);
 			prop.setPropertyName(locatorName);
 			prop.setValue(value);
 			prop.setActualValue(value);
 			prop.setAction(action);
+			prop.setOptions(options);
 			return prop;
 		}else{
 			return null;

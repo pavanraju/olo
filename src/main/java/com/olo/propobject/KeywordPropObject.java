@@ -8,7 +8,6 @@ public class KeywordPropObject implements Cloneable {
 	
 	private static final Logger logger = LogManager.getLogger(KeywordPropObject.class.getName());
 	
-	private String propertyFile = "";
 	private String propertyName = "";
 	private String propertyValue = "";
 	private String action = "";
@@ -26,14 +25,6 @@ public class KeywordPropObject implements Cloneable {
 	private boolean ifSkipped = false;
 	private boolean conditionSkip=false;
 	private String options = "" ;
-
-	public String getPropertyFile() {
-		return propertyFile;
-	}
-
-	public void setPropertyFile(String propertyFile) {
-		this.propertyFile = propertyFile;
-	}
 
 	public String getPropertyName() {
 		return propertyName;

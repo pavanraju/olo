@@ -55,7 +55,7 @@ public class OloTestReporter {
 					sb.append("<div class='btn-group' data-toggle='buttons-checkbox'>");
 					
 					for (Map.Entry<String, String> column : reportColumns.entrySet()) {
-						if(column.getKey().equals("propertyFile") || column.getKey().equals("propertyValue") || column.getKey().equals("value") || column.getKey().equals("startTime") || column.getKey().equals("endTime") || column.getKey().equals("status")){
+						if(column.getKey().equals("propertyValue") || column.getKey().equals("value") || column.getKey().equals("options") || column.getKey().equals("startTime") || column.getKey().equals("endTime") || column.getKey().equals("status")){
 							sb.append("<button type='button' class='btn btn-primary' id='"+column.getKey()+"'>"+column.getValue()+"</button>");
 						}else{
 							sb.append("<button type='button' class='btn btn-primary active' id='"+column.getKey()+"'>"+column.getValue()+"</button>");
@@ -68,7 +68,7 @@ public class OloTestReporter {
 					sb.append("<th>S.No</th>");
 					
 					for (Map.Entry<String, String> column : reportColumns.entrySet()) {
-						if(column.getKey().equals("propertyFile") || column.getKey().equals("propertyValue") || column.getKey().equals("value") || column.getKey().equals("startTime") || column.getKey().equals("endTime") || column.getKey().equals("status")){
+						if(column.getKey().equals("propertyValue") || column.getKey().equals("value") || column.getKey().equals("options") || column.getKey().equals("startTime") || column.getKey().equals("endTime") || column.getKey().equals("status")){
 							sb.append("<th style='display:none' id='"+column.getKey()+"'> ");
 						}else{
 							sb.append("<th id='"+column.getKey()+"'> ");
@@ -86,9 +86,7 @@ public class OloTestReporter {
 						sb.append("<td>"+(i+1)+"</td>");
 						
 						for (Map.Entry<String, String> column : reportColumns.entrySet()) {
-							if(column.getKey().equals("propertyFile")){
-								sb.append("<td style='display:none'>"+localStep.getPropertyFile()+"</td>");
-							}else if(column.getKey().equals("propertyName")){
+							if(column.getKey().equals("propertyName")){
 								sb.append("<td>"+localStep.getPropertyName()+"</td>");
 							}else if(column.getKey().equals("propertyValue")){
 								sb.append("<td style='display:none'>"+localStep.getPropertyValue()+"</td>");
@@ -98,6 +96,8 @@ public class OloTestReporter {
 								sb.append("<td style='display:none'>"+(localStep.getValue()!=null ? localStep.getValue().replace("\n", "<br/>") : "null")+"</td>");
 							}else if(column.getKey().equals("actualValue")){
 								sb.append("<td>"+(localStep.getActualValue()!=null ? localStep.getActualValue().replace("\n", "<br/>") : "null")+"</td>");
+							}else if(column.getKey().equals("options")){
+								sb.append("<td style='display:none'>"+localStep.getOptions()+"</td>");
 							}else if(column.getKey().equals("startTime")){
 								sb.append("<td style='display:none'>"+(!localStep.isConditionSkip() ? (localStep.getStartTime()!=0 ? Commons.hourFormat.format(localStep.getStartTime()) : "") : "-")  +"</td>");
 							}else if(column.getKey().equals("endTime")){
