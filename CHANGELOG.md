@@ -1,3 +1,11 @@
+0.5.0
+------------
+
+**Breaking Changes**
+
+* For KeywordDriven Tests have one column to specify locatorname. Syntax for the same will be {{fileName}}.{{propertyName}} in the first column.
+
+
 0.4.0
 ------------
 
