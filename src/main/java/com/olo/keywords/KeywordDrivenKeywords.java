@@ -7,16 +7,16 @@ import java.util.HashMap;
 import org.json.JSONObject;
 
 import com.olo.annotations.Keyword;
-import com.olo.bot.OloBrowserBot;
+import com.olo.bot.BrowserBot;
 import com.olo.propobject.KeywordPropObject;
 import com.olo.util.Commons;
 
-public class OloKeywords{
+public class KeywordDrivenKeywords{
 	
-	private OloBrowserBot browser;
+	private BrowserBot browser;
 	
-	public OloKeywords(OloBrowserBot webBot){
-		this.browser=webBot;
+	public KeywordDrivenKeywords(BrowserBot browser){
+		this.browser=browser;
 	}
 	
 	@Keyword(name="Wait")

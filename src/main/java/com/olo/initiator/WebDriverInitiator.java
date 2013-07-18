@@ -3,17 +3,18 @@ package com.olo.initiator;
 import static com.olo.util.PropertyReader.configProp;
 
 import com.olo.annotations.Reporter;
-import com.olo.bot.OloBrowserBot;
 import com.olo.util.OSUtil;
 import com.opera.core.systems.OperaDriver;
 
 import java.io.File;
-import java.lang.reflect.Constructor;
 import java.net.URL;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Platform;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -33,13 +34,13 @@ public class WebDriverInitiator {
 	
 	private static final Logger logger = LogManager.getLogger(WebDriverInitiator.class.getName());
 	
-	public OloBrowserBot browser = null;
+	public WebDriver driver = null;
 	
 	@BeforeMethod
 	public void driverStart(ITestContext ctx) throws Exception{
 		try{
 			try {
-				WebDriver driver = null;
+				
 				String openBrowser = configProp.getProperty("browser");
 				logger.info("Trying to Start WebDriver");
 				DesiredCapabilities capabilities = null;
@@ -60,16 +61,6 @@ public class WebDriverInitiator {
 					capabilities = DesiredCapabilities.ipad();
 				}else{
 					throw new Exception("Un Supported Browser");
-				}
-				
-				Class<?> webPageBotClass = null;
-				
-				try {
-					webPageBotClass = Class.forName(configProp.getProperty("browserBot"));
-				}catch (ClassNotFoundException e){
-					throw new Exception("browserBot class not found");
-				} catch (Exception e1) {
-					throw new Exception("Problem with browserBot Class");
 				}
 				
 				if(!ctx.getSuite().getParallel().equals("false")){
@@ -119,21 +110,6 @@ public class WebDriverInitiator {
 					}
 				}
 				
-				try {
-					Constructor<?> botConstructor = webPageBotClass.getConstructor(new Class[]{WebDriver.class});
-					browser = (OloBrowserBot) botConstructor.newInstance(driver);
-				} catch (Exception e) {
-					throw new Exception("Problem in creating instance for browserBot class");
-				}
-				
-				browser.waitForPageToLoad();
-				if(configProp.containsKey("url")){
-					browser.get(configProp.getProperty("url"));
-					browser.deleteAllVisibleCookies();
-				}
-				browser.implicitWait();
-				browser.windowMaximize();
-				browser.windowFocus();
 				Thread.sleep(1000);
 				logger.info("WebDriver Started");
 			} catch (Exception e) {
@@ -158,8 +134,9 @@ public class WebDriverInitiator {
 				case ITestResult.FAILURE:
 					try {
 						String screenShotFileName=System.currentTimeMillis()+".png";
-						String screenShotPath=result.getTestContext().getOutputDirectory()+File.separator+"screenshots"+File.separator+screenShotFileName;
-						browser.captureScreenshot(screenShotPath);
+						String screenShotPath=result.getTestContext().getOutputDirectory()+"/"+"screenshots"+"/"+screenShotFileName;
+						File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+						FileUtils.copyFile(srcFile, new File(screenShotPath));
 						result.setAttribute("screenshot", screenShotFileName);
 					} catch (Exception e2) {
 						e2.printStackTrace();
@@ -168,7 +145,7 @@ public class WebDriverInitiator {
 				}
 			}
 			logger.info("Trying to Stop WebDriver");
-			browser.getDriver().quit();
+			driver.quit();
 			logger.info("WebDriver Stopped");
 		}catch(Exception e){
 			logger.error("Error in stopping WebDriver "+e.getMessage());

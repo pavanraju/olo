@@ -31,21 +31,17 @@ import org.testng.Assert;
 import com.olo.util.Commons;
 
 
-public class OloBrowserBot{
+public class BrowserBot{
 	
 	private final WebDriver driver;
 	
 	private long implicitWaitAndWaitTimeOut=30;
 
-	public OloBrowserBot(WebDriver driver) {
+	public BrowserBot(WebDriver driver) {
 		this.driver = driver;
 		if(configProp.containsKey("implicitWaitAndWaitTimeOut")){
 			implicitWaitAndWaitTimeOut=Integer.parseInt(configProp.getProperty("implicitWaitAndWaitTimeOut"));
 		}
-	}
-	
-	public WebDriver getDriver(){
-		return driver;
 	}
 	
 	public void implicitWait(){
