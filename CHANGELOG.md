@@ -1,3 +1,14 @@
+0.6.0
+------------
+
+**Breaking Changes**
+
+* Removed keywords,browserBot from config.properties and handled the same implementation. All tests should extend from BrowserBotInitiaor.
+
+**Enhancements**
+
+* Moved keywordDriven execution from KeywordDrivenRunner to KeywordDrivenExecution.
+
 0.5.0
 ------------
 
