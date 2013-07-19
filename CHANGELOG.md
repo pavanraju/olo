@@ -1,3 +1,19 @@
+0.7.0
+------------
+
+**Enhancements**
+
+* New Keywords implemented(AssertNotSelectOptions,VerifyNotSelectOptions,AssertNotSelectOptionsSize,VerifyNotSelectOptionsSize,AssertNotAttribute,VerifyNotAttribute)
+* KeywordDriven keywords will use the same api of WebElements instead of seperate implementation in BrowserBot.
+
+**Bug Fixes**
+
+* Fixed issue with WaitForElementPresent for KeywordDriven Approach
+
+**Breaking Changes**
+
+* Removing support for old chrome drivers. PageLoadTimeOut is not implemented in old browsers. But it is handled in chrome driver 2.1. Request to download the latest version of chrome driver.
+
 0.6.0
 ------------
 
