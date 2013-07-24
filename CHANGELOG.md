@@ -1,3 +1,25 @@
+0.8.0
+------------
+
+**Enhancements**
+
+* Added new Method getTimeOut in BrowserBot to get timeout at run time.
+* Adding new class WebDriverConfiguration so that users can write their own WebDriverInitiators.
+* WebDriverInitiator is using methods from WebDriverConfiguration
+* removing implicitWait and waitForPageToload from BrowserBot as they are handled in WebDriverInitiator
+* removed unnecessary code from keywordDrivenExection
+* Moved opening url, maximize window, window focus to WebDriverInitiator, BrowserBotInitiator will only create instance for Browser Bot.
+* removed WaitForPageToLoad keyword from keywords list as it handled at framework level
+* Couple of enhancements in SuiteListener, better reports in Suite Level report.
+ 
+
+**Bug Fixes**
+
+* WaitForElementNotPresent for KeywordDriven
+* Added extra div with class span1 in reporter, so that there will be no table breaks if we have very long url given for execution.
+
+
+
 0.7.0
 ------------
 
