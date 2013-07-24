@@ -145,7 +145,7 @@ public class Reporter implements IReporter{
 	    int totalTests=totalPassedTests+totalFailedTests+totalSkippedTests;
 	    
 	    StringBuffer suitesSummaryStartHtml = new StringBuffer();
-	    suitesSummaryStartHtml.append("<html><head><title>" + title + "</title><meta name='viewport' content='width=device-width, initial-scale=1.0'><link href='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet'>");
+	    suitesSummaryStartHtml.append("<!DOCTYPE html><html><head><meta charset='utf-8'><title>" + title + "</title><meta name='viewport' content='width=device-width, initial-scale=1.0'><link href='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet'>");
 	    suitesSummaryStartHtml.append("<script type='text/javascript' src='http://www.google.com/jsapi'></script>");
 	    suitesSummaryStartHtml.append("<script type='text/javascript'>google.load('visualization', '1', {packages: ['corechart']}); </script>");
 	    suitesSummaryStartHtml.append("<script type='text/javascript'>function drawVisualization() { var data = new google.visualization.DataTable(); data.addColumn('string', 'Topping'); data.addColumn('number', 'Slices'); data.addRows([['Passed', "+totalPassedTests+"],['Failed', "+totalFailedTests+"],['Skipped', "+totalSkippedTests+"]]); new google.visualization.PieChart(document.getElementById('visualization')).draw(data,{'width':400,'height':300,slices: [{color: '#109618'}, {color:'#dc3912'}, {color: '#ff9900'}]});} google.setOnLoadCallback(drawVisualization); </script> ");
@@ -161,7 +161,7 @@ public class Reporter implements IReporter{
 	    	suitesSummaryStartHtml.append("<tr><th>URL</th><td>"+configProp.getProperty("url")+"</td></tr>");
 	    }
 	    suitesSummaryStartHtml.append("<tr><th>Browser</th><td>"+configProp.getProperty("browser")+"</td></tr>");
-	    suitesSummaryStartHtml.append("<tr><th>Total Tests</th><td>"+totalTests+"</td></tr>");
+	    suitesSummaryStartHtml.append("<tr><th nowrap='nowrap'>Total Tests</th><td>"+totalTests+"</td></tr>");
 	    suitesSummaryStartHtml.append("<tr><th>Passed</th><td>"+totalPassedTests+"</td></tr>");
 	    suitesSummaryStartHtml.append("<tr><th>Failed</th><td>"+totalFailedTests+"</td></tr>");
 	    suitesSummaryStartHtml.append("<tr><th>Skipped</th><td>"+totalSkippedTests+"</td></tr>");
