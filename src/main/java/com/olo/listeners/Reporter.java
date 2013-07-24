@@ -167,6 +167,7 @@ public class Reporter implements IReporter{
 	    suitesSummaryStartHtml.append("<tr><th>Skipped</th><td>"+totalSkippedTests+"</td></tr>");
 	    suitesSummaryStartHtml.append("</table>");
 	    suitesSummaryStartHtml.append("</div>");
+	    suitesSummaryStartHtml.append("<div class='span1'></div>");
 	    suitesSummaryStartHtml.append("<div id='visualization' class='span4'></div>");
 	    
 	    suitesSummaryStartHtml.append("</div>");

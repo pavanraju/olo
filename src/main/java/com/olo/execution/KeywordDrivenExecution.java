@@ -171,7 +171,7 @@ public class KeywordDrivenExecution {
 					
 					try {
 						String screenShotFileName=System.currentTimeMillis()+".png";
-						String screenShotPath=ctx.getOutputDirectory()+"/"+"screenshots"+"/"+screenShotFileName;
+						String screenShotPath=ctx.getOutputDirectory()+"/screenshots/"+screenShotFileName;
 						browser.captureScreenshot(screenShotPath);
 						localStep.setScreenShotName(screenShotFileName);
 						localStep.setScreenShotPath(screenShotPath);
@@ -180,9 +180,6 @@ public class KeywordDrivenExecution {
 					}
 					localStep.setHasError(true);
 					
-					if(localStep.getAction().startsWith("If")){
-						browser.implicitWait();
-					}
 				}finally{
 					if(localStep.getEndTime()==0){
 						localStep.setEndTime(System.currentTimeMillis());

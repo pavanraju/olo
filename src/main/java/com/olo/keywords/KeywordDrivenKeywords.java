@@ -24,13 +24,6 @@ public class KeywordDrivenKeywords{
 		browser.Wait(Integer.parseInt(step.getActualValue()));
 	}
 	
-	@Keyword(name="WaitForPageToLoad")
-	public void waitForPageToLoad(KeywordPropObject step) throws Exception{
-		step.setStartTime(System.currentTimeMillis());
-		browser.waitForPageToLoad();
-		step.setEndTime(System.currentTimeMillis());
-	}
-	
 	@Keyword(name="WaitForElementPresent")
 	public void waitForElementPresent(KeywordPropObject step) throws Exception{
 		browser.waitForElementPresent(browser.byLocator(step.getPropertyValue()));

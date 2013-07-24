@@ -6,7 +6,6 @@ import static com.olo.util.PropertyReader.configProp;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
@@ -43,24 +42,8 @@ public class BrowserBot{
 		}
 	}
 	
-	public void implicitWait(){
-		driver.manage().timeouts().implicitlyWait(implicitWaitAndWaitTimeOut, TimeUnit.SECONDS);
-	}
-	
-	public void implicitWait(long sec){
-		driver.manage().timeouts().implicitlyWait(sec, TimeUnit.SECONDS);
-	}
-	
 	public void Wait(int timeOutSec) throws Exception {
 			Thread.sleep(timeOutSec*1000);
-	}
-	
-	public void waitForPageToLoad(long timeOutInSeconds) throws Exception {
-		driver.manage().timeouts().pageLoadTimeout(timeOutInSeconds, TimeUnit.SECONDS);
-	}
-	
-	public void waitForPageToLoad() throws Exception {
-		driver.manage().timeouts().pageLoadTimeout(implicitWaitAndWaitTimeOut, TimeUnit.SECONDS);
 	}
 	
 	public void waitForFrameToBeAvailableAndSwitchToIt(String frameLocator,long timeOutInSeconds){
@@ -85,6 +68,14 @@ public class BrowserBot{
 	
 	public void waitForElementNotPresent(WebElement element,long timeOutInSeconds){
 		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.stalenessOf(element));
+	}
+	
+	public void waitForElementNotPresent(By by){
+		new WebDriverWait(driver, implicitWaitAndWaitTimeOut).until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(by)));
+	}
+	
+	public void waitForElementNotPresent(By by,long timeOutInSeconds){
+		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(by)));
 	}
 	
 	public void waitForVisible(WebElement element){
@@ -572,6 +563,10 @@ public class BrowserBot{
 	
 	public void switchToWindow(String nameOrHandle){
 		driver.switchTo().window(nameOrHandle);
+	}
+	
+	public long getTimeOut(){
+		return implicitWaitAndWaitTimeOut;
 	}
 	
 	public By byLocator(String locator) {
