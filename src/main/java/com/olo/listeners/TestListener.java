@@ -1,7 +1,5 @@
 package com.olo.listeners;
 
-import static com.olo.util.PropertyReader.configProp;
-
 import java.lang.reflect.Method;
 
 import org.apache.log4j.LogManager;
@@ -11,6 +9,7 @@ import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 import com.olo.annotations.Reporter;
+import com.olo.reporter.TestReporter;
 
 public class TestListener implements ITestListener{
 	
@@ -53,7 +52,7 @@ public class TestListener implements ITestListener{
 			result.getTestContext().getAttribute(result.getName());
 			
 			try {
-				Class<?> testReporterClass= Class.forName(configProp.getProperty("testReporter"));
+				Class<TestReporter> testReporterClass = reporter.reporterClass();
 				for (final Method reporterMethod : testReporterClass.getDeclaredMethods()) {
 					Reporter annotation = reporterMethod.getAnnotation(com.olo.annotations.Reporter.class);
 					if(annotation!=null){

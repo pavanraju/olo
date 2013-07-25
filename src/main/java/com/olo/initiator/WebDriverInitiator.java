@@ -49,7 +49,7 @@ public class WebDriverInitiator extends WebDriverConfiguration{
 				}
 				logger.info("Trying to maximize and focus the window");
 				windowMaximizeAndWindowFocus(driver);
-				
+				logger.info("setting up browser preferences completed");
 			} catch (Exception e) {
 				throw e;
 			} catch (Throwable e) {
@@ -68,7 +68,7 @@ public class WebDriverInitiator extends WebDriverConfiguration{
 		try{
 			if(result.getStatus() == ITestResult.FAILURE){
 				Reporter reporter = result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(com.olo.annotations.Reporter.class);
-				if(reporter == null || (reporter!=null && !reporter.screenShotHandled())){
+				if(reporter == null ){
 					try {
 						takeScreenShotForTest(result,driver);
 					} catch (Exception e2) {
