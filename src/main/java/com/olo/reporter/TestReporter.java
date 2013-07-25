@@ -18,9 +18,9 @@ import com.olo.annotations.Reporter;
 import com.olo.propobject.KeywordPropObject;
 import com.olo.util.Commons;
 
-public class OloTestReporter {
+public class TestReporter {
 	
-	private static final Logger logger = LogManager.getLogger(OloTestReporter.class.getName());
+	private static final Logger logger = LogManager.getLogger(TestReporter.class.getName());
 	
 	@Reporter(name=KeywordDriven.class)
 	public void keywordDrivenTest(ITestResult result){
@@ -37,15 +37,16 @@ public class OloTestReporter {
 					result.setAttribute("reporterFileName", result.getName());
 					result.setAttribute("reporterFilePath", reporterFileDirectory+File.separator+reporterFileName.replace("/", "_"));
 					HashMap<String,Object> level3FinalArray = (HashMap<String, Object>) result.getTestContext().getAttribute(result.getName());
-					sb.append("<div class='span4'>");
+					sb.append("<div class='span5'>");
 					sb.append("<table class='table table-bordered'>");
 					sb.append("<tr><th>Test Case</th><td>"+result.getName()+"</td></tr>");
+					sb.append("<tr><th>Test Path</th><td>"+level3FinalArray.get("testPath")+"</td></tr>");
 					sb.append("<tr><th>Started</th><td>"+Commons.sdfTests.format(new Date(result.getStartMillis()))+"</td></tr>");
 					sb.append("<tr><th>Completed</th><td>"+Commons.sdfTests.format(new Date(result.getEndMillis()))+"</td></tr>");
 					sb.append("<tr><th>Time Taken</th><td>"+Commons.timeTaken(result.getEndMillis()-result.getStartMillis())+"</td></tr>");
 					sb.append("<tr "+(result.getStatus()==1 ? "class='passed'" : "class='failed'")+"><th>Status</th><td>"+Commons.getStatusString(result.getStatus())+"</td></tr>");
 					sb.append("<tr><th>Total Verifications</th><td>"+level3FinalArray.get("totalVerifications")+"</td></tr>");
-					sb.append("<tr><th>Verifications Failed</th><td>"+level3FinalArray.get("totalVerificationFailures")+"</td></tr>");
+					sb.append("<tr><th nowrap='nowrap'>Verifications Failed</th><td>"+level3FinalArray.get("totalVerificationFailures")+"</td></tr>");
 					sb.append("</table>");
 					sb.append("</div><div class='clearfix'></div>");
 					
