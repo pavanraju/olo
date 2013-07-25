@@ -1,3 +1,21 @@
+0.9.0
+------------
+
+**Enhancements**
+
+* Added Test Builder support for keyword driven tests
+* Moved keyword driven handling classes to single package
+* Showing test case path in keyword driven test report.
+* Removed 'screenshothandled' from Reporter annotation
+
+**Bug Fixes**
+
+* Fixed issue for IE driver path problem
+
+**Breaking Changes**
+
+* removed testreporter property from config.properties
+
 0.8.0
 ------------
 
