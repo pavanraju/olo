@@ -125,7 +125,7 @@ public class WebDriverConfiguration {
 		if(browser.equals("Firefox")){
 			return getFirefoxDriver(capabilities);
 		}else if(browser.equals("Explorer")){
-			System.setProperty("webdriver.ie.driver", System.getProperty("user.dir")+"/drivers/win+"+OSUtil.getJavaBitVersion()+"/IEDriverServer.exe");
+			System.setProperty("webdriver.ie.driver", System.getProperty("user.dir")+"/drivers/win"+OSUtil.getJavaBitVersion()+"/IEDriverServer.exe");
 			return getInternetExplorerDriver(capabilities);
 		}else if(browser.equals("Chrome")){
 			String driverFolder=null;
