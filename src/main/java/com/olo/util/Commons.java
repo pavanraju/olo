@@ -46,7 +46,7 @@ public class Commons {
 	public static final Random randomGenerator = new Random();
 	public static final NumberFormat formatter = new DecimalFormat("#,##0.0");
 	public static final SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd-MMM-yyyy HH:mm:ss, z");
-	public static final SimpleDateFormat sdfTests = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+	public static final SimpleDateFormat sdfTests = new SimpleDateFormat("HH:mm:ss");
 	public static final SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 	public static final SimpleDateFormat defaultFormat = new SimpleDateFormat("dd/MM/yyyy");
 	private static final Pattern pattern = Pattern.compile("\\{\\{(.*?)\\}\\}");
