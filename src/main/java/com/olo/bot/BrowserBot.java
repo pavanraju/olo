@@ -12,7 +12,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.HasInputDevices;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keyboard;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.Mouse;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -346,6 +348,14 @@ public class BrowserBot{
 		return new Select(element);
 	}
 	
+	public Keyboard getKeyBoard(){
+		return ((HasInputDevices) driver).getKeyboard();
+	}
+	
+	public Mouse getMouse(){
+		return ((HasInputDevices) driver).getMouse();
+	}
+	
 	public Actions actions(){
 		return new Actions(driver);
 	}
@@ -457,21 +467,21 @@ public class BrowserBot{
 	}
 	
 	public void mouseDown(WebElement element){
-		((HasInputDevices) driver).getMouse().mouseDown((Coordinates) element.getLocation());
+		getMouse().mouseDown((Coordinates) element.getLocation());
 	}
 	
 	public void mouseDownAt(WebElement element,String coordString) throws Exception {
 		String[] v = coordString.split(",");
-		((HasInputDevices) driver).getMouse().mouseDown((Coordinates) element.getLocation().moveBy(Integer.parseInt(v[0]), Integer.parseInt(v[1])));
+		getMouse().mouseDown((Coordinates) element.getLocation().moveBy(Integer.parseInt(v[0]), Integer.parseInt(v[1])));
 	}
 	
 	public void mouseUp(WebElement element){
-		((HasInputDevices) driver).getMouse().mouseUp((Coordinates) element.getLocation());
+		getMouse().mouseUp((Coordinates) element.getLocation());
 	}
 	
 	public void mouseUpAt(WebElement element,String coordString){
 		String[] v = coordString.split(",");
-		((HasInputDevices) driver).getMouse().mouseUp((Coordinates) element.getLocation().moveBy(Integer.parseInt(v[0]), Integer.parseInt(v[1])));
+		getMouse().mouseUp((Coordinates) element.getLocation().moveBy(Integer.parseInt(v[0]), Integer.parseInt(v[1])));
 	}
 	
 	public void mouseOver(WebElement element) throws Exception{
