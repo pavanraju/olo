@@ -12,6 +12,7 @@ import org.testng.ITestContext;
 import org.testng.internal.Utils;
 import org.testng.xml.XmlSuite;
 
+import com.olo.reporter.Utility;
 //import com.igloor.WebDriverInitiator;
 import com.olo.util.Commons;
 import com.olo.util.MailClient;
@@ -77,7 +78,7 @@ public class Reporter implements IReporter{
 	    	suite.setAttribute("suiteStartTime_sort", suiteStartTime);
 	    }
 	    
-	    Collections.sort(suites, Commons.suiteStartComp);
+	    Collections.sort(suites, Utility.suiteStartComp);
 	    
 	    for (ISuite suite : suites) {
 	    	if (suite.getResults().size() == 0) {
@@ -113,16 +114,16 @@ public class Reporter implements IReporter{
 				}
 				suiteTotalTests=suitePassedTests+suiteFailedTests+suiteSkippedTests;
 			}
-			suiteTimeTaken = Commons.timeTaken(suiteEndTime-suiteStartTime);
+			suiteTimeTaken = Utility.timeTaken(suiteEndTime-suiteStartTime);
 			String cls = suiteFailedTests > 0 ? "error" : ( (suitePassedTests > 0 && suiteSkippedTests==0 )  ? "success" :  "error"  );
 			suitesSummaryReport.append("<tr class='"+cls+"'>");
 			suitesSummaryReportMailBody.append("<tr class='"+cls+"'>");
 			suitesSummaryReport.append("<td>"+suiteName+"</td>");
 			suitesSummaryReportMailBody.append("<td>"+suiteName+"</td>");
-			suitesSummaryReport.append("<td>"+Commons.sdf.format(suiteStartTime)+"</td>");
-			suitesSummaryReportMailBody.append("<td>"+Commons.sdf.format(suiteStartTime)+"</td>");
-			suitesSummaryReport.append("<td>"+Commons.sdf.format(suiteEndTime)+"</td>");
-			suitesSummaryReportMailBody.append("<td>"+Commons.sdf.format(suiteEndTime)+"</td>");
+			suitesSummaryReport.append("<td>"+Utility.sdf.format(suiteStartTime)+"</td>");
+			suitesSummaryReportMailBody.append("<td>"+Utility.sdf.format(suiteStartTime)+"</td>");
+			suitesSummaryReport.append("<td>"+Utility.sdf.format(suiteEndTime)+"</td>");
+			suitesSummaryReportMailBody.append("<td>"+Utility.sdf.format(suiteEndTime)+"</td>");
 			suitesSummaryReport.append("<td>"+suiteTimeTaken+"</td>");
 			suitesSummaryReportMailBody.append("<td>"+suiteTimeTaken+"</td>");
 			suitesSummaryReport.append("<td><a href='"+suiteName+File.separator+"suite-"+suiteName+"-index.html'>"+suiteTotalTests+"</a></td>");
@@ -145,7 +146,7 @@ public class Reporter implements IReporter{
 	    int totalTests=totalPassedTests+totalFailedTests+totalSkippedTests;
 	    
 	    StringBuffer suitesSummaryStartHtml = new StringBuffer();
-	    suitesSummaryStartHtml.append("<!DOCTYPE html><html><head><meta charset='utf-8'><title>" + title + "</title><meta name='viewport' content='width=device-width, initial-scale=1.0'><link href='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet'>");
+	    suitesSummaryStartHtml.append("<!DOCTYPE html><html><head><meta charset='utf-8'><title>" + title + "</title><meta name='viewport' content='width=device-width, initial-scale=1.0'>"+Utility.getBootstrapCss());
 	    suitesSummaryStartHtml.append("<script type='text/javascript' src='http://www.google.com/jsapi'></script>");
 	    suitesSummaryStartHtml.append("<script type='text/javascript'>google.load('visualization', '1', {packages: ['corechart']}); </script>");
 	    suitesSummaryStartHtml.append("<script type='text/javascript'>function drawVisualization() { var data = new google.visualization.DataTable(); data.addColumn('string', 'Topping'); data.addColumn('number', 'Slices'); data.addRows([['Passed', "+totalPassedTests+"],['Failed', "+totalFailedTests+"],['Skipped', "+totalSkippedTests+"]]); new google.visualization.PieChart(document.getElementById('visualization')).draw(data,{'width':400,'height':300,slices: [{color: '#109618'}, {color:'#dc3912'}, {color: '#ff9900'}]});} google.setOnLoadCallback(drawVisualization); </script> ");

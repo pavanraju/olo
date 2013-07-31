@@ -16,7 +16,6 @@ import org.testng.internal.Utils;
 import com.olo.annotations.KeywordDriven;
 import com.olo.annotations.Reporter;
 import com.olo.propobject.KeywordPropObject;
-import com.olo.util.Commons;
 
 public class TestReporter {
 	
@@ -27,27 +26,37 @@ public class TestReporter {
 		try {
 			
 			if(result.getStatus() == ITestResult.SUCCESS || result.getStatus() == ITestResult.FAILURE){
+				String suiteName = result.getTestContext().getSuite().getName();
 				StringBuffer sb = new StringBuffer();
-				sb.append("<!DOCTYPE html><html><head><title>"+result.getName()+"</title><meta name='viewport' content='width=device-width, initial-scale=1.0'><link href='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet'>"+Commons.customStyle+"<script src='http://code.jquery.com/jquery-1.10.1.min.js'></script><script src='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js'></script><script type='text/javascript'>$( document ).ready(function() {   $('#checkboxform button').click(function(){ var checkboxId=this.id;  $('#tabledata thead tr th[id='+checkboxId+']').toggle();  var columnIndex=$('#tabledata thead tr th[id='+checkboxId+']').index();  $('#tabledata tbody tr td:nth-child('+(columnIndex+1)+')').toggle();      });     });</script></head><body>");
-				sb.append("<div class='container-fluid'><div class='row-fluid' style='margin-top:20px;'>");
+				sb.append("<!DOCTYPE html><html><head><title>"+result.getName()+"</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {   $('#checkboxform button').click(function(){ var checkboxId=this.id;  $('#tabledata thead tr th[id='+checkboxId+']').toggle();  var columnIndex=$('#tabledata thead tr th[id='+checkboxId+']').index();  $('#tabledata tbody tr td:nth-child('+(columnIndex+1)+')').toggle();      });     });</script></head><body>");
+				
+				sb.append("<div class='navbar navbar-inverse navbar-fixed-top'>");
+				sb.append("<ul class='breadcrumb'>");
+				sb.append("<li><a href='../../../suites-summary-index.html'>Suite Summary</a> <span class='divider'>/</span></li>");
+				sb.append("<li><a href='../../suite-"+suiteName+"-index.html'>"+suiteName+"</a> <span class='divider'>/</span></li>");
+				sb.append("<li class='active'>"+result.getName()+"<span class='divider'></span></li>");
+				sb.append("</ul>");
+				sb.append("</div>");
+				
+				sb.append("<div class='container-fluid'><div class='row-fluid' style='margin-top:50px;'>");
 				String reporterFileName=result.getName()+".html";
-				String reporterFileDirectory = result.getTestContext().getCurrentXmlTest().getName()+File.separator+Commons.getStatusString(result.getStatus());
+				String reporterFileDirectory = result.getTestContext().getCurrentXmlTest().getName()+File.separator+Utility.getStatusString(result.getStatus());
 				result.setAttribute("reporterFilePath", reporterFileDirectory+File.separator+reporterFileName);
 				HashMap<String,Object> level3FinalArray = (HashMap<String, Object>) result.getTestContext().getAttribute(result.getName());
 				sb.append("<div class='span5'>");
 				sb.append("<table class='table table-bordered'>");
 				sb.append("<tr><th>Test Case</th><td>"+result.getName()+"</td></tr>");
 				sb.append("<tr><th>Test Path</th><td>"+level3FinalArray.get("testPath")+"</td></tr>");
-				sb.append("<tr><th>Started</th><td>"+Commons.sdf.format(new Date(result.getStartMillis()))+"</td></tr>");
-				sb.append("<tr><th>Completed</th><td>"+Commons.sdf.format(new Date(result.getEndMillis()))+"</td></tr>");
-				sb.append("<tr><th>Time Taken</th><td>"+Commons.timeTaken(result.getEndMillis()-result.getStartMillis())+"</td></tr>");
-				sb.append("<tr "+(result.getStatus()==1 ? "class='passed'" : "class='failed'")+"><th>Status</th><td>"+Commons.getStatusString(result.getStatus())+"</td></tr>");
+				sb.append("<tr><th>Started</th><td>"+Utility.sdf.format(new Date(result.getStartMillis()))+"</td></tr>");
+				sb.append("<tr><th>Completed</th><td>"+Utility.sdf.format(new Date(result.getEndMillis()))+"</td></tr>");
+				sb.append("<tr><th>Time Taken</th><td>"+Utility.timeTaken(result.getEndMillis()-result.getStartMillis())+"</td></tr>");
+				sb.append("<tr "+(result.getStatus()==1 ? "class='passed'" : "class='failed'")+"><th>Status</th><td>"+Utility.getStatusString(result.getStatus())+"</td></tr>");
 				sb.append("<tr><th>Total Verifications</th><td>"+level3FinalArray.get("totalVerifications")+"</td></tr>");
 				sb.append("<tr><th nowrap='nowrap'>Verifications Failed</th><td>"+level3FinalArray.get("totalVerificationFailures")+"</td></tr>");
 				sb.append("</table>");
 				sb.append("</div><div class='clearfix'></div>");
 				
-				LinkedHashMap<String, String> reportColumns = new LinkedHashMap<String, String>(Commons.testCaseReportColumns);
+				LinkedHashMap<String, String> reportColumns = new LinkedHashMap<String, String>(Utility.testCaseReportColumns);
 				ArrayList<KeywordPropObject> level3ReportArray = (ArrayList<KeywordPropObject>)level3FinalArray.get("level3ReportArray");
 				sb.append("<form id='checkboxform'>");
 				sb.append("<div class='btn-group' data-toggle='buttons-checkbox'>");
@@ -77,7 +86,7 @@ public class TestReporter {
 				sb.append("</tr></thead>");
 				for(int i=0;i < level3ReportArray.size(); i++){
 					KeywordPropObject localStep = level3ReportArray.get(i);
-					String timeTaken=Commons.timeTaken(localStep.getEndTime()-localStep.getStartTime());
+					String timeTaken = Utility.timeTaken(localStep.getEndTime()-localStep.getStartTime());
 					
 					sb.append("<tr "+ (!localStep.isConditionSkip() ? (localStep.getHasError() ? (localStep.getIsVerification() ? (localStep.getIsAssertionError() ? "class='warning'" : "class='error'") : "class='error'") : "class='success'" ) : "class='ifskipped'")+">");
 					
@@ -97,13 +106,13 @@ public class TestReporter {
 						}else if(column.getKey().equals("options")){
 							sb.append("<td style='display:none'>"+localStep.getOptions()+"</td>");
 						}else if(column.getKey().equals("startTime")){
-							sb.append("<td style='display:none'>"+(!localStep.isConditionSkip() ? (localStep.getStartTime()!=0 ? Commons.hourFormat.format(localStep.getStartTime()) : "") : "-")  +"</td>");
+							sb.append("<td style='display:none'>"+(!localStep.isConditionSkip() ? (localStep.getStartTime()!=0 ? Utility.hourFormat.format(localStep.getStartTime()) : "") : "-")  +"</td>");
 						}else if(column.getKey().equals("endTime")){
-							sb.append("<td style='display:none'>"+(!localStep.isConditionSkip() ? (localStep.getEndTime()!=0 ? Commons.hourFormat.format(localStep.getEndTime()) : "") : "-")  +"</td>");
+							sb.append("<td style='display:none'>"+(!localStep.isConditionSkip() ? (localStep.getEndTime()!=0 ? Utility.hourFormat.format(localStep.getEndTime()) : "") : "-")  +"</td>");
 						}else if(column.getKey().equals("timeTaken")){
 							sb.append("<td>"+(!localStep.isConditionSkip() ? (localStep.getStartTime()!=0 ? timeTaken : "") : "-") +"</td>");
 						}else if(column.getKey().equals("status")){
-							sb.append("<td style='display:none'>"+(!localStep.isConditionSkip() ? (localStep.getStartTime()!=0 ? localStep.getHasError() ? Commons.getStatusString(2) : Commons.getStatusString(1) : "") : "-")+"</td>");
+							sb.append("<td style='display:none'>"+(!localStep.isConditionSkip() ? (localStep.getStartTime()!=0 ? localStep.getHasError() ? Utility.getStatusString(2) : Utility.getStatusString(1) : "") : "-")+"</td>");
 						}else if(column.getKey().equals("exception")){
 							sb.append("<td style='max-width:200px;overflow:hidden;'>"+(localStep.getHasError() ? localStep.getErrorMessage() : "")+"</td>");
 						}else if(column.getKey().equals("screenShot")){
