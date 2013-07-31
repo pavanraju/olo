@@ -33,6 +33,8 @@ public class ExecutionInitiator {
 				configProp.setProperty("browser", args[1]);
 			}
 			
+			String browser = configProp.getProperty("browser");
+			
 			List<String> suiteFiles = new ArrayList<String>();
 			for(int i=0;i<suitsToRun.length;i++){
 				File suiteFile = new File(suitsToRun[i]);
@@ -52,9 +54,10 @@ public class ExecutionInitiator {
 			testng.addListener(suiteListner);
 			testng.addListener(reporter);
 			
-			String testOutputDirectoryAppend="ExecutionReport-"+formatter.format(Calendar.getInstance().getTime());
+			String testOutputDirectoryAppend="ExecutionReport-"+browser+"-"+formatter.format(Calendar.getInstance().getTime());
 			String testOutputDirectory="test-output/"+testOutputDirectoryAppend;
 			testng.setOutputDirectory(testOutputDirectory);
+			logger.info("Execution Reports will be located in "+testOutputDirectory);
 			testng.run();
 			logger.info("Execution Completed !!!");
 			logger.info("Execution Reports are located in "+testOutputDirectory);
