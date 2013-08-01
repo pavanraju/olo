@@ -170,10 +170,10 @@ public class Commons {
 			Row row = rows.next();
 			KeywordPropObject prop = getKeywordPropObject(row);
 			if(prop!=null){
-				if(prop.getAction().equalsIgnoreCase("Else") || prop.getAction().equalsIgnoreCase("EndIf")){
+				if(prop.getAction().equals("Else") || prop.getAction().equals("EndIf")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
-				}else if(prop.getAction().equalsIgnoreCase("StartDataTable")){
+				}else if(prop.getAction().equals("StartDataTable")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
 					try {
@@ -187,11 +187,11 @@ public class Commons {
 					lprop.setAction("EndDataTable");
 					lprop.setSkip(true);
 					excelRowsAsProbObject.add(lprop);
-				}else if(prop.getAction().equalsIgnoreCase("IncludeFile")){
+				}else if(prop.getAction().equals("IncludeFile")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
 					excelRowsAsProbObject.addAll(getExcelSteps(Commons.class.getResource(prop.getValue())));
-				}else if(prop.getAction().equalsIgnoreCase("EndDataTable")){
+				}else if(prop.getAction().equals("EndDataTable")){
 					break;
 				}else{
 					if(!prop.getPropertyName().isEmpty()){

@@ -42,22 +42,22 @@ public class TestReporter {
 				String reporterFileName=result.getName()+".html";
 				String reporterFileDirectory = result.getTestContext().getCurrentXmlTest().getName()+File.separator+Utility.getStatusString(result.getStatus());
 				result.setAttribute("reporterFilePath", reporterFileDirectory+File.separator+reporterFileName);
-				HashMap<String,Object> level3FinalArray = (HashMap<String, Object>) result.getTestContext().getAttribute(result.getName());
+				HashMap<String,Object> keywordDrivenTestInfo = (HashMap<String, Object>) result.getTestContext().getAttribute(result.getName());
 				sb.append("<div class='span5'>");
 				sb.append("<table class='table table-bordered'>");
 				sb.append("<tr><th>Test Case</th><td>"+result.getName()+"</td></tr>");
-				sb.append("<tr><th>Test Path</th><td>"+level3FinalArray.get("testPath")+"</td></tr>");
+				sb.append("<tr><th>Test Path</th><td>"+keywordDrivenTestInfo.get("testPath")+"</td></tr>");
 				sb.append("<tr><th>Started</th><td>"+Utility.sdf.format(new Date(result.getStartMillis()))+"</td></tr>");
 				sb.append("<tr><th>Completed</th><td>"+Utility.sdf.format(new Date(result.getEndMillis()))+"</td></tr>");
 				sb.append("<tr><th>Time Taken</th><td>"+Utility.timeTaken(result.getEndMillis()-result.getStartMillis())+"</td></tr>");
 				sb.append("<tr "+(result.getStatus()==1 ? "class='passed'" : "class='failed'")+"><th>Status</th><td>"+Utility.getStatusString(result.getStatus())+"</td></tr>");
-				sb.append("<tr><th>Total Verifications</th><td>"+level3FinalArray.get("totalVerifications")+"</td></tr>");
-				sb.append("<tr><th nowrap='nowrap'>Verifications Failed</th><td>"+level3FinalArray.get("totalVerificationFailures")+"</td></tr>");
+				sb.append("<tr><th>Total Verifications</th><td>"+keywordDrivenTestInfo.get("totalVerifications")+"</td></tr>");
+				sb.append("<tr><th nowrap='nowrap'>Verifications Failed</th><td>"+keywordDrivenTestInfo.get("totalVerificationFailures")+"</td></tr>");
 				sb.append("</table>");
 				sb.append("</div><div class='clearfix'></div>");
 				
 				LinkedHashMap<String, String> reportColumns = new LinkedHashMap<String, String>(Utility.testCaseReportColumns);
-				ArrayList<KeywordPropObject> level3ReportArray = (ArrayList<KeywordPropObject>)level3FinalArray.get("level3ReportArray");
+				ArrayList<KeywordPropObject> keywordExecutionSteps = (ArrayList<KeywordPropObject>)keywordDrivenTestInfo.get("keywordExecutionSteps");
 				sb.append("<form id='checkboxform'>");
 				sb.append("<div class='btn-group' data-toggle='buttons-checkbox'>");
 				
@@ -84,8 +84,8 @@ public class TestReporter {
 				}
 
 				sb.append("</tr></thead>");
-				for(int i=0;i < level3ReportArray.size(); i++){
-					KeywordPropObject localStep = level3ReportArray.get(i);
+				for(int i=0;i < keywordExecutionSteps.size(); i++){
+					KeywordPropObject localStep = keywordExecutionSteps.get(i);
 					String timeTaken = Utility.timeTaken(localStep.getEndTime()-localStep.getStartTime());
 					
 					sb.append("<tr "+ (!localStep.isConditionSkip() ? (localStep.getHasError() ? (localStep.getIsVerification() ? (localStep.getIsAssertionError() ? "class='warning'" : "class='error'") : "class='error'") : "class='success'" ) : "class='ifskipped'")+">");
