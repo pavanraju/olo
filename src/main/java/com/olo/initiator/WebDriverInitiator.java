@@ -63,25 +63,26 @@ public class WebDriverInitiator extends WebDriverConfiguration{
 		}
 	}
 	
-	@AfterMethod
+	@AfterMethod(alwaysRun=true)
 	public void driverStop(ITestResult result){
-		try{
-			if(result.getStatus() == ITestResult.FAILURE){
-				Reporter reporter = result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(com.olo.annotations.Reporter.class);
-				if(reporter == null ){
-					try {
-						takeScreenShotForTest(result,driver);
-					} catch (Exception e2) {
-						e2.printStackTrace();
+		if(driver!=null){
+			try{
+				if(result.getStatus() == ITestResult.FAILURE){
+					Reporter reporter = result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(com.olo.annotations.Reporter.class);
+					if(reporter == null ){
+						try {
+							takeScreenShotForTest(result,driver);
+						} catch (Exception e2) {
+							e2.printStackTrace();
+						}
 					}
 				}
+				logger.info("Trying to Stop WebDriver");
+				driver.quit();
+				logger.info("WebDriver Stopped");
+			}catch(Exception e){
+				logger.error("Error in stopping WebDriver "+e.getMessage());
 			}
-			
-			logger.info("Trying to Stop WebDriver");
-			driver.quit();
-			logger.info("WebDriver Stopped");
-		}catch(Exception e){
-			logger.error("Error in stopping WebDriver "+e.getMessage());
 		}
 	}
 	
