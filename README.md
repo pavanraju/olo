@@ -19,7 +19,7 @@ PROJECT DIRECTORY STRUCTURE
 -------------------
       
       src/                 Assuming your project source directory(classpath pointing to this folder).
-          properties/
+          properties/config/
             config.properties        Olo configurations.(Will be comming with default config placed in olo jar)
             mail.properties          Mail configurations for olo.(Will be comming with default config placed in olo jar)
             log4j.properties         log4j configuration.(Will be comming with default config placed in olo jar)
