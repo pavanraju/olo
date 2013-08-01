@@ -1,3 +1,19 @@
+0.10.0
+------------
+
+**Enhancements**
+
+* Enhancements in reports
+* Enhancements for keyworddriven execution. User can have their own templates. Seperated reading from execution for KeyWord Driven.
+* Added new methods getMouse and getKeyboard in BrowserBot
+* Showing browser name in the generated report folder & showing folder name where reports will be generated in logs.
+
+**Bug Fixes**
+
+* Fixed issue window not closing if failure in beforemethod.
+* Label name shown improper in suite skipped report.
+
+
 0.9.0
 ------------
 
