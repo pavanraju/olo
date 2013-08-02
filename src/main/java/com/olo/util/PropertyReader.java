@@ -11,7 +11,6 @@ import java.util.Properties;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 public class PropertyReader {
 	
@@ -23,45 +22,18 @@ public class PropertyReader {
 	public static Properties mailProp = new Properties();
 	
 	static{
-		PropertyConfigurator.configure(PropertyReader.class.getResource("/properties/config/log4j.properties"));
 		try {
 			
 			if(configProp.isEmpty()){
 				logger.info("Loading config.properties");
-				configProp.load(PropertyReader.class.getResourceAsStream("/properties/config/config.properties"));
+				configProp.load(PropertyReader.class.getResourceAsStream("/config/config.properties"));
 			}
 			if(mailProp.isEmpty()){
 				logger.info("Loading mail.properties");
-				mailProp.load(PropertyReader.class.getResourceAsStream("/properties/config/mail.properties"));
+				mailProp.load(PropertyReader.class.getResourceAsStream("/config/mail.properties"));
 			}
-			/*
-			Enumeration<URL> propFolder = PropertyReader.class.getClassLoader().getResources("/properties");
 			
-			if (propFolder.hasMoreElements()) {
-				URL fileURL=propFolder.nextElement();
-				try {
-					File file=new File(fileURL.toURI());
-					if (file.isFile()) {
-						String fileName=file.getName();
-						String extension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-						String propName= fileName.substring(0,fileName.lastIndexOf("."));
-						
-						if(extension.equals("properties")){
-							System.out.println("Loading "+fileName);
-							Properties temp = new Properties();
-							temp.load(new FileInputStream(file));
-							allProp.put(propName, temp);
-						}
-						
-					}
-				} catch (URISyntaxException e) {
-					e.printStackTrace();
-				}
-			}
-			*/
-			
-			
-			URL propertyFilesUrl = PropertyReader.class.getResource("/properties/webelements");
+			URL propertyFilesUrl = PropertyReader.class.getResource("/webelements");
 			if(propertyFilesUrl!=null){
 				try {
 					File propFolder = new File(propertyFilesUrl.toURI());
@@ -88,7 +60,7 @@ public class PropertyReader {
 			}
 			
 			
-			URL messageFilesUrl = PropertyReader.class.getResource("/properties/messages");
+			URL messageFilesUrl = PropertyReader.class.getResource("/messages");
 			if(messageFilesUrl!=null){
 				try {
 					File messageFolder = new File(messageFilesUrl.toURI());
