@@ -21,7 +21,7 @@ public class TestReporter {
 	
 	private static final Logger logger = LogManager.getLogger(TestReporter.class.getName());
 	
-	@Reporter(name=KeywordDriven.class)
+	@Reporter(KeywordDriven.class)
 	public void keywordDrivenTest(ITestResult result){
 		try {
 			

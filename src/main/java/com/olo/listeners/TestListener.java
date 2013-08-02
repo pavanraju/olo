@@ -56,7 +56,7 @@ public class TestListener implements ITestListener{
 				for (final Method reporterMethod : testReporterClass.getDeclaredMethods()) {
 					Reporter annotation = reporterMethod.getAnnotation(com.olo.annotations.Reporter.class);
 					if(annotation!=null){
-						if(annotation.name().equals(reporter.name())){
+						if(annotation.value().equals(reporter.value())){
 							reporterMethod.invoke(testReporterClass.newInstance(),result);
 						}
 					}

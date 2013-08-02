@@ -70,7 +70,7 @@ public class Execution {
 						for (final Method method : keywords.getClass().getDeclaredMethods()) {
 							Keyword annotation = method.getAnnotation(com.olo.annotations.Keyword.class);
 							if(annotation!=null){
-								if(annotation.name().equals(localStep.getAction())){
+								if(annotation.value().equals(localStep.getAction())){
 									foundKeyword=true;
 									logger.info(localStep);
 									if(!localStep.getAction().startsWith("Put")){
@@ -178,6 +178,7 @@ public class Execution {
 		level3FinalReport.put("keywordExecutionSteps", keywordExecutionSteps);
 		level3FinalReport.put("testPath", testPath);
 		ctx.setAttribute(testName, level3FinalReport);
+		logger.info("##### Test Case Completed "+testPath+" #####");
 	}
 	
 }

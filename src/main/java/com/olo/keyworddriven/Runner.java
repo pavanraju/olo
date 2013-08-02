@@ -30,7 +30,7 @@ public class Runner extends WebDriverInitiator implements ITest{
 		return testName;
 	}
 	
-	@Reporter(name=com.olo.annotations.KeywordDriven.class)
+	@Reporter(com.olo.annotations.KeywordDriven.class)
 	@Test
 	public void keywordTest(ITestContext ctx) throws Exception{
 		BrowserBot browser = new BrowserBot(driver);
@@ -38,7 +38,6 @@ public class Runner extends WebDriverInitiator implements ITest{
 		new KeywordUtility().validateSteps(excelSteps);
 		logger.info("Executing Test File "+testFilePath);
 		new Execution(browser, new Keywords(browser)).run(ctx, excelSteps, testFilePath, testName);
-		logger.info("##### Test Case Completed "+testFilePath+" #####");
 	}
 
 }
