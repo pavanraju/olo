@@ -34,9 +34,9 @@ import org.testng.xml.XmlInclude;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
+import com.olo.mailer.MailClient;
 import com.olo.reporter.Utility;
 import com.olo.util.Commons;
-import com.olo.util.MailClient;
 
 public class SuiteListener implements ISuiteListener{
 	
@@ -46,16 +46,16 @@ public class SuiteListener implements ISuiteListener{
 	
 	public void onFinish(ISuite suite) {
 		try {
-			Map<String, ISuiteResult> results=suite.getResults();
-			String suiteName= suite.getName();
-			int suiteFailedTests=0;
-			int suitePassedTests=0;
-			int suiteSkippedTests=0;
-			int suiteTotalTests=0;
-			int ctr=0;
-			long suiteStartTime=0;
-			long suiteEndTime=0;
-			long temp=0;
+			Map<String, ISuiteResult> results = suite.getResults();
+			String suiteName = suite.getName();
+			int suiteFailedTests = 0;
+			int suitePassedTests = 0;
+			int suiteSkippedTests = 0;
+			int suiteTotalTests = 0;
+			int ctr = 0;
+			long suiteStartTime = 0;
+			long suiteEndTime = 0;
+			long temp = 0;
 			StringBuffer textContextReport = new StringBuffer();
 			StringBuffer textContextSummaryReport = new StringBuffer();
 			StringBuffer passedtextContextSummaryReport = new StringBuffer();
