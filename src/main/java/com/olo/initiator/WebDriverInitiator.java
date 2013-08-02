@@ -41,7 +41,7 @@ public class WebDriverInitiator extends WebDriverConfiguration{
 					int timeout = Integer.parseInt(configProp.getProperty("implicitWaitAndWaitTimeOut"));
 					logger.info("Setting pageloadtimeout and implicitwait");
 					setWaitForPageToLoadInSec(driver, timeout);
-					setImplicitWait(driver, timeout);
+					setImplicitWaitInSec(driver, timeout);
 				}
 				if(configProp.containsKey("url")){
 					logger.info("Trying to open url and delete cookies");

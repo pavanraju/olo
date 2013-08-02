@@ -11,13 +11,12 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.iphone.IPhoneDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.testng.ITestResult;
 
 import com.olo.util.OSUtil;
@@ -33,39 +32,31 @@ public class WebDriverConfiguration {
 	}
 	
 	protected DesiredCapabilities getFirefoxCapabilities(){
-		DesiredCapabilities capabilities = null;
-		capabilities = DesiredCapabilities.firefox();
-		return capabilities;
+		return DesiredCapabilities.firefox();
 	}
 	
 	protected DesiredCapabilities getChromeCapabilities(){
-		DesiredCapabilities capabilities = null;
-		capabilities = DesiredCapabilities.chrome();
-		return capabilities;
+		return DesiredCapabilities.chrome();
 	}
 	
 	protected DesiredCapabilities getOperaCapabilities(){
-		DesiredCapabilities capabilities = null;
-		capabilities = DesiredCapabilities.opera();
-		return capabilities;
+		return DesiredCapabilities.opera();
+	}
+	
+	protected DesiredCapabilities getSafariCapabilities(){
+		return DesiredCapabilities.safari();
 	}
 	
 	protected DesiredCapabilities getAndroidCapabilities(){
-		DesiredCapabilities capabilities = null;
-		capabilities = DesiredCapabilities.android();
-		return capabilities;
+		return DesiredCapabilities.android();
 	}
 	
 	protected DesiredCapabilities getIphoneCapabilities(){
-		DesiredCapabilities capabilities = null;
-		capabilities = DesiredCapabilities.iphone();
-		return capabilities;
+		return DesiredCapabilities.iphone();
 	}
 	
 	protected DesiredCapabilities getIpadCapabilities(){
-		DesiredCapabilities capabilities = null;
-		capabilities = DesiredCapabilities.ipad();
-		return capabilities;
+		return DesiredCapabilities.ipad();
 	}
 	
 	protected DesiredCapabilities getCapabilities(String browser) throws Exception{
@@ -78,6 +69,8 @@ public class WebDriverConfiguration {
 			capabilities = getChromeCapabilities();
 		}else if(browser.equals("Opera")){
 			capabilities = getOperaCapabilities();
+		}else if(browser.equals("Safari")){
+			capabilities = getSafariCapabilities();
 		}else if(browser.equals("Android")){
 			capabilities = getAndroidCapabilities();
 		}else if(browser.equals("Iphone")){
@@ -95,10 +88,7 @@ public class WebDriverConfiguration {
 	}
 	
 	protected WebDriver getFirefoxDriver(DesiredCapabilities capabilities){
-		FirefoxBinary binary = new FirefoxBinary();
-		FirefoxProfile profile = new FirefoxProfile();
-		profile.setAcceptUntrustedCertificates(true);
-		return new FirefoxDriver(binary,profile,capabilities);
+		return new FirefoxDriver(capabilities);
 	}
 	
 	protected WebDriver getChromeDriver(DesiredCapabilities capabilities){
@@ -107,6 +97,10 @@ public class WebDriverConfiguration {
 	
 	protected WebDriver getOperaDriver(DesiredCapabilities capabilities){
 		return new OperaDriver(capabilities);
+	}
+	
+	protected WebDriver getSafariDriver(DesiredCapabilities capabilities){
+		return new SafariDriver(capabilities);
 	}
 	
 	protected WebDriver getAndroidDriver(DesiredCapabilities capabilities){
@@ -141,6 +135,8 @@ public class WebDriverConfiguration {
 			return getChromeDriver(capabilities);
 		}else if(browser.equals("Opera")){
 			return getOperaDriver(capabilities);
+		}else if(browser.equals("Safari")){
+			return getSafariDriver(capabilities);
 		}else if(browser.equals("Android")){
 			return getAndroidDriver(capabilities);
 		}else if(browser.equals("Iphone") || browser.equals("Ipad")){
@@ -162,7 +158,7 @@ public class WebDriverConfiguration {
 		driver.manage().timeouts().pageLoadTimeout(sec, TimeUnit.SECONDS);
 	}
 	
-	protected void setImplicitWait(WebDriver driver,long sec){
+	protected void setImplicitWaitInSec(WebDriver driver,long sec){
 		driver.manage().timeouts().implicitlyWait(sec, TimeUnit.SECONDS);
 	}
 	
