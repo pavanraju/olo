@@ -1,2 +1,6 @@
 target/
 .settings/
+drivers/
+test-output/
+suiteFiles/
+src/test/
