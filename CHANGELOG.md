@@ -1,3 +1,19 @@
+0.11.0
+------------
+
+**Enhancements**
+
+* Reports are now sent by mail. Mailer is activated.
+* Supporting Safari browser.
+* Enhancements in reports.
+* Annotations are now targeted to method.
+
+**Breaking Changes**
+
+* log4j.properties file should be put under classpath. config,webelements,messages folders should be put under classpath.
+
+
+
 0.10.0
 ------------
 

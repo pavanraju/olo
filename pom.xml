@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.olo</groupId>
   <artifactId>olo</artifactId>
-  <version>0.10.0</version>
+  <version>0.11.0</version>
   
   <dependencies>
   	<dependency>
@@ -35,10 +35,10 @@
 		<artifactId>operadriver</artifactId>
 		<version>1.3</version>
 	</dependency>
-	<dependency> 
-		<groupId>org.testng</groupId> 
-		<artifactId>testng</artifactId> 
-		<version>6.8</version> 
+	<dependency>
+		<groupId>org.testng</groupId>
+		<artifactId>testng</artifactId>
+		<version>6.8</version>
 	</dependency>
 	<dependency>
 		<groupId>xml-apis</groupId>
