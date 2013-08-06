@@ -4,11 +4,7 @@ import static com.olo.util.PropertyReader.mailProp;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +32,6 @@ import org.testng.xml.XmlTest;
 
 import com.olo.mailer.MailClient;
 import com.olo.reporter.Utility;
-import com.olo.util.Commons;
 
 public class SuiteListener implements ISuiteListener{
 	
@@ -57,7 +52,9 @@ public class SuiteListener implements ISuiteListener{
 			long suiteEndTime = 0;
 			long temp = 0;
 			StringBuffer textContextReport = new StringBuffer();
-			StringBuffer textContextSummaryReport = new StringBuffer();
+			StringBuffer mailTextContextReport = new StringBuffer();
+			StringBuffer suiteContextSummaryReport = new StringBuffer();
+			StringBuffer mailSuiteContextSummaryReport = new StringBuffer();
 			StringBuffer passedtextContextSummaryReport = new StringBuffer();
 			StringBuffer failedtextContextSummaryReport = new StringBuffer();
 			StringBuffer skippedtextContextSummaryReport = new StringBuffer();
@@ -66,20 +63,8 @@ public class SuiteListener implements ISuiteListener{
 			StringBuffer failedTextContextReport = new StringBuffer();
 			StringBuffer skippedTextContextReport = new StringBuffer();
 			
-			StringBuffer testResultsHeader = new StringBuffer();
-			testResultsHeader.append("<tr>");
-			testResultsHeader.append("<th>S.No</th>");
-			testResultsHeader.append("<th>Test Case</th>");
-			testResultsHeader.append("<th>Start Time</th>");
-			testResultsHeader.append("<th>End Time</th>");
-			testResultsHeader.append("<th>Time Taken</th>");
-			testResultsHeader.append("<th>Status</th>");
-			testResultsHeader.append("</tr>");
-			
 			StringBuffer errorModelWindow = new StringBuffer();
 			errorModelWindow.append("<div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>  <div class='modal-header'>   <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>   <h4 id='myModalLabel'>Stack Trace</h4>  </div>  <div class='modal-body'>   <p id='modelbodyerror'></p>  </div>	</div>");
-			
-			
 			
 			for (ISuiteResult suiteResult : results.values()) {
 				ITestContext suiteTestContext = suiteResult.getTestContext();
@@ -107,103 +92,58 @@ public class SuiteListener implements ISuiteListener{
 				String contextEndTime=Utility.sdf.format(suiteTestContext.getEndDate().getTime());
 				String contextTimeTaken=Utility.timeTaken(suiteTestContext.getEndDate().getTime()-suiteTestContext.getStartDate().getTime());
 				int contextTotalTests=contextPassedTests+contextFailedTests+contextSkippedTests;
-				
-			    List<ITestResult> testResultsChronological = new ArrayList<ITestResult>();
-			    testResultsChronological.addAll(suiteTestContext.getPassedTests().getAllResults());
-			    testResultsChronological.addAll(suiteTestContext.getFailedTests().getAllResults());
-			    testResultsChronological.addAll(suiteTestContext.getSkippedTests().getAllResults());
-			    Collections.sort(testResultsChronological, TIME_COMPARATOR);
 			    
-			    List<ITestResult> failedSuiteExcel = new ArrayList<ITestResult>();
-			    failedSuiteExcel.addAll(suiteTestContext.getFailedTests().getAllResults());
-			    failedSuiteExcel.addAll(suiteTestContext.getSkippedTests().getAllResults());
-			    Collections.sort(failedSuiteExcel, TIME_COMPARATOR);
-			    
-			    StringBuffer suiteResultSummaryReport = new StringBuffer();
-			    
-			    suiteResultSummaryReport.append("<div class='span6'><table class='table table-bordered' id='"+suiteTestContext.getName()+"'><tr><th>Test</th><td>"+suiteTestContext.getName()+"</td></tr>");
-			    suiteResultSummaryReport.append("<tr><th>Start Time</th><td>"+contextStartTime+"</td></tr>\n");
-			    suiteResultSummaryReport.append("<tr><th>End Time</th><td>"+contextEndTime+"</td></tr>\n");
-			    suiteResultSummaryReport.append("<tr><th>Time Taken</th><td>"+contextTimeTaken+"</td></tr>\n");
-			    suiteResultSummaryReport.append("</table></div>");
-			    
-			    StringBuffer suiteResultBody = new StringBuffer();
-			    suiteResultBody.append(testDetailReport(testResultsChronological));
-			    
-			    textContextReport.append(suiteResultSummaryReport);
-			    textContextReport.append("<table class='table table-bordered'>");
-			    textContextReport.append("<caption>Detailed report of "+suiteTestContext.getName()+" Tests</caption>");
-			    textContextReport.append(testResultsHeader);
-			   
-			    textContextReport.append(suiteResultBody);
-			    textContextReport.append("</table><hr/>");
-			    textContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td><td class='error'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
-			    
+				suiteContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td><td class='error'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
+				mailSuiteContextSummaryReport.append("<tr><td>"+suiteTestContext.getName()+"</td><td class='success'>"+contextPassedTests+"</td><td class='error'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
+			    /**
+			     * All Context
+			     */
+			    StringBuffer textContextSummary = new StringBuffer();
+			    textContextSummary.append("<div class='span6'><table class='table table-bordered' id='"+suiteTestContext.getName()+"'><tr><th>Test</th><td>"+suiteTestContext.getName()+"</td></tr>");
+			    textContextSummary.append("<tr><th>Start Time</th><td>"+contextStartTime+"</td></tr>");
+			    textContextSummary.append("<tr><th>End Time</th><td>"+contextEndTime+"</td></tr>");
+			    textContextSummary.append("<tr><th>Time Taken</th><td>"+contextTimeTaken+"</td></tr>");
+			    textContextSummary.append("</table></div>");
+			    textContextReport.append(textContextSummary);
+			    textContextReport.append(Utility.contextDetailedReport(suiteTestContext, false));
+			    mailTextContextReport.append(textContextSummary);
+			    mailTextContextReport.append(Utility.contextDetailedReport(suiteTestContext, true));
 			    
 			    /**
 			     * Passed Context
 			     */
 			    
-			    StringBuffer suiteReportPassedTestDetails = new StringBuffer();
 			    if(contextPassedTests>0){
-			    	
 			    	passedtextContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td></tr>");
-			    	
-				    suiteReportPassedTestDetails.append("<table class='table table-bordered'>");
-				    suiteReportPassedTestDetails.append("<caption>Detailed report of "+suiteTestContext.getName()+" Tests</caption>");
-				    suiteReportPassedTestDetails.append(testResultsHeader);
-				    List<ITestResult> passedTests = new ArrayList<ITestResult>();
-				    passedTests.addAll(suiteTestContext.getPassedTests().getAllResults());
-				    Collections.sort(passedTests, TIME_COMPARATOR);
-				    suiteReportPassedTestDetails.append(testDetailReport(passedTests));
-				    suiteReportPassedTestDetails.append("</table><hr/>");
+			    	passedTextContextReport.append(Utility.passedContextDetailedReport(suiteTestContext));
 			    }
-			    
-			    passedTextContextReport.append(suiteReportPassedTestDetails);
 			    
 			    /**
 			     * Failed Context
 			     */
 			    
-			    StringBuffer suiteReportFailedDetailReport = new StringBuffer();
 			    if(contextFailedTests>0){
-			    	
 			    	failedtextContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='error'>"+contextFailedTests+"</td></tr>");
-			    	
-			    	suiteReportFailedDetailReport.append("<table class='table table-bordered'>");
-			    	suiteReportFailedDetailReport.append("<caption>Detailed report of "+suiteTestContext.getName()+" Tests</caption>");
-			    	suiteReportFailedDetailReport.append(testResultsHeader);
-			    	List<ITestResult> failedTests = new ArrayList<ITestResult>();
-				    failedTests.addAll(suiteTestContext.getFailedTests().getAllResults());
-				    Collections.sort(failedTests, TIME_COMPARATOR);
-				    suiteReportFailedDetailReport.append(testDetailReport(failedTests));
-				    suiteReportFailedDetailReport.append("</table>");
+			    	failedTextContextReport.append(Utility.failedContextDetailedReport(suiteTestContext));
 			    }
-			    failedTextContextReport.append(suiteReportFailedDetailReport);
 			    
 			    /**
 			     * Skipped Context
 			     */
 			    
-			    StringBuffer suiteReportSkippedDetailReport = new StringBuffer();
 			    if(contextSkippedTests>0){
-			    	
 			    	skippedtextContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='warning'>"+contextSkippedTests+"</td></tr>");
-			    	
-			    	suiteReportSkippedDetailReport.append("<table class='table table-bordered'>");
-			    	suiteReportSkippedDetailReport.append("<caption>Detailed report of "+suiteTestContext.getName()+" Tests</caption>");
-			    	suiteReportSkippedDetailReport.append(testResultsHeader);
-			    	List<ITestResult> skippedTests = new ArrayList<ITestResult>();
-			    	skippedTests.addAll(suiteTestContext.getSkippedTests().getAllResults());
-				    Collections.sort(skippedTests, TIME_COMPARATOR);
-				    suiteReportSkippedDetailReport.append(testDetailReport(skippedTests));
-				    suiteReportSkippedDetailReport.append("</table>");
+			    	skippedTextContextReport.append(Utility.skippedContextDetailedReport(suiteTestContext));
 			    }
-			    skippedTextContextReport.append(suiteReportSkippedDetailReport);
 			    
 			}
 			
 			suiteTotalTests=suiteFailedTests+suitePassedTests+suiteSkippedTests;
+			
+			/**
+		     * Writing suite results
+		     */
+			
 			StringBuffer suiteReport = new StringBuffer();
 			suiteReport.append("<!DOCTYPE html><html><head><title>"+suiteName+" Suite Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var myBookId = $(this).data('showthismessage');   $('.modal-body #modelbodyerror').html( myBookId ); });  });</script></head><body>");
 			
@@ -231,15 +171,18 @@ public class SuiteListener implements ISuiteListener{
 			
 			suiteReport.append("<div class='container-fluid' style='margin-top:60px;'>");
 			suiteReport.append("<div class='row-fluid'>");
-			suiteReport.append("<div class='span4'><div class='affix span4'>");
+			suiteReport.append("<div class='span4'><div class='span4 affix'>");
 			suiteReport.append("<table class='table table-bordered'>");
 			suiteReport.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
+			suiteReport.append("<tr><th>Start Time</th><td>"+Utility.sdf.format(suiteStartTime)+"</td></tr>");
+			suiteReport.append("<tr><th>End Time</th><td>"+Utility.sdf.format(suiteEndTime)+"</td></tr>");
+			suiteReport.append("<tr><th>Time Taken</th><td>"+Utility.timeTaken(suiteEndTime-suiteStartTime)+"</td></tr>");
 			suiteReport.append("</table>");
 			
 			suiteReport.append("<table class='table table-bordered'>");
-			suiteReport.append("<tr><th>Test</th><th>Passed</th><th>Failed</th><th>Skipped</th><th>Total</th></tr>");
-			suiteReport.append(textContextSummaryReport);
-			suiteReport.append("<tr><th>Total</th><th class='success'>"+suitePassedTests+" ("+Commons.percentageCalculator(suiteTotalTests,suitePassedTests)+"%)</th><th class='error'>"+suiteFailedTests+" ("+Commons.percentageCalculator(suiteTotalTests,suiteFailedTests)+"%)</th><th class='warning'>"+suiteSkippedTests+" ("+Commons.percentageCalculator(suiteTotalTests,suiteSkippedTests)+"%)</th><th>"+suiteTotalTests+"</th></tr>");
+			suiteReport.append(Utility.suiteContextSummaryHeader());
+			suiteReport.append(suiteContextSummaryReport);
+			suiteReport.append(Utility.suiteContextSummaryFooter(suiteTotalTests, suitePassedTests, suiteFailedTests, suiteSkippedTests));
 			suiteReport.append("</table>");
 			
 			suiteReport.append("</div></div>");
@@ -248,17 +191,62 @@ public class SuiteListener implements ISuiteListener{
 			suiteReport.append("</div>");
 			suiteReport.append(errorModelWindow);
 		    suiteReport.append("</div></div></body></html>");
-		    
-		    
-		    /**
-		     * Writing all results
-		     */
-
 		    Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-index.html", suiteReport.toString());
 		    
+		    try{
+			    if(mailProp.containsKey("mail.SendMail") && mailProp.getProperty("mail.SendMail").equalsIgnoreCase("ON")){
+		    		
+		    		String ToMail=mailProp.getProperty("mail.to");
+	    			String CCMail=mailProp.getProperty("mail.cc");
+		    		if(mailProp.containsKey("mail."+suiteName+".to")){
+		    			ToMail=mailProp.getProperty("mail."+suiteName+".to");
+		    		}
+		    		if(mailProp.containsKey("mail."+suiteName+".cc")){
+		    			CCMail=mailProp.getProperty("mail."+suiteName+".cc");
+		    		}
+	    			
+		    		StringBuffer subject = new StringBuffer();
+		    		subject.append("Suite '"+suiteName+"' Execution Completed - Total : "+suiteTotalTests+"; Passed : "+suitePassedTests+"; Failed : "+suiteFailedTests+"; Skipped : "+suiteSkippedTests);
+		    		StringBuffer body = new StringBuffer();
+		    		body.append(Utility.getHtmlToHead());
+		    		body.append(Utility.mailSuiteSummaryHead());
+		    		body.append(Utility.endHeadAndStartBody());
+		    		body.append(Utility.startContainer());
+		    		body.append(Utility.startRow());
+		    		body.append("<div>");
+		    		body.append(Utility.startTable());
+		    		body.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
+		    		body.append("<tr><th>Start Time</th><td>"+Utility.sdf.format(suiteStartTime)+"</td></tr>");
+		    		body.append("<tr><th>End Time</th><td>"+Utility.sdf.format(suiteEndTime)+"</td></tr>");
+		    		body.append("<tr><th>Time Taken</th><td>"+Utility.timeTaken(suiteEndTime-suiteStartTime)+"</td></tr>");
+		    		body.append(Utility.endTable());
+		    		body.append(Utility.startTable());
+		    		body.append(Utility.suiteContextSummaryHeader());
+		    		body.append(mailSuiteContextSummaryReport);
+		    		body.append(Utility.suiteContextSummaryFooter(suiteTotalTests, suitePassedTests, suiteFailedTests, suiteSkippedTests));
+		    		body.append(Utility.endTable());
+		    		body.append("</div>");
+		    		
+		    		body.append("<div>");
+		    		body.append(mailTextContextReport);
+		    		body.append("</div>");
+		    		
+		    		body.append(Utility.endRow());
+		    		body.append(Utility.endContainerToHtml());
+		    		body.append("Execution Report for '"+suiteName+"' suite is in below mentioned location.<br/><br/>"+suite.getOutputDirectory());
+			    	MailClient mail = new MailClient();
+			    	if(CCMail==null || CCMail.equals("")){
+			    		mail.sendMail(ToMail.split(","), subject.toString(), body);
+			    	}else{
+			    		mail.sendMail(ToMail.split(","), subject.toString(), body, CCMail.split(","));
+			    	}
+			    }
+		    }catch(Exception e){
+		    	logger.error("Mail sending failed!! "+e.getMessage());
+		    }
 		    
 		    /**
-		     * Writing only suite passed results
+		     * Writing suite passed results
 		     */
 		    if(suitePassedTests>0){
 		    	StringBuffer suiteReportPassed = new StringBuffer();
@@ -306,7 +294,7 @@ public class SuiteListener implements ISuiteListener{
 		    }
 		    
 		    /**
-		     * Writing only suite failed results
+		     * Writing suite failed results
 		     */
 		    if(suiteFailedTests>0){
 		    	StringBuffer suiteReportFailed = new StringBuffer();
@@ -354,7 +342,7 @@ public class SuiteListener implements ISuiteListener{
 		    }
 		    
 		    /**
-		     * Writing only suite skipped results
+		     * Writing suite skipped results
 		     */
 		    if(suiteSkippedTests>0){
 		    	StringBuffer suiteReportSkipped = new StringBuffer();
@@ -408,27 +396,24 @@ public class SuiteListener implements ISuiteListener{
 		}
 	}
 	
-	public void onStart(ISuite arg0) {
+	public void onStart(ISuite suite) {
 		try{
 		    if(mailProp.containsKey("mail.SendMail") && mailProp.getProperty("mail.SendMail").equalsIgnoreCase("ON")){
-	    		String suiteName=arg0.getName();
+	    		String suiteName=suite.getName();
 	    		
 	    		String ToMail=mailProp.getProperty("mail.to");
     			String CCMail=mailProp.getProperty("mail.cc");
-	    		
-	    		if(mailProp.containsKey("mail."+arg0.getName()+".to")){
-	    			ToMail=mailProp.getProperty("mail."+arg0.getName()+".to");
+	    		if(mailProp.containsKey("mail."+suiteName+".to")){
+	    			ToMail=mailProp.getProperty("mail."+suiteName+".to");
 	    		}
-	    		
-	    		if(mailProp.containsKey("mail."+arg0.getName()+".cc")){
-	    			CCMail=mailProp.getProperty("mail."+arg0.getName()+".cc");
+	    		if(mailProp.containsKey("mail."+suiteName+".cc")){
+	    			CCMail=mailProp.getProperty("mail."+suiteName+".cc");
 	    		}
     			
 	    		StringBuffer subject = new StringBuffer();
 	    		subject.append("Suite '"+suiteName+"' Execution Started");
-	    		
 	    		StringBuffer body = new StringBuffer();
-	    		
+	    		body.append("Execution Report for '"+suiteName+"' suite will be in below mentioned location.<br/><br/>"+suite.getOutputDirectory());
 		    	MailClient mail = new MailClient();
 		    	if(CCMail==null || CCMail.equals("")){
 		    		mail.sendMail(ToMail.split(","), subject.toString(), body);
@@ -437,8 +422,7 @@ public class SuiteListener implements ISuiteListener{
 		    	}
 		    }
 	    }catch(Exception e){
-	    	logger.error("Mail sending failed!!");
-	    	e.printStackTrace();
+	    	logger.error("Mail sending failed!! "+e.getMessage());
 	    }
 	}
 	
@@ -490,75 +474,7 @@ public class SuiteListener implements ISuiteListener{
        }
     }
 	
-	private static final Comparator<ITestResult> TIME_COMPARATOR= new TimeComparator();
-	  
-	private static class TimeComparator implements Comparator<ITestResult>, Serializable {
-		private static final long serialVersionUID = 381775815838366907L;
-		public int compare(ITestResult o1, ITestResult o2) {
-		  return (int) (o1.getStartMillis() - o2.getStartMillis());
-		}
-	} 
 	
-	
-	private StringBuffer testDetailReport(List<ITestResult> testResults){
-		StringBuffer resultsStringBuffer = new StringBuffer();
-		int i=1;
-		for (ITestResult eachTestResult : testResults) {
-			
-			String testName = eachTestResult.getName();
-	    	String testCasePath=null;
-	    	
-	    	if(eachTestResult.getAttribute("reporterFilePath")!=null){
-	    		testCasePath=eachTestResult.getAttribute("reporterFilePath").toString();
-	    	}
-			
-	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "error" : "warning") )+"'>");
-	    	
-	    	resultsStringBuffer.append("<td>"+i+"</td>");
-	    	if(testCasePath==null){
-	    		resultsStringBuffer.append("<td>"+testName+"</td>");
-	    	}else{
-	    		resultsStringBuffer.append("<td><a href='"+testCasePath+"'>"+testName+"</a></td>");
-	    	}
-	    	
-	    	resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>");
-	    	resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>");
-	    	resultsStringBuffer.append("<td>"+tikeTakenForResult(eachTestResult)+"</td>");
-	    	String testStatus=statusForResult(eachTestResult);
-	    	String errorMessage=null;
-	    	
-	    	if(eachTestResult.getStatus() != ITestResult.SUCCESS){
-	    		
-	    		if(eachTestResult.getThrowable()!= null) {
-					String[] stackTraces = Utils.stackTrace(eachTestResult.getThrowable(), true);
-			        errorMessage = stackTraces[1];
-				}
-	    		
-	    	}
-	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a href='#myModal' role='button' class='openDialog btn' data-toggle='modal' data-showthismessage='"+(errorMessage!=null ? errorMessage : "")+" "+(eachTestResult.getAttribute("screenshot")!=null? "<a href=\"screenshots"+File.separator+eachTestResult.getAttribute("screenshot").toString()+"\">Screenshot</a>" : "")+" '>"+testStatus+"</a>") +"</td>");
-	    	
-	    	
-	    	resultsStringBuffer.append("</tr>");
-    		i++;
-    	}
-		return resultsStringBuffer;
-	}
-	
-	private static String startTimeForResult(ITestResult eachTestResult){
-		return Utility.sdfTests.format(eachTestResult.getStartMillis());
-	}
-	
-	private static String endTimeForResult(ITestResult eachTestResult){
-		return Utility.sdfTests.format(eachTestResult.getEndMillis());
-	}
-	
-	private static String tikeTakenForResult(ITestResult eachTestResult){
-		return Utility.timeTaken(eachTestResult.getEndMillis()-eachTestResult.getStartMillis());
-	}
-	
-	private static String statusForResult(ITestResult eachTestResult){
-		return Utility.getStatusString(eachTestResult.getStatus());
-	}
 	
 	protected void generateFailureSuite(XmlSuite xmlSuite, ISuite suite, String outputDir) {
 	    XmlSuite failedSuite = (XmlSuite) xmlSuite.clone();

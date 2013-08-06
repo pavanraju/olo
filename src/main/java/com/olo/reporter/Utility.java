@@ -3,14 +3,22 @@ package com.olo.reporter;
 import static com.olo.util.PropertyReader.configProp;
 
 import java.io.File;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 
 import org.testng.ISuite;
+import org.testng.ITestContext;
 import org.testng.ITestResult;
+import org.testng.internal.Utils;
 
 import com.olo.util.Commons;
 
@@ -129,7 +137,7 @@ public class Utility {
 		return new StringBuffer().append("<!DOCTYPE html><html><head>");
 	}
 	
-	public static StringBuffer getSuitesSummaryHead(String title,int totalPassedTests,int totalFailedTests, int totalSkippedTests){
+	public static StringBuffer suitesSummaryHead(String title,int totalPassedTests,int totalFailedTests, int totalSkippedTests){
 		StringBuffer headPart = new StringBuffer();
 		headPart.append("<meta charset='utf-8'><title>" + title + "</title><meta name='viewport' content='width=device-width, initial-scale=1.0'>"+Utility.getBootstrapCss());
 		headPart.append(getGoogleChartsJs());
@@ -138,7 +146,7 @@ public class Utility {
 	    return headPart;
 	}
 	
-	public static StringBuffer getSuiteSummaryMailHead(String title){
+	public static StringBuffer mailSuiteSummaryHead(){
 		return new StringBuffer().append(getMailCss());
 	}
 	
@@ -255,6 +263,149 @@ public class Utility {
 	
 	public static StringBuffer endContainerToHtml(){
 		return new StringBuffer().append("</div></body></html>");
+	}
+	
+	public static final Comparator<ITestResult> TIME_COMPARATOR= new TimeComparator();
+	  
+	private static class TimeComparator implements Comparator<ITestResult>, Serializable {
+		private static final long serialVersionUID = 381775815838366907L;
+		public int compare(ITestResult o1, ITestResult o2) {
+		  return (int) (o1.getStartMillis() - o2.getStartMillis());
+		}
+	} 
+	
+	public static StringBuffer suiteContextSummaryHeader(){
+		return new StringBuffer().append("<tr><th>Test</th><th>Passed</th><th>Failed</th><th>Skipped</th><th>Total</th></tr>");
+	}
+	
+	public static StringBuffer suiteContextSummaryFooter(int suiteTotalTests, int suitePassedTests, int suiteFailedTests, int suiteSkippedTests){
+		return new StringBuffer().append("<tr><th>Total</th><th class='success'>"+suitePassedTests+" ("+Commons.percentageCalculator(suiteTotalTests,suitePassedTests)+"%)</th><th class='error'>"+suiteFailedTests+" ("+Commons.percentageCalculator(suiteTotalTests,suiteFailedTests)+"%)</th><th class='warning'>"+suiteSkippedTests+" ("+Commons.percentageCalculator(suiteTotalTests,suiteSkippedTests)+"%)</th><th>"+suiteTotalTests+"</th></tr>");
+	}
+	
+	public static StringBuffer testDetailReport(List<ITestResult> testResults){
+		StringBuffer resultsStringBuffer = new StringBuffer();
+		int i=1;
+		for (ITestResult eachTestResult : testResults) {
+			String testName = eachTestResult.getName();
+	    	String testCasePath=null;
+	    	if(eachTestResult.getAttribute("reporterFilePath")!=null){
+	    		testCasePath=eachTestResult.getAttribute("reporterFilePath").toString();
+	    	}
+	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "error" : "warning") )+"'>");
+	    	
+	    	resultsStringBuffer.append("<td>"+i+"</td>");
+	    	if(testCasePath==null){
+	    		resultsStringBuffer.append("<td>"+testName+"</td>");
+	    	}else{
+	    		resultsStringBuffer.append("<td><a href='"+testCasePath+"'>"+testName+"</a></td>");
+	    	}
+	    	resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>");
+	    	resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>");
+	    	resultsStringBuffer.append("<td>"+tikeTakenForResult(eachTestResult)+"</td>");
+	    	String testStatus=statusForResult(eachTestResult);
+	    	String errorMessage=null;
+	    	if(eachTestResult.getStatus() != ITestResult.SUCCESS){
+	    		if(eachTestResult.getThrowable()!= null) {
+					String[] stackTraces = Utils.stackTrace(eachTestResult.getThrowable(), true);
+			        errorMessage = stackTraces[1];
+				}
+	    	}
+	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a href='#myModal' role='button' class='openDialog btn' data-toggle='modal' data-showthismessage='"+(errorMessage!=null ? errorMessage : "")+" "+(eachTestResult.getAttribute("screenshot")!=null? "<a href=\"screenshots"+File.separator+eachTestResult.getAttribute("screenshot").toString()+"\">Screenshot</a>" : "")+" '>"+testStatus+"</a>") +"</td>");
+	    	
+	    	resultsStringBuffer.append("</tr>");
+    		i++;
+    	}
+		return resultsStringBuffer;
+	}
+	
+	public static StringBuffer mailTestDetailReport(List<ITestResult> testResults){
+		StringBuffer resultsStringBuffer = new StringBuffer();
+		int i=1;
+		for (ITestResult eachTestResult : testResults) {
+			String testName = eachTestResult.getName();
+	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "error" : "warning") )+"'>");
+	    	resultsStringBuffer.append("<td>"+i+"</td>");
+	    	resultsStringBuffer.append("<td>"+testName+"</td>");
+	    	resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>");
+	    	resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>");
+	    	resultsStringBuffer.append("<td>"+tikeTakenForResult(eachTestResult)+"</td>");
+	    	String testStatus=statusForResult(eachTestResult);
+	    	resultsStringBuffer.append("<td>"+testStatus+"</td>");
+	    	resultsStringBuffer.append("</tr>");
+    		i++;
+    	}
+		return resultsStringBuffer;
+	}
+	
+	public static String startTimeForResult(ITestResult eachTestResult){
+		return Utility.sdfTests.format(eachTestResult.getStartMillis());
+	}
+	
+	public static String endTimeForResult(ITestResult eachTestResult){
+		return Utility.sdfTests.format(eachTestResult.getEndMillis());
+	}
+	
+	public static String tikeTakenForResult(ITestResult eachTestResult){
+		return Utility.timeTaken(eachTestResult.getEndMillis()-eachTestResult.getStartMillis());
+	}
+	
+	public static String statusForResult(ITestResult eachTestResult){
+		return Utility.getStatusString(eachTestResult.getStatus());
+	}
+	
+	public static StringBuffer headerContextDetailedReport(){
+		StringBuffer testResultsHeader = new StringBuffer();
+		testResultsHeader.append("<tr>");
+		testResultsHeader.append("<th>S.No</th>");
+		testResultsHeader.append("<th>Test Case</th>");
+		testResultsHeader.append("<th>Start Time</th>");
+		testResultsHeader.append("<th>End Time</th>");
+		testResultsHeader.append("<th>Time Taken</th>");
+		testResultsHeader.append("<th>Status</th>");
+		testResultsHeader.append("</tr>");
+		return testResultsHeader;
+	}
+	
+	public static List<ITestResult> sortResults(Set<ITestResult> results){
+		List<ITestResult> testResults = new ArrayList<ITestResult>();
+		testResults.addAll(results);
+    	Collections.sort(testResults, TIME_COMPARATOR);
+	    return testResults;
+	}
+	
+	private static StringBuffer getContextDetailedReport(String contextName,Set<ITestResult> results, boolean isMail){
+		StringBuffer contextReport = new StringBuffer();
+		contextReport.append("<table class='table table-bordered'>");
+		contextReport.append("<caption>Detailed report of "+contextName+" Tests</caption>");
+		contextReport.append(headerContextDetailedReport());
+		if(isMail){
+			contextReport.append(mailTestDetailReport(sortResults(results)));
+		}else{
+			contextReport.append(testDetailReport(sortResults(results)));
+		}
+	    
+	    contextReport.append("</table><hr/>");
+	    return contextReport;
+	}
+	
+	public static StringBuffer skippedContextDetailedReport(ITestContext ctx){
+		return getContextDetailedReport(ctx.getName(),ctx.getSkippedTests().getAllResults(), false);
+	}
+	
+	public static StringBuffer failedContextDetailedReport(ITestContext ctx){
+		return getContextDetailedReport(ctx.getName(),ctx.getFailedTests().getAllResults(), false);
+	}
+	
+	public static StringBuffer passedContextDetailedReport(ITestContext ctx){
+		return getContextDetailedReport(ctx.getName(),ctx.getPassedTests().getAllResults(), false);
+	}
+	
+	public static StringBuffer contextDetailedReport(ITestContext ctx, boolean isMail){
+		Set<ITestResult> testResults = new HashSet<ITestResult>();
+		testResults.addAll(ctx.getPassedTests().getAllResults());
+		testResults.addAll(ctx.getFailedTests().getAllResults());
+		testResults.addAll(ctx.getSkippedTests().getAllResults());
+		return getContextDetailedReport(ctx.getName(), testResults, isMail);
 	}
 	
 }

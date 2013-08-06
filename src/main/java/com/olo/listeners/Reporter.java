@@ -118,7 +118,7 @@ public class Reporter implements IReporter{
 	    
 	    StringBuffer suitesSummaryHtml = new StringBuffer();
 	    suitesSummaryHtml.append(Utility.getHtmlToHead());
-	    suitesSummaryHtml.append(Utility.getSuitesSummaryHead(title, totalPassedTests, totalFailedTests, totalSkippedTests));
+	    suitesSummaryHtml.append(Utility.suitesSummaryHead(title, totalPassedTests, totalFailedTests, totalSkippedTests));
 	    suitesSummaryHtml.append(Utility.endHeadAndStartBody());
 	    suitesSummaryHtml.append(Utility.startContainer());
 	    suitesSummaryHtml.append(Utility.headerTitle(title));
@@ -136,7 +136,7 @@ public class Reporter implements IReporter{
 	    
 	    StringBuffer suitesSummaryMailHtml = new StringBuffer();
 	    suitesSummaryMailHtml.append(Utility.getHtmlToHead());
-	    suitesSummaryMailHtml.append(Utility.getSuiteSummaryMailHead(title));
+	    suitesSummaryMailHtml.append(Utility.mailSuiteSummaryHead());
 	    suitesSummaryMailHtml.append(Utility.endHeadAndStartBody());
 	    suitesSummaryMailHtml.append(Utility.startContainer());
 	    suitesSummaryMailHtml.append(Utility.headerTitle(title));
