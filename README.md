@@ -3,7 +3,7 @@ Olo
 
 Automation Framework for WebDriver with TestNG.
 
-Olo not only supports WebDriver Tests but also KeyWord Driven Tests.
+Olo supports WebDriver Tests and KeyWord Driven Tests.
 
 Used Twitter Bootstrap for execution summary reports which makes reports look rich.
 
@@ -14,17 +14,16 @@ REQUIREMENTS
 The minimum requirement for Olo is that you must be on Java 1.6 or higher versions of Java.
 
 
-
 PROJECT DIRECTORY STRUCTURE
 -------------------
       
       src/                 Assuming your project source directory(classpath pointing to this folder).
-          properties/config/
+          config/
             config.properties        Olo configurations.(Will be comming with default config placed in olo jar)
             mail.properties          Mail configurations for olo.(Will be comming with default config placed in olo jar)
-            log4j.properties         log4j configuration.(Will be comming with default config placed in olo jar)
-          properties/webelements/    For KeywordDriven Tests put all your locator properties files in this folder.
-          properties/messages/       Mesages(properties) used by KeywordDriven Tests should be put into this folder.
+          webelements/    For KeywordDriven Tests put all your locator properties files in this folder.
+          messages/       Mesages(properties) used by KeywordDriven Tests should be put into this folder.
+          log4j.properties         log4j configuration.(Will be comming with default config placed in olo jar)
       drivers/             WebDrivers
           win32/           Windows 32 bit driver.
           win64/           Windows 64 bit driver.
