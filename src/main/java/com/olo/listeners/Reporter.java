@@ -154,7 +154,7 @@ public class Reporter implements IReporter{
 	    Utils.writeFile(outputDirectory, "suites-summary-index.html", suitesSummaryHtml.toString());
 	    
 	    try{
-		    if(mailProp.containsKey("mail.SendMail") && mailProp.getProperty("mail.SendMail").equalsIgnoreCase("ON")){
+		    if(mailProp.containsKey("mail.SendMail") && mailProp.getProperty("mail.SendMail").equalsIgnoreCase("true")){
 	    		String cc=mailProp.getProperty("mail.cc");
 		    	String to = mailProp.getProperty("mail.to");
 		    	String subject = "Suites Summary Report";
