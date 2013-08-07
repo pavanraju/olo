@@ -310,7 +310,7 @@ public class Utility {
 			        errorMessage = stackTraces[1];
 				}
 	    	}
-	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a href='#myModal' role='button' class='openDialog btn' data-toggle='modal' data-showthismessage='"+(errorMessage!=null ? errorMessage : "")+" "+(eachTestResult.getAttribute("screenshot")!=null? "<a href=\"screenshots"+File.separator+eachTestResult.getAttribute("screenshot").toString()+"\">Screenshot</a>" : "")+" '>"+testStatus+"</a>") +"</td>");
+	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a href='#myModal' role='button' class='openDialog btn btn-small' data-toggle='modal' data-showthismessage='"+(errorMessage!=null ? errorMessage : "")+" "+(eachTestResult.getAttribute("screenshot")!=null? "<a href=\"screenshots"+File.separator+eachTestResult.getAttribute("screenshot").toString()+"\">Screenshot</a>" : "")+" '>"+testStatus+"</a>") +"</td>");
 	    	
 	    	resultsStringBuffer.append("</tr>");
     		i++;

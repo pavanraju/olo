@@ -2,15 +2,11 @@ package com.olo.listeners;
 
 import static com.olo.util.PropertyReader.mailProp;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.StringTokenizer;
-import java.util.zip.*;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -172,14 +168,14 @@ public class SuiteListener implements ISuiteListener{
 			suiteReport.append("<div class='container-fluid' style='margin-top:60px;'>");
 			suiteReport.append("<div class='row-fluid'>");
 			suiteReport.append("<div class='span4'><div class='span4 affix'>");
-			suiteReport.append("<table class='table table-bordered'>");
+			suiteReport.append("<table class='table table-bordered table-condensed'>");
 			suiteReport.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
 			suiteReport.append("<tr><th>Start Time</th><td>"+Utility.sdf.format(suiteStartTime)+"</td></tr>");
 			suiteReport.append("<tr><th>End Time</th><td>"+Utility.sdf.format(suiteEndTime)+"</td></tr>");
 			suiteReport.append("<tr><th>Time Taken</th><td>"+Utility.timeTaken(suiteEndTime-suiteStartTime)+"</td></tr>");
 			suiteReport.append("</table>");
 			
-			suiteReport.append("<table class='table table-bordered'>");
+			suiteReport.append("<table class='table table-bordered table-condensed'>");
 			suiteReport.append(Utility.suiteContextSummaryHeader());
 			suiteReport.append(suiteContextSummaryReport);
 			suiteReport.append(Utility.suiteContextSummaryFooter(suiteTotalTests, suitePassedTests, suiteFailedTests, suiteSkippedTests));
@@ -194,7 +190,7 @@ public class SuiteListener implements ISuiteListener{
 		    Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-index.html", suiteReport.toString());
 		    
 		    try{
-			    if(mailProp.containsKey("mail.SendMail") && mailProp.getProperty("mail.SendMail").equalsIgnoreCase("ON")){
+			    if(mailProp.containsKey("mail.SendMail") && mailProp.getProperty("mail.SendMail").equalsIgnoreCase("true")){
 		    		
 		    		String ToMail=mailProp.getProperty("mail.to");
 	    			String CCMail=mailProp.getProperty("mail.cc");
@@ -275,10 +271,10 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportPassed.append("<div class='container-fluid' style='margin-top:60px;'>");
 	            suiteReportPassed.append("<div class='row-fluid'>");
 		    	suiteReportPassed.append("<div class='span3'><div class='affix span3'>");
-		    	suiteReportPassed.append("<table class='table table-bordered'>");
+		    	suiteReportPassed.append("<table class='table table-bordered table-condensed'>");
 		    	suiteReportPassed.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
 				suiteReportPassed.append("</table>");
-				suiteReportPassed.append("<table class='table table-bordered'>");
+				suiteReportPassed.append("<table class='table table-bordered table-condensed'>");
 				suiteReportPassed.append("<tr><th>Test</th><th>Passed</th></tr>");
 				suiteReportPassed.append(passedtextContextSummaryReport);
 				suiteReportPassed.append("<tr><th>Total</th><th class='success'>"+suitePassedTests+"</th></tr>");
@@ -323,10 +319,10 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportFailed.append("<div class='container-fluid' style='margin-top:60px;'>");
 	            suiteReportFailed.append("<div class='row-fluid'>");
 		    	suiteReportFailed.append("<div class='span3'><div class='affix span3'>");
-		    	suiteReportFailed.append("<table class='table table-bordered'>");
+		    	suiteReportFailed.append("<table class='table table-bordered table-condensed'>");
 		    	suiteReportFailed.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
 		    	suiteReportFailed.append("</table>");
-		    	suiteReportFailed.append("<table class='table table-bordered'>");
+		    	suiteReportFailed.append("<table class='table table-bordered table-condensed'>");
 		    	suiteReportFailed.append("<tr><th>Test</th><th>Failed</th></tr>");
 		    	suiteReportFailed.append(failedtextContextSummaryReport);
 		    	suiteReportFailed.append("<tr><th>Total</th><th class='error'>"+suiteFailedTests+"</th></tr>");
@@ -371,10 +367,10 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportSkipped.append("<div class='container-fluid' style='margin-top:60px;'>");
 	            suiteReportSkipped.append("<div class='row-fluid'>");
 		    	suiteReportSkipped.append("<div class='span3'><div class='affix span3'>");
-		    	suiteReportSkipped.append("<table class='table table-bordered'>");
+		    	suiteReportSkipped.append("<table class='table table-bordered table-condensed'>");
 		    	suiteReportSkipped.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
 		    	suiteReportSkipped.append("</table>");
-		    	suiteReportSkipped.append("<table class='table table-bordered'>");
+		    	suiteReportSkipped.append("<table class='table table-bordered table-condensed'>");
 		    	suiteReportSkipped.append("<tr><th>Test</th><th>Skipped</th></tr>");
 		    	suiteReportSkipped.append(skippedtextContextSummaryReport);
 		    	suiteReportSkipped.append("<tr><th>Total</th><th class='warning'>"+suiteSkippedTests+"</th></tr>");
@@ -398,7 +394,7 @@ public class SuiteListener implements ISuiteListener{
 	
 	public void onStart(ISuite suite) {
 		try{
-		    if(mailProp.containsKey("mail.SendMail") && mailProp.getProperty("mail.SendMail").equalsIgnoreCase("ON")){
+		    if(mailProp.containsKey("mail.SendMail") && mailProp.getProperty("mail.SendMail").equalsIgnoreCase("true")){
 	    		String suiteName=suite.getName();
 	    		
 	    		String ToMail=mailProp.getProperty("mail.to");
@@ -425,56 +421,6 @@ public class SuiteListener implements ISuiteListener{
 	    	logger.error("Mail sending failed!! "+e.getMessage());
 	    }
 	}
-	
-	public void zipDir(String dir2zip, ZipOutputStream zos, String dir) 
-    {
-        try 
-        {
-           File zipDir = new File(dir2zip); 	           
-           String[] dirList = zipDir.list();
-           byte[] readBuffer = new byte[2156]; 
-           int bytesIn = 0; 
-           //System.out.println("dir2zip "+dir2zip);
-           //System.out.println("size "+dirList.length);
-           for(int i=0; i<dirList.length; i++) 
-           {
-        	   //System.out.println(dirList[i]);
-               File f = new File(zipDir, dirList[i]); 
-               if(f.isDirectory()) 
-               {	                    
-            	   String filePath = f.getPath(); 
-            	   zipDir(filePath, zos, dir);
-            	   continue; 
-               } 
-               //System.out.println("File Path "+f.getPath().substring(47,f.getPath().length()));
-               String path=f.getPath();
-               StringTokenizer str = new StringTokenizer(path, "\\");
-               path="";
-               int ctr=0;
-               while(str.hasMoreTokens()){
-            	   if(ctr < 3){
-	            	  str.nextToken();
-	            	   ctr++;
-            	   }else
-            		   path+="\\"+str.nextToken();
-               }
-               //System.out.println(path);
-               FileInputStream fis = new FileInputStream(f); 	           
-               ZipEntry anEntry = new ZipEntry(path);
-               zos.putNextEntry(anEntry);
-               while((bytesIn = fis.read(readBuffer)) != -1) 
-               { 
-            	   zos.write(readBuffer, 0, bytesIn); 
-               } 
-               
-               fis.close();
-           }  
-       }catch(Exception e){ 
-    	   System.out.println("Error while zipping the files!!");
-       }
-    }
-	
-	
 	
 	protected void generateFailureSuite(XmlSuite xmlSuite, ISuite suite, String outputDir) {
 	    XmlSuite failedSuite = (XmlSuite) xmlSuite.clone();
@@ -602,8 +548,6 @@ public class SuiteListener implements ISuiteListener{
 	      }
 	      
 	      xmlClass.setIncludedMethods(methodNames);
-	      
-	      
 	      
 	      xmlClass.setParameters(parameters);
 	      result.add(xmlClass);
