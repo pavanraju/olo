@@ -1,6 +1,6 @@
 package com.olo.util;
 
-import static com.olo.util.PropertyReader.allProp;
+import static com.olo.util.PropertyReader.webElements;
 import static com.olo.util.PropertyReader.messages;
 
 import java.io.File;
@@ -198,9 +198,9 @@ public class Commons {
 						String property = prop.getPropertyName();
 						String propFile = property.substring(0, property.indexOf("."));
 						String propName = property.substring(property.indexOf(".")+1);
-						if(allProp.containsKey(propFile)){
-							if(allProp.get(propFile).containsKey(propName)){
-								prop.setPropertyValue(allProp.get(propFile).getProperty(propName));
+						if(webElements.containsKey(propFile)){
+							if(webElements.get(propFile).containsKey(propName)){
+								prop.setPropertyValue(webElements.get(propFile).getProperty(propName));
 							}else{
 								throw new KeywordConfigurationException("Missing Property Name at Line Number : "+(row.getRowNum()+1));
 							}
