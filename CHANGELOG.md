@@ -1,3 +1,14 @@
+0.12.0
+------------
+
+**Enhancements**
+
+* Upgraded WebDriver to 2.34.0
+* Upgraded TestNg to 6.8.5
+* Added 'table-condensed' class to table, shows more tests on left pane. Added 'btn-small' class to test status in Suite Listener.
+* added new properties 'webElements' and 'messages' in config.properties to handle webElements and messages by Olo.
+
+
 0.11.0
 ------------
 
@@ -11,7 +22,6 @@
 **Breaking Changes**
 
 * log4j.properties file should be put under classpath. config,webelements,messages folders should be put under classpath.
-
 
 
 0.10.0
