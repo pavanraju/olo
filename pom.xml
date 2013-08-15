@@ -71,6 +71,12 @@
   	<url>git@github.com:pavanraju/olo.git</url>
   </scm>
   
+  <parent>
+    <groupId>org.sonatype.oss</groupId>
+    <artifactId>oss-parent</artifactId>
+    <version>3</version>
+  </parent>
+  
   <distributionManagement>
 	<repository>
 		<id>sonatype-nexus-staging</id>
