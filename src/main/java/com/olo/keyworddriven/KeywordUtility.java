@@ -2,6 +2,7 @@ package com.olo.keyworddriven;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -25,7 +26,7 @@ public class KeywordUtility {
 		}
 		
 		try {
-			logger.info("#### Reading "+testFile+" #####");
+			logger.info("#### Read and Get steps "+testFile+" #####");
 			excelSteps = new Commons().getExcelSteps(xlsFile);
 		} catch (Exception e) {
 			logger.error("Skipping Test: Error occured while reading test file "+e.getMessage());
@@ -66,6 +67,25 @@ public class KeywordUtility {
 			logger.error("Skipping Test: "+message);
 			throw new SkipException(message);
 		}
+	}
+	
+	public void replaceTestData(ArrayList<KeywordPropObject> excelSteps, HashMap<String,String> testData) throws Exception{
+		for(int i=0;i<excelSteps.size();i++){
+			String replacedTestData = Commons.replaceTestData(excelSteps.get(i).getValue(),testData);
+			excelSteps.get(i).setActualValue(Commons.replaceMessageMatchers(replacedTestData));
+		}
+	}
+	
+	public ArrayList<HashMap<String, String>> getDataProiderData(String testFile){
+		ArrayList<HashMap<String, String>> testData = new ArrayList<HashMap<String, String>>();
+		try {
+			logger.info("#### Reading Data from "+testFile+" #####");
+			testData = Commons.getDataProviderSheetData(testFile);
+		} catch (Exception e) {
+			logger.error("Skipping Test: Error occured while reading test file data "+e.getMessage());
+			throw new SkipException(e.getMessage());
+		}
+		return testData;
 	}
 	
 }
