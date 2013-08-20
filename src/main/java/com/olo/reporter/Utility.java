@@ -33,8 +33,8 @@ public class Utility {
 		private static final long serialVersionUID = 1L;
 
 			{
-			        put("propertyName", "Property Name");
-			        put("propertyValue", "Property Value");
+			        put("propertyName", "Web Element");
+			        put("propertyValue", "Element Locator");
 			        put("action", "Action");
 			        put("value", "Value");
 			        put("actualValue", "Actual Value");
