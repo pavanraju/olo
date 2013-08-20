@@ -38,7 +38,7 @@ public class TestBuilder {
 			}
 		}else{
 			String fileName = baseDirectory.getName();
-			if(fileName.startsWith("TC-") && (fileName.endsWith(".xls") || fileName.endsWith(".xlsx"))){
+			if(fileName.startsWith("KWD-") && (fileName.endsWith(".xls") || fileName.endsWith(".xlsx"))){
 				testFiles.put(fileName, baseDirectory.getAbsolutePath());
 			}
 		}

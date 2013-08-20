@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,8 +37,9 @@ public class Commons {
 	private static final Logger logger = LogManager.getLogger(Commons.class.getName());
 	
 	public static final Random randomGenerator = new Random();
-	public static final SimpleDateFormat defaultFormat = new SimpleDateFormat("dd/MM/yyyy");
-	private static final Pattern pattern = Pattern.compile("\\{\\{(.*?)\\}\\}");
+	public static final Pattern messagesPattern = Pattern.compile("\\<\\{(.*?)\\}\\>");
+	public static final Pattern testDataPattern = Pattern.compile("\\<\\<(.*?)\\>\\>");
+	public static final Pattern dynamicPattern = Pattern.compile("\\<\\?(.*?)\\?\\>");
 	
 	public static Workbook getWorkbookFromXls(String xlsPath) throws Exception{
 		try {
@@ -82,6 +82,16 @@ public class Commons {
 		}
 	}
 	
+	public static Sheet getSheetWithNameFromXlsPath(String xlsPath,String sheetName) throws Exception {
+		try {
+			Workbook workBook=getWorkbookFromXls(xlsPath);
+			Sheet sheet = workBook.getSheet(sheetName);
+			return sheet;
+		} catch (Exception ex) {
+			throw ex;
+		}
+	}
+	
 	public static Sheet getSheetFromXlsPath(String xlsPath) throws Exception {
 		try {
 			Workbook workBook=getWorkbookFromXls(xlsPath);
@@ -111,9 +121,9 @@ public class Commons {
 			throw ex;
 		}
 	}
-
-	public ArrayList<HashMap<String,String>> getDataProviderSheetData(String xlsPath) throws Exception {
-		Sheet sheet = getSheetFromXlsPath(xlsPath);
+	
+	public static ArrayList<HashMap<String,String>> getDataProviderSheetData(String xlsPath) throws Exception {
+		Sheet sheet = getSheetWithNameFromXlsPath(xlsPath,"dataProvider");
 		ArrayList<HashMap<String,String>> dataProvider = new ArrayList<HashMap<String,String>>();
 		Iterator<Row> rows = sheet.rowIterator();
 		ArrayList<String> headers = new ArrayList<String>();
@@ -125,7 +135,7 @@ public class Commons {
 		getDataProviderData(headers, dataProvider, rows);
 		return dataProvider;
 	}
-	
+	/*
 	public ArrayList<HashMap<String,String>> getDataProviderSheetData(URL xlsPathURL) throws Exception {
 		Sheet sheet = getSheetFromXlsPath(xlsPathURL);
 		ArrayList<HashMap<String,String>> dataProvider = new ArrayList<HashMap<String,String>>();
@@ -139,7 +149,7 @@ public class Commons {
 		getDataProviderData(headers, dataProvider, rows);
 		return dataProvider;
 	}
-	
+	*/
 	public ArrayList<KeywordPropObject> getExcelSteps(String xlsPath) throws Exception {
 		ArrayList<KeywordPropObject> excelSteps = new ArrayList<KeywordPropObject>();
 		Iterator<Row> rows = getRowsInExcel(xlsPath);
@@ -173,6 +183,7 @@ public class Commons {
 				if(prop.getAction().equals("Else") || prop.getAction().equals("EndIf")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
+					/*
 				}else if(prop.getAction().equals("StartDataTable")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
@@ -187,12 +198,15 @@ public class Commons {
 					lprop.setAction("EndDataTable");
 					lprop.setSkip(true);
 					excelRowsAsProbObject.add(lprop);
+					*/
 				}else if(prop.getAction().equals("IncludeFile")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
 					excelRowsAsProbObject.addAll(getExcelSteps(Commons.class.getResource(prop.getValue())));
+					/*
 				}else if(prop.getAction().equals("EndDataTable")){
 					break;
+					*/
 				}else{
 					if(!prop.getPropertyName().isEmpty()){
 						String property = prop.getPropertyName();
@@ -259,10 +273,11 @@ public class Commons {
 		}
 	}
 	
-	public String getCellValue(Row row,int cellNum){
-		String value="";
+	public static String getCellValue(Row row,int cellNum){
+		String value = "";
 		if(row.getCell(cellNum)!= null && row.getCell(cellNum).getCellType()==Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(row.getCell(cellNum))) {
-		    value = String.valueOf(defaultFormat.format(row.getCell(cellNum).getDateCellValue()));
+		    //value = String.valueOf(defaultFormat.format(row.getCell(cellNum).getDateCellValue()));
+			value = row.getCell(cellNum).getRichStringCellValue().toString();
 		} else if(row.getCell(cellNum)!= null && row.getCell(cellNum).getCellType()==Cell.CELL_TYPE_NUMERIC && !DateUtil.isCellDateFormatted(row.getCell(cellNum))) {
 			value = row.getCell(cellNum) == null ? "" : String.valueOf(row.getCell(cellNum).getNumericCellValue());
 			if(value.endsWith(".0")){
@@ -271,10 +286,11 @@ public class Commons {
 		}else {
 			value = row.getCell(cellNum) == null ? "" : row.getCell(cellNum).getStringCellValue();
 		}
+		
 		value=value.trim();
 		return value;
 	}
-
+	/*
 	public ArrayList<KeywordPropObject> startDataProviderSteps(Iterator<Row> rows,String xlsPath) throws Exception{
 		ArrayList<HashMap<String,String>> dataProvider = getDataProviderSheetData(xlsPath);
 		ArrayList<KeywordPropObject> startDataProviderSteps = new ArrayList<KeywordPropObject>();
@@ -316,8 +332,8 @@ public class Commons {
 		lDataProviderTemplate.addAll(getStepsAsPropObject(rows));
 		return lDataProviderTemplate;
 	}
-	
-	private void getDataProviderData(ArrayList<String> headers,
+	*/
+	private static void getDataProviderData(ArrayList<String> headers,
 			ArrayList<HashMap<String,String>> dataProvider, Iterator<Row> rows) {
 		Row row = rows.next();
 		while (rows.hasNext()) {
@@ -400,7 +416,7 @@ public class Commons {
 	
 	public static boolean expectedValueCheck(String expectedValue,String actualValue){
         StringBuffer sb = new StringBuffer(expectedValue);
-        Matcher matcher = pattern.matcher(sb);
+        Matcher matcher = dynamicPattern.matcher(sb);
         while(matcher.find()){
                if(matcher.group(1).equals("!")){
                      int start = matcher.start();
@@ -418,23 +434,37 @@ public class Commons {
         	return false;
 	}
 	
-	public static String replaceStoredMatchers(String expectedValue,HashMap<String,String> storedData) throws Exception{
+	public static String replaceDynamicValueMatchers(String expectedValue,HashMap<String,String> storedData) throws Exception{
 		StringBuffer sb = new StringBuffer(expectedValue);
-		Matcher matcher = pattern.matcher(sb);
+		Matcher matcher = dynamicPattern.matcher(sb);
 		
 		while(matcher.find()){
 			int matchIndexStart=matcher.start();
 			int matchIndexEnd=matcher.end();
 			String matchedValue=matcher.group(1);
-			if(matchedValue.startsWith("get.")){
-				String StoredKey = matchedValue.substring(4, matchedValue.length());
-				if(storedData.containsKey(StoredKey)){
-					sb.replace(matchIndexStart, matchIndexEnd, storedData.get(StoredKey));
-					matcher = pattern.matcher(sb);
-				}else{
-					throw new KeywordConfigurationException("Haven't stored any value with : "+StoredKey);
-				}
-				
+			if(storedData.containsKey(matchedValue)){
+				sb.replace(matchIndexStart, matchIndexEnd, storedData.get(matchedValue));
+				matcher = dynamicPattern.matcher(sb);
+			}else{
+				throw new KeywordConfigurationException("Haven't stored any value with : "+matchedValue);
+			}
+		}
+		return sb.toString();
+	}
+	
+	public static String replaceTestData(String expectedValue,HashMap<String,String> testData) throws Exception{
+		StringBuffer sb = new StringBuffer(expectedValue);
+		Matcher matcher = testDataPattern.matcher(sb);
+		
+		while(matcher.find()){
+			int matchIndexStart=matcher.start();
+			int matchIndexEnd=matcher.end();
+			String matchedValue=matcher.group(1);
+			if(testData.containsKey(matchedValue)){
+				sb.replace(matchIndexStart, matchIndexEnd, testData.get(matchedValue));
+				matcher = testDataPattern.matcher(sb);
+			}else{
+				throw new KeywordConfigurationException("Data definition missing in test data file : "+matchedValue);
 			}
 		}
 		return sb.toString();
@@ -442,26 +472,24 @@ public class Commons {
 	
 	public static String replaceMessageMatchers(String expectedValue) throws Exception{
 		StringBuffer sb = new StringBuffer(expectedValue);
-		Matcher matcher = pattern.matcher(sb);
+		Matcher matcher = messagesPattern.matcher(sb);
 		
 		while(matcher.find()){
 			int matchIndexStart=matcher.start();
 			int matchIndexEnd=matcher.end();
 			String matchedValue=matcher.group(1);
-			if(matchedValue.startsWith("messages.")){
-				String propFileKey=matchedValue.substring(9, matchedValue.indexOf(".", 9));
-				String propValueKey=matchedValue.substring(matchedValue.indexOf(".", 9)+1);
-				if(messages.containsKey(propFileKey) && messages.get(propFileKey).containsKey(propValueKey)){
-					sb.replace(matchIndexStart, matchIndexEnd, messages.get(propFileKey).getProperty(propValueKey));
-					matcher = pattern.matcher(sb);
-				}else{
-					throw new KeywordConfigurationException("Property in Value column Not Found");
-				}
+			String propFileKey=matchedValue.substring(0, matchedValue.indexOf("."));
+			String propValueKey=matchedValue.substring(matchedValue.indexOf(".")+1);
+			if(messages.containsKey(propFileKey) && messages.get(propFileKey).containsKey(propValueKey)){
+				sb.replace(matchIndexStart, matchIndexEnd, messages.get(propFileKey).getProperty(propValueKey));
+				matcher = messagesPattern.matcher(sb);
+			}else{
+				throw new KeywordConfigurationException("Property in Value column Not Found");
 			}
 		}
 		return sb.toString();
 	}
-	
+	/*
 	public static String replaceDataSetHeaderMatchers(String expectedValue,HashMap<String,String> dataSetHeader) throws Exception{
 		StringBuffer sb = new StringBuffer(expectedValue);
 		Matcher matcher = pattern.matcher(sb);
@@ -483,6 +511,6 @@ public class Commons {
 		}
 		return sb.toString();
 	}
-	
+	*/
 
 }
