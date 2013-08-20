@@ -1,5 +1,7 @@
 package com.olo.keyworddriven;
 
+import static com.olo.util.PropertyReader.configProp;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -143,7 +145,8 @@ public class Keywords{
 			cal.add(Calendar.DATE, Integer.parseInt(value));
 		}
 		if(step.getOptions()==null || step.getOptions().equals("")){
-			String newdate = Commons.defaultFormat.format(cal.getTime());
+			SimpleDateFormat defaultFormat = new SimpleDateFormat(configProp.getProperty("dateFormat"));
+			String newdate = defaultFormat.format(cal.getTime());
 			step.setActualValue(newdate);
 		}else{
 			JSONObject options = new JSONObject(step.getOptions());
