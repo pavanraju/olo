@@ -26,7 +26,7 @@ public class Execution {
 		this.keywords=keywords;
 	}
 	
-	public void run(ITestContext ctx, ArrayList<KeywordPropObject> excelSteps, String testFilePath, String testName) throws Exception{
+	public void run(ITestContext ctx, int testCount, ArrayList<KeywordPropObject> excelSteps, String testFilePath, String testName) throws Exception{
 		
 		HashMap<String, String> storeData = new HashMap<String, String>();
 		int totalVerification=0;
@@ -156,28 +156,28 @@ public class Execution {
 						verificationFailures=true;
 						totalVerificationFailures++;
 					}else{
-						addVariables(ctx,level3FinalReport,totalVerification,totalVerificationFailures,keywordExecutionSteps, testFilePath, testName);
+						addVariables(ctx,level3FinalReport,totalVerification,totalVerificationFailures,keywordExecutionSteps, testFilePath, testName, testCount);
 						Assert.fail(localStep.getErrorMessage());
 					}
 				}else{
-					addVariables(ctx,level3FinalReport,totalVerification,totalVerificationFailures,keywordExecutionSteps, testFilePath, testName);
+					addVariables(ctx,level3FinalReport,totalVerification,totalVerificationFailures,keywordExecutionSteps, testFilePath, testName, testCount);
 					Assert.fail(localStep.getErrorMessage());
 				}
 			}
 		}
 		
-		addVariables(ctx,level3FinalReport,totalVerification,totalVerificationFailures,keywordExecutionSteps, testFilePath, testName);
+		addVariables(ctx,level3FinalReport,totalVerification,totalVerificationFailures,keywordExecutionSteps, testFilePath, testName, testCount);
 		if(verificationFailures){
 			Assert.fail("Verification Failures");
 		}
 	}
 	
-	private void addVariables(ITestContext ctx,HashMap<String,Object> level3FinalReport,int totalVerification,int totalVerificationFailures,ArrayList<KeywordPropObject> keywordExecutionSteps, String testPath, String testName){
+	private void addVariables(ITestContext ctx,HashMap<String,Object> level3FinalReport,int totalVerification,int totalVerificationFailures,ArrayList<KeywordPropObject> keywordExecutionSteps, String testPath, String testName, int testCount){
 		level3FinalReport.put("totalVerifications", totalVerification);
 		level3FinalReport.put("totalVerificationFailures", totalVerificationFailures);
 		level3FinalReport.put("keywordExecutionSteps", keywordExecutionSteps);
 		level3FinalReport.put("testPath", testPath);
-		ctx.setAttribute(testName, level3FinalReport);
+		ctx.setAttribute(testName+"-"+testCount, level3FinalReport);
 		logger.info("##### Test Case Completed "+testPath+" #####");
 	}
 	

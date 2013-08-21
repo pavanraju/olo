@@ -37,7 +37,7 @@ public class Runner extends WebDriverInitiator implements ITest{
 		ArrayList<KeywordPropObject> excelSteps = new KeywordUtility().getExcelSteps(testFilePath);
 		new KeywordUtility().validateSteps(excelSteps);
 		logger.info("Executing Test File "+testFilePath);
-		new Execution(browser, new Keywords(browser)).run(ctx, excelSteps, testFilePath, testName);
+		new Execution(browser, new Keywords(browser)).run(ctx, 0, excelSteps, testFilePath, testName);
 	}
 
 }

@@ -17,7 +17,6 @@ public class TestListener implements ITestListener{
 
 	public void onTestStart(ITestResult result) {
 		
-		
 	}
 
 	public void onTestSuccess(ITestResult result) {
@@ -29,7 +28,7 @@ public class TestListener implements ITestListener{
 	}
 
 	public void onTestSkipped(ITestResult result) {
-		generateReportForReporters(result);
+	
 	}
 
 	public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
@@ -46,11 +45,7 @@ public class TestListener implements ITestListener{
 	
 	private void generateReportForReporters(ITestResult result){
 		Reporter reporter = result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(com.olo.annotations.Reporter.class);
-		
 		if(reporter!=null){
-			
-			result.getTestContext().getAttribute(result.getName());
-			
 			try {
 				Class<TestReporter> testReporterClass = reporter.reporterClass();
 				for (final Method reporterMethod : testReporterClass.getDeclaredMethods()) {
@@ -65,8 +60,6 @@ public class TestListener implements ITestListener{
 				logger.error(e.getMessage());
 				e.printStackTrace();
 			}
-			
-			result.getTestContext().removeAttribute(result.getName());
 		}
 	}
 

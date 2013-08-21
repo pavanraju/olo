@@ -60,7 +60,7 @@ public class SuiteListener implements ISuiteListener{
 			StringBuffer skippedTextContextReport = new StringBuffer();
 			
 			StringBuffer errorModelWindow = new StringBuffer();
-			errorModelWindow.append("<div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>  <div class='modal-header'>   <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>   <h4 id='myModalLabel'>Stack Trace</h4>  </div>  <div class='modal-body'>   <p id='modelbodyerror'></p>  </div>	</div>");
+			errorModelWindow.append("<div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>  <div class='modal-header'>   <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>   <h4 id='myModalLabel'>Stack Trace</h4>  </div>  <div class='modal-body'>   <p id='modelbodyerror'></p>  </div>	</div>");
 			
 			for (ISuiteResult suiteResult : results.values()) {
 				ITestContext suiteTestContext = suiteResult.getTestContext();

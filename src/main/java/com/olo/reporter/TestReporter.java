@@ -23,9 +23,9 @@ public class TestReporter {
 	
 	@Reporter(KeywordDriven.class)
 	public void keywordDrivenTest(ITestResult result){
-		try {
-			
-			if(result.getStatus() == ITestResult.SUCCESS || result.getStatus() == ITestResult.FAILURE){
+		if(result.getStatus() == ITestResult.SUCCESS || result.getStatus() == ITestResult.FAILURE){
+			String testCount = "0";
+			try {
 				String suiteName = result.getTestContext().getSuite().getName();
 				StringBuffer sb = new StringBuffer();
 				sb.append("<!DOCTYPE html><html><head><title>"+result.getName()+"</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {   $('#checkboxform button').click(function(){ var checkboxId=this.id;  $('#tabledata thead tr th[id='+checkboxId+']').toggle();  var columnIndex=$('#tabledata thead tr th[id='+checkboxId+']').index();  $('#tabledata tbody tr td:nth-child('+(columnIndex+1)+')').toggle();      });     });</script></head><body>");
@@ -39,10 +39,18 @@ public class TestReporter {
 				sb.append("</div>");
 				
 				sb.append("<div class='container-fluid'><div class='row-fluid' style='margin-top:50px;'>");
-				String reporterFileName=result.getName()+".html";
+				String reporterFileName = null;
+				
+				try {
+					testCount = result.getParameters()[1].toString();
+				} catch (Exception e) {
+					
+				}
+				reporterFileName = result.getName()+"-"+testCount+".html";
+				
 				String reporterFileDirectory = result.getTestContext().getCurrentXmlTest().getName()+File.separator+Utility.getStatusString(result.getStatus());
 				result.setAttribute("reporterFilePath", reporterFileDirectory+File.separator+reporterFileName);
-				HashMap<String,Object> keywordDrivenTestInfo = (HashMap<String, Object>) result.getTestContext().getAttribute(result.getName());
+				HashMap<String,Object> keywordDrivenTestInfo = (HashMap<String, Object>) result.getTestContext().getAttribute(result.getName()+"-"+testCount);
 				sb.append("<div class='span5'>");
 				sb.append("<table class='table table-bordered'>");
 				sb.append("<tr><th>Test Case</th><td>"+result.getName()+"</td></tr>");
@@ -93,14 +101,14 @@ public class TestReporter {
 					sb.append("<td>"+(i+1)+"</td>");
 					
 					for (Map.Entry<String, String> column : reportColumns.entrySet()) {
-						if(column.getKey().equals("propertyName")){
+						if(column.getKey().equals("action")){
+							sb.append("<td>"+localStep.getAction()+"</td>");
+						}else if(column.getKey().equals("propertyName")){
 							sb.append("<td>"+localStep.getPropertyName()+"</td>");
 						}else if(column.getKey().equals("propertyValue")){
 							sb.append("<td style='display:none'>"+localStep.getPropertyValue()+"</td>");
-						}else if(column.getKey().equals("action")){
-							sb.append("<td>"+localStep.getAction()+"</td>");
 						}else if(column.getKey().equals("value")){
-							sb.append("<td style='display:none'>"+(localStep.getValue()!=null ? localStep.getValue().replace("\n", "<br/>") : "null")+"</td>");
+							sb.append("<td style='display:none'>"+(localStep.getValue()!=null ? localStep.getValue().replace("\n", "<br/>").replace("<", "&lt;").replace(">", "&gt;") : "null")+"</td>");
 						}else if(column.getKey().equals("actualValue")){
 							sb.append("<td>"+(localStep.getActualValue()!=null ? localStep.getActualValue().replace("\n", "<br/>") : "null")+"</td>");
 						}else if(column.getKey().equals("options")){
@@ -125,15 +133,16 @@ public class TestReporter {
 				sb.append("</table>");
 				sb.append("</div></div></body></html>");
 				Utils.writeFile(result.getTestContext().getOutputDirectory()+File.separator+reporterFileDirectory, reporterFileName, sb.toString());
+			} catch (Exception e) {
+				logger.error(e.getMessage());
 			}
-			
-			
-			
-		} catch (Exception e) {
-			logger.error(e.getMessage());
-			e.printStackTrace();
+			try {
+				result.getTestContext().removeAttribute(result.getName()+"-"+testCount);
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+			}
 		}
+		
 	}
-	
 	
 }
