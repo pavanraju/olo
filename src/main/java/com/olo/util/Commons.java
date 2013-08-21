@@ -257,8 +257,8 @@ public class Commons {
 	
 	public KeywordPropObject getKeywordPropObject(Row row){
 		KeywordPropObject prop = new KeywordPropObject();
-		String locatorName = row.getCell(0) == null ? "" : row.getCell(0).toString().trim();
-		String action = row.getCell(1) == null ? "" : row.getCell(1).toString().trim();
+		String action = row.getCell(0) == null ? "" : row.getCell(0).toString().trim();
+		String locatorName = row.getCell(1) == null ? "" : row.getCell(1).toString().trim();
 		String value = getCellValue(row,2);
 		String options = row.getCell(3) == null ? "" : row.getCell(3).toString().trim();
 		if (!(locatorName + value + action).trim().equals("")) {
@@ -489,28 +489,5 @@ public class Commons {
 		}
 		return sb.toString();
 	}
-	/*
-	public static String replaceDataSetHeaderMatchers(String expectedValue,HashMap<String,String> dataSetHeader) throws Exception{
-		StringBuffer sb = new StringBuffer(expectedValue);
-		Matcher matcher = pattern.matcher(sb);
-		
-		while(matcher.find()){
-			int matchIndexStart=matcher.start();
-			int matchIndexEnd=matcher.end();
-			String matchedValue=matcher.group(1);
-			if(matchedValue.startsWith("datatable.")){
-				String dataSetKey = matchedValue.substring(10, matchedValue.length());
-				if(dataSetHeader.containsKey(dataSetKey)){
-					sb.replace(matchIndexStart, matchIndexEnd, dataSetHeader.get(dataSetKey));
-					matcher = pattern.matcher(sb);
-				}else{
-					throw new KeywordConfigurationException("Missing Header in DataTable File: "+dataSetKey);
-				}
-				
-			}
-		}
-		return sb.toString();
-	}
-	*/
 
 }
