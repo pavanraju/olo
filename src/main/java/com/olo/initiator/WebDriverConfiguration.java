@@ -13,13 +13,11 @@ import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.iphone.IPhoneDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.testng.ITestResult;
 
-import com.olo.util.OSUtil;
 import com.opera.core.systems.OperaDriver;
 
 public class WebDriverConfiguration {
@@ -73,10 +71,6 @@ public class WebDriverConfiguration {
 			capabilities = getSafariCapabilities();
 		}else if(browser.equals("Android")){
 			capabilities = getAndroidCapabilities();
-		}else if(browser.equals("Iphone")){
-			capabilities = getIphoneCapabilities();
-		}else if(browser.equals("Ipad")){
-			capabilities = getIpadCapabilities();
 		}else{
 			throw new Exception("Un Supported Browser");
 		}
@@ -107,10 +101,6 @@ public class WebDriverConfiguration {
 		return new AndroidDriver(capabilities);
 	}
 	
-	protected WebDriver getIphoneDriver(DesiredCapabilities capabilities) throws Exception{
-		return new IPhoneDriver(capabilities);
-	}
-	
 	protected WebDriver getRemoteWebDriverDriver(String hubURL, DesiredCapabilities capabilities) throws Exception{
 		return new RemoteWebDriver(new URL(hubURL),capabilities);
 	}
@@ -119,17 +109,16 @@ public class WebDriverConfiguration {
 		if(browser.equals("Firefox")){
 			return getFirefoxDriver(capabilities);
 		}else if(browser.equals("Explorer")){
-			System.setProperty("webdriver.ie.driver", System.getProperty("user.dir")+"/drivers/win"+OSUtil.getJavaBitVersion()+"/IEDriverServer.exe");
+			System.setProperty("webdriver.ie.driver", System.getProperty("user.dir")+"/drivers/win/IEDriverServer.exe");
 			return getInternetExplorerDriver(capabilities);
 		}else if(browser.equals("Chrome")){
 			String driverFolder=null;
-			String javaBitVersion = OSUtil.getJavaBitVersion();
 			if(Platform.getCurrent().is(Platform.WINDOWS)){
-				driverFolder="win"+javaBitVersion;
+				driverFolder="win";
 			}else if(Platform.getCurrent().is(Platform.MAC)){
-				driverFolder="mac"+javaBitVersion;
+				driverFolder="mac";
 			}else{
-				driverFolder="linux"+javaBitVersion;
+				driverFolder="linux";
 			}
 			System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/drivers/"+driverFolder+"/chromedriver.exe");
 			return getChromeDriver(capabilities);
@@ -139,8 +128,6 @@ public class WebDriverConfiguration {
 			return getSafariDriver(capabilities);
 		}else if(browser.equals("Android")){
 			return getAndroidDriver(capabilities);
-		}else if(browser.equals("Iphone") || browser.equals("Ipad")){
-			return getIphoneDriver(capabilities);
 		}else{
 			throw new Exception("Unsupported Browser");
 		}
