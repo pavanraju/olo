@@ -258,6 +258,11 @@ public class Keywords{
 		browser.chooseCancel();
 	}
 	
+	@Keyword("CaptureScreenshot")
+	public void captureScreenShot(KeywordPropObject step) throws Exception{
+		browser.captureScreenshot(step.getScreenShotPath());
+	}
+	
 	@Keyword("AssertTitle")
 	public void asertTitle(KeywordPropObject step) throws Exception{
 		browser.assertTitle(step.getActualValue());

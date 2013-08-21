@@ -75,11 +75,17 @@ public class Execution {
 									foundKeyword=true;
 									localStep.setActualValue(Commons.replaceDynamicValueMatchers(localStep.getActualValue(), storeData));
 									logger.info(localStep);
-									if(!localStep.getAction().startsWith("Put")){
+									if(localStep.getAction().equals("CaptureScreenshot")){
+										String screenShotFileName=System.currentTimeMillis()+".png";
+										String screenShotPath=ctx.getOutputDirectory()+"/"+"screenshots"+"/"+screenShotFileName;
+										localStep.setScreenShotName(screenShotFileName);
+										localStep.setScreenShotPath(screenShotPath);
 										method.invoke(keywords,localStep);
-									}else{
+									}else if(localStep.getAction().startsWith("Put")){
 										HashMap<String, String> storedData =  (HashMap<String, String>)method.invoke(keywords,localStep);
 										storeData.putAll(storedData);
+									}else{
+										method.invoke(keywords,localStep);
 									}
 									
 									if(localStep.getAction().startsWith("If") && localStep.getIfSkipped()){
@@ -100,7 +106,7 @@ public class Execution {
 				} catch (AssertionError e) {
 					
 					try {
-						String screenShotFileName=System.currentTimeMillis()+".png";;
+						String screenShotFileName=System.currentTimeMillis()+".png";
 						String screenShotPath=ctx.getOutputDirectory()+"/"+"screenshots"+"/"+screenShotFileName;
 						browser.captureScreenshot(screenShotPath);
 						localStep.setScreenShotName(screenShotFileName);
