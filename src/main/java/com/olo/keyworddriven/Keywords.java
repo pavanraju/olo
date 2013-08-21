@@ -593,14 +593,20 @@ public class Keywords{
 	@Keyword("PutValueIn")
 	public HashMap<String, String> putValueIn(KeywordPropObject step) throws Exception{
 		HashMap<String, String> storeData = new HashMap<String, String>();
-		storeData.put(step.getActualValue(), browser.getValue(browser.findElement(step.getPropertyValue())));
+		String elementValue = browser.getValue(browser.findElement(step.getPropertyValue()));
+		String actualValue = step.getActualValue();
+		storeData.put(actualValue, elementValue);
+		step.setActualValue(elementValue);
 		return storeData;
 	}
 	
 	@Keyword("PutTextIn")
 	public HashMap<String, String> putTextIn(KeywordPropObject step) throws Exception{
 		HashMap<String, String> storeData = new HashMap<String, String>();
-		storeData.put(step.getActualValue(), browser.getText(browser.findElement(step.getPropertyValue())));
+		String elementText = browser.getText(browser.findElement(step.getPropertyValue()));
+		String actualValue = step.getActualValue();
+		storeData.put(actualValue, elementText);
+		step.setActualValue(elementText);
 		return storeData;
 	}
 	

@@ -14,6 +14,7 @@ import com.olo.annotations.Keyword;
 import com.olo.bot.BrowserBot;
 import com.olo.keyworddriven.Keywords;
 import com.olo.propobject.KeywordPropObject;
+import com.olo.util.Commons;
 
 public class Execution {
 	
@@ -72,6 +73,7 @@ public class Execution {
 							if(annotation!=null){
 								if(annotation.value().equals(localStep.getAction())){
 									foundKeyword=true;
+									localStep.setActualValue(Commons.replaceDynamicValueMatchers(localStep.getActualValue(), storeData));
 									logger.info(localStep);
 									if(!localStep.getAction().startsWith("Put")){
 										method.invoke(keywords,localStep);
