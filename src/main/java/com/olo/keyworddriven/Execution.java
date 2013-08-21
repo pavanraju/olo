@@ -102,7 +102,6 @@ public class Execution {
 						String screenShotPath=ctx.getOutputDirectory()+"/"+"screenshots"+"/"+screenShotFileName;
 						browser.captureScreenshot(screenShotPath);
 						localStep.setScreenShotName(screenShotFileName);
-						localStep.setScreenShotPath(screenShotPath);
 					} catch (Exception e1) {
 						logger.error(e1.getMessage());
 					}
@@ -129,7 +128,6 @@ public class Execution {
 						String screenShotPath=ctx.getOutputDirectory()+"/screenshots/"+screenShotFileName;
 						browser.captureScreenshot(screenShotPath);
 						localStep.setScreenShotName(screenShotFileName);
-						localStep.setScreenShotPath(screenShotPath);
 					} catch (Exception e1) {
 						logger.error(e1.getMessage());
 					}

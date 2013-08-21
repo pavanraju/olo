@@ -18,7 +18,6 @@ public class KeywordPropObject implements Cloneable {
 	private String errorMessage = "";
 	private Boolean isVerification = false;
 	private String screenShotName = "";
-	private String screenShotPath = "";
 	private long startTime = 0;
 	private long endTime = 0;
 	private Boolean isAssertionError = false;
@@ -136,14 +135,6 @@ public class KeywordPropObject implements Cloneable {
 
 	public void setScreenShotName(String screenShotName) {
 		this.screenShotName = screenShotName;
-	}
-
-	public String getScreenShotPath() {
-		return screenShotPath;
-	}
-
-	public void setScreenShotPath(String screenShotPath) {
-		this.screenShotPath = screenShotPath;
 	}
 	
 	public boolean isConditionSkip() {
