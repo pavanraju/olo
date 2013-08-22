@@ -1,3 +1,30 @@
+0.13.0
+------------
+
+**Enhancements**
+
+* Upgraded WebDriver to 2.35.0
+* Upgraded OperaDriver to 1.4
+* Data Driven support for Keyword Driven Tests.
+* Added New Property 'dateFormat' which will be used in TypeDate keyword.
+* New KeyWord CaptureScreenshot
+
+**Bug Fixes**
+* Fixed issue with getting values of Put keyword.
+
+**Breaking Changes**
+
+* Keyword driven test cases should start with 'KWD' instead of 'TC'.
+* syntax changed for accessing test data,messages & put keyword
+  - <<username>>   to access test data
+  - <{login.username}>  to access app properties
+  - <?username?> to access the put keyword values
+* Removed Iphone&Ipad support as they are depricated in WebDriver 2.35
+* drivers folder will now have sub folders with os names like win,linux & mac.
+* For KeywordDriven Test 1st column will be action and 2nd column will be WebElement.
+* changing 'messages' folder 'app' as it makes more meaningful.
+
+
 0.12.0
 ------------
 
