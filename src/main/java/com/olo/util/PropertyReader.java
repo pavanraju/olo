@@ -17,7 +17,7 @@ public class PropertyReader {
 	private static final Logger logger = LogManager.getLogger(PropertyReader.class.getName());
 	
 	public static HashMap<String, Properties> webElements = new HashMap<String, Properties>();
-	public static HashMap<String, Properties> messages = new HashMap<String, Properties>();
+	public static HashMap<String, Properties> app = new HashMap<String, Properties>();
 	public static Properties configProp = new Properties();
 	public static Properties mailProp = new Properties();
 	
@@ -60,8 +60,8 @@ public class PropertyReader {
 				}
 			}
 			
-			if(configProp.containsKey("messages") && configProp.getProperty("messages").equals("true")){
-				URL messageFilesUrl = PropertyReader.class.getResource("/messages");
+			if(configProp.containsKey("app") && configProp.getProperty("app").equals("true")){
+				URL messageFilesUrl = PropertyReader.class.getResource("/app");
 				if(messageFilesUrl!=null){
 					try {
 						File messageFolder = new File(messageFilesUrl.toURI());
@@ -75,7 +75,7 @@ public class PropertyReader {
 									logger.info("Loading "+nextFile.getAbsolutePath());
 									Properties temp = new Properties();
 									temp.load(new FileInputStream(nextFile));
-									messages.put(propFileName, temp);
+									app.put(propFileName, temp);
 								}
 								
 							}

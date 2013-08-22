@@ -1,7 +1,7 @@
 package com.olo.util;
 
 import static com.olo.util.PropertyReader.webElements;
-import static com.olo.util.PropertyReader.messages;
+import static com.olo.util.PropertyReader.app;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -480,8 +480,8 @@ public class Commons {
 			String matchedValue=matcher.group(1);
 			String propFileKey=matchedValue.substring(0, matchedValue.indexOf("."));
 			String propValueKey=matchedValue.substring(matchedValue.indexOf(".")+1);
-			if(messages.containsKey(propFileKey) && messages.get(propFileKey).containsKey(propValueKey)){
-				sb.replace(matchIndexStart, matchIndexEnd, messages.get(propFileKey).getProperty(propValueKey));
+			if(app.containsKey(propFileKey) && app.get(propFileKey).containsKey(propValueKey)){
+				sb.replace(matchIndexStart, matchIndexEnd, app.get(propFileKey).getProperty(propValueKey));
 				matcher = messagesPattern.matcher(sb);
 			}else{
 				throw new KeywordConfigurationException("Property in Value column Not Found");
