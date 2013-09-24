@@ -133,6 +133,10 @@ public class Utility {
 		return "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
 	}
 	
+	public static String getDescriptionTooltipJs(){
+		return "<script type='text/javascript'>$(document).ready(function() { $('.testNameToolTip').tooltip({html: true}); });</script>";
+	}
+	
 	public static StringBuffer getHtmlToHead(){
 		return new StringBuffer().append("<!DOCTYPE html><html><head>");
 	}
@@ -250,9 +254,9 @@ public class Utility {
 		suiteListHeader.append("<th>"+sdf.format(endTimeOfSuites)+"</th>");
 		suiteListHeader.append("<th>"+timeTaken(endTimeOfSuites-startTimeOfSuites)+"</th>");
 		suiteListHeader.append("<th>"+totalTests+"</th>");
-		suiteListHeader.append("<th>"+totalPassedTests+" ("+Commons.percentageCalculator(totalTests,totalPassedTests)+"%)</th>");
-		suiteListHeader.append("<th>"+totalFailedTests+" ("+Commons.percentageCalculator(totalTests,totalFailedTests)+"%)</th>");
-		suiteListHeader.append("<th>"+totalSkippedTests+" ("+Commons.percentageCalculator(totalTests,totalSkippedTests)+"%)</th>");
+		suiteListHeader.append("<th>"+totalPassedTests+(totalPassedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalPassedTests)+"%)" : "")+"</th>");
+		suiteListHeader.append("<th>"+totalFailedTests+(totalFailedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalFailedTests)+"%)" : "")+"</th>");
+		suiteListHeader.append("<th>"+totalSkippedTests+(totalSkippedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalSkippedTests)+"%)" : "")+"</th>");
 		suiteListHeader.append("</tr>");
 		return suiteListHeader;
 	}
@@ -279,7 +283,7 @@ public class Utility {
 	}
 	
 	public static StringBuffer suiteContextSummaryFooter(int suiteTotalTests, int suitePassedTests, int suiteFailedTests, int suiteSkippedTests){
-		return new StringBuffer().append("<tr><th>Total</th><th class='success'>"+suitePassedTests+" ("+Commons.percentageCalculator(suiteTotalTests,suitePassedTests)+"%)</th><th class='error'>"+suiteFailedTests+" ("+Commons.percentageCalculator(suiteTotalTests,suiteFailedTests)+"%)</th><th class='warning'>"+suiteSkippedTests+" ("+Commons.percentageCalculator(suiteTotalTests,suiteSkippedTests)+"%)</th><th>"+suiteTotalTests+"</th></tr>");
+		return new StringBuffer().append("<tr><th>Total</th><th class='success'>"+suitePassedTests+(suitePassedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suitePassedTests)+"%)" : "")+"</th><th class='error'>"+suiteFailedTests+(suiteFailedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suiteFailedTests)+"%)" : "")+"</th><th class='warning'>"+suiteSkippedTests+(suiteSkippedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suiteSkippedTests)+"%)" : "")+"</th><th>"+suiteTotalTests+"</th></tr>");
 	}
 	
 	public static StringBuffer testDetailReport(List<ITestResult> testResults){
@@ -294,24 +298,23 @@ public class Utility {
 	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "error" : "warning") )+"'>");
 	    	
 	    	resultsStringBuffer.append("<td>"+i+"</td>");
+	    	String testDescription = eachTestResult.getMethod().getDescription();
 	    	if(testCasePath==null){
-	    		resultsStringBuffer.append("<td>"+testName+"</td>");
+	    		resultsStringBuffer.append("<td><div "+(testDescription != null ? "class='testNameToolTip' data-toggle='tooltip' data-placement='top' title='"+testDescription+"'" : "")+" >"+testName+"</div></td>");
 	    	}else{
-	    		resultsStringBuffer.append("<td><a href='"+testCasePath+"'>"+testName+"</a></td>");
+	    		resultsStringBuffer.append("<td><a href='"+testCasePath+"' "+(testDescription != null ? "class='testNameToolTip' data-toggle='tooltip' data-placement='top' title='"+testDescription+"'" : "")+" >"+testName+"</a></td>");
 	    	}
 	    	resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>");
 	    	resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>");
 	    	resultsStringBuffer.append("<td>"+tikeTakenForResult(eachTestResult)+"</td>");
-	    	String testStatus=statusForResult(eachTestResult);
-	    	String errorMessage=null;
+	    	String testStatus = statusForResult(eachTestResult);
+	    	String errorMessage = null;
 	    	if(eachTestResult.getStatus() != ITestResult.SUCCESS){
 	    		if(eachTestResult.getThrowable()!= null) {
-					String[] stackTraces = Utils.stackTrace(eachTestResult.getThrowable(), true);
-			        errorMessage = stackTraces[1];
+			        errorMessage = Utils.escapeHtml(eachTestResult.getThrowable().getMessage());
 				}
 	    	}
 	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a href='#myModal' role='button' class='openDialog btn btn-small' data-toggle='modal' data-showthismessage='"+(errorMessage!=null ? errorMessage : "")+" "+(eachTestResult.getAttribute("screenshot")!=null? "<a href=\"screenshots"+File.separator+eachTestResult.getAttribute("screenshot").toString()+"\">Screenshot</a>" : "")+" '>"+testStatus+"</a>") +"</td>");
-	    	
 	    	resultsStringBuffer.append("</tr>");
     		i++;
     	}

@@ -60,7 +60,7 @@ public class SuiteListener implements ISuiteListener{
 			StringBuffer skippedTextContextReport = new StringBuffer();
 			
 			StringBuffer errorModelWindow = new StringBuffer();
-			errorModelWindow.append("<div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>  <div class='modal-header'>   <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>   <h4 id='myModalLabel'>Stack Trace</h4>  </div>  <div class='modal-body'>   <p id='modelbodyerror'></p>  </div>	</div>");
+			errorModelWindow.append("<div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>  <div class='modal-header'>   <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>   <h4 id='myModalLabel'>Error Details</h4>  </div>  <div class='modal-body'>   <p id='modelbodyerror'></p>  </div>	</div>");
 			
 			for (ISuiteResult suiteResult : results.values()) {
 				ITestContext suiteTestContext = suiteResult.getTestContext();
@@ -186,7 +186,7 @@ public class SuiteListener implements ISuiteListener{
 			suiteReport.append(textContextReport);
 			suiteReport.append("</div>");
 			suiteReport.append(errorModelWindow);
-		    suiteReport.append("</div></div></body></html>");
+			suiteReport.append("</div></div>"+Utility.getDescriptionTooltipJs()+"</body></html>");
 		    Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-index.html", suiteReport.toString());
 		    
 		    try{
@@ -285,7 +285,7 @@ public class SuiteListener implements ISuiteListener{
 				suiteReportPassed.append(passedTextContextReport);
 				suiteReportPassed.append("</div>");
 				suiteReportPassed.append(errorModelWindow);
-				suiteReportPassed.append("</div></div></body></html>");
+				suiteReport.append("</div></div>"+Utility.getDescriptionTooltipJs()+"</body></html>");
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-passed.html", suiteReportPassed.toString());
 		    }
 		    
@@ -333,7 +333,7 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportFailed.append(failedTextContextReport);
 		    	suiteReportFailed.append("</div>");
 		    	suiteReportFailed.append(errorModelWindow);
-		    	suiteReportFailed.append("</div></div></body></html>");
+		    	suiteReport.append("</div></div>"+Utility.getDescriptionTooltipJs()+"</body></html>");
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-failed.html", suiteReportFailed.toString());
 		    }
 		    
@@ -381,14 +381,14 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportSkipped.append(skippedTextContextReport);
 		    	suiteReportSkipped.append("</div>");
 		    	suiteReportSkipped.append(errorModelWindow);
-		    	suiteReportSkipped.append("</div></div></body></html>");
+		    	suiteReport.append("</div></div>"+Utility.getDescriptionTooltipJs()+"</body></html>");
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-skipped.html", suiteReportSkipped.toString());
 		    }
 		    
 		    
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			e.printStackTrace();
+			logger.error(e.getStackTrace());
 		}
 	}
 	

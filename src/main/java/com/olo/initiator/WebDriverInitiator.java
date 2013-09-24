@@ -2,8 +2,6 @@ package com.olo.initiator;
 
 import static com.olo.util.PropertyReader.configProp;
 
-import com.olo.annotations.Reporter;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +11,7 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
-public class WebDriverInitiator extends WebDriverConfiguration{
+public class WebDriverInitiator extends Configuration{
 	
 	private static final Logger logger = LogManager.getLogger(WebDriverInitiator.class.getName());
 	
@@ -23,7 +21,6 @@ public class WebDriverInitiator extends WebDriverConfiguration{
 	public void driverStart(ITestContext ctx) throws Exception{
 		try{
 			try {
-				
 				String openBrowser = configProp.getProperty("browser");
 				logger.info("Trying to Start WebDriver");
 				DesiredCapabilities capabilities = getCapabilities(openBrowser);
@@ -37,15 +34,21 @@ public class WebDriverInitiator extends WebDriverConfiguration{
 				Thread.sleep(1000);
 				logger.info("WebDriver Started");
 				
-				if(configProp.containsKey("implicitWaitAndWaitTimeOut")){
-					int timeout = Integer.parseInt(configProp.getProperty("implicitWaitAndWaitTimeOut"));
-					logger.info("Setting pageloadtimeout and implicitwait");
+				if(configProp.containsKey("pageWaitAndWaitTimeOut")){
+					int timeout = Integer.parseInt(configProp.getProperty("pageWaitAndWaitTimeOut"));
+					logger.info("Setting pageloadtimeout");
 					setWaitForPageToLoadInSec(driver, timeout);
-					setImplicitWaitInSec(driver, timeout);
+				}
+				if(configProp.containsKey("implicitWait")){
+					int implicitWait = Integer.parseInt(configProp.getProperty("implicitWait"));
+					logger.info("Setting implicit wait");
+					setImplicitWaitInSec(driver, implicitWait);
 				}
 				if(configProp.containsKey("url")){
-					logger.info("Trying to open url and delete cookies");
-					openUrlAndDeleteCookies(driver, configProp.getProperty("url"));
+					logger.info("Trying to open url");
+					openUrl(driver, configProp.getProperty("url"));
+					logger.info("Trying to delete cookies");
+					deleteCookies(driver);
 				}
 				logger.info("Trying to maximize and focus the window");
 				windowMaximizeAndWindowFocus(driver);
@@ -53,10 +56,8 @@ public class WebDriverInitiator extends WebDriverConfiguration{
 			} catch (Exception e) {
 				throw e;
 			} catch (Throwable e) {
-				e.printStackTrace();
 				throw new Exception(e.getCause().getMessage());
 			}
-			
 		}catch (Exception e) {
 			logger.error("WebDriver Failed To Start "+e.getMessage());
 			throw e;
@@ -65,25 +66,7 @@ public class WebDriverInitiator extends WebDriverConfiguration{
 	
 	@AfterMethod(alwaysRun=true)
 	public void driverStop(ITestResult result){
-		if(driver!=null){
-			try{
-				if(result.getStatus() == ITestResult.FAILURE){
-					Reporter reporter = result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(com.olo.annotations.Reporter.class);
-					if(reporter == null ){
-						try {
-							takeScreenShotForTest(result,driver);
-						} catch (Exception e2) {
-							e2.printStackTrace();
-						}
-					}
-				}
-				logger.info("Trying to Stop WebDriver");
-				driver.quit();
-				logger.info("WebDriver Stopped");
-			}catch(Exception e){
-				logger.error("Error in stopping WebDriver "+e.getMessage());
-			}
-		}
+		handleAfterMethod(driver, result);
 	}
 	
 }

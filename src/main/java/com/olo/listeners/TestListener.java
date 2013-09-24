@@ -20,11 +20,11 @@ public class TestListener implements ITestListener{
 	}
 
 	public void onTestSuccess(ITestResult result) {
-		generateReportForReporters(result);
+		generateReportForTestResult(result);
 	}
 
 	public void onTestFailure(ITestResult result) {
-		generateReportForReporters(result);
+		generateReportForTestResult(result);
 	}
 
 	public void onTestSkipped(ITestResult result) {
@@ -43,7 +43,7 @@ public class TestListener implements ITestListener{
 		
 	}
 	
-	private void generateReportForReporters(ITestResult result){
+	private void generateReportForTestResult(ITestResult result){
 		Reporter reporter = result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(com.olo.annotations.Reporter.class);
 		if(reporter!=null){
 			try {

@@ -4,10 +4,14 @@ package com.olo.bot;
 import static com.olo.util.PropertyReader.configProp;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.HasInputDevices;
 import org.openqa.selenium.InvalidElementStateException;
@@ -22,25 +26,32 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.internal.Coordinates;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.ITestResult;
+import org.testng.Reporter;
 
 import com.olo.util.Commons;
+import com.olo.util.OloExpectedConditions;
+import com.olo.util.VerificationErrors;
 
 
 public class BrowserBot{
 	
 	private final WebDriver driver;
 	
-	private long implicitWaitAndWaitTimeOut=30;
+	protected long pageWaitAndWaitTimeOut=30;
+	
+	private static final Logger logger = LogManager.getLogger(BrowserBot.class.getName());
 
 	public BrowserBot(WebDriver driver) {
 		this.driver = driver;
-		if(configProp.containsKey("implicitWaitAndWaitTimeOut")){
-			implicitWaitAndWaitTimeOut=Integer.parseInt(configProp.getProperty("implicitWaitAndWaitTimeOut"));
+		if(configProp.containsKey("pageWaitAndWaitTimeOut")){
+			pageWaitAndWaitTimeOut=Integer.parseInt(configProp.getProperty("pageWaitAndWaitTimeOut"));
 		}
 	}
 	
@@ -53,11 +64,11 @@ public class BrowserBot{
 	}
 	
 	public void waitForFrameToBeAvailableAndSwitchToIt(String frameLocator){
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameLocator));
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameLocator));
 	}
 	
 	public void waitForElementPresent(By by) throws Exception{
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut).until(ExpectedConditions.presenceOfElementLocated(by));
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(ExpectedConditions.presenceOfElementLocated(by));
 	}
 	
 	public void waitForElementPresent(By by,long timeOutInSeconds) throws Exception{
@@ -65,15 +76,15 @@ public class BrowserBot{
 	}
 	
 	public void waitForElementNotPresent(WebElement element){
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut).until(ExpectedConditions.stalenessOf(element));
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(OloExpectedConditions.elementNotPresent(element));
 	}
 	
 	public void waitForElementNotPresent(WebElement element,long timeOutInSeconds){
-		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.stalenessOf(element));
+		new WebDriverWait(driver, timeOutInSeconds).until(OloExpectedConditions.elementNotPresent(element));
 	}
 	
 	public void waitForElementNotPresent(By by){
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut).until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(by)));
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(by)));
 	}
 	
 	public void waitForElementNotPresent(By by,long timeOutInSeconds){
@@ -81,11 +92,11 @@ public class BrowserBot{
 	}
 	
 	public void waitForVisible(WebElement element){
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut).until(ExpectedConditions.visibilityOf(element));
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(ExpectedConditions.visibilityOf(element));
 	}
 	
 	public void waitForNotVisible(WebElement element) throws Exception{
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut).until(ExpectedConditions.not(ExpectedConditions.visibilityOf(element)));
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(ExpectedConditions.not(ExpectedConditions.visibilityOf(element)));
 	}
 	
 	public void waitForVisible(WebElement element,long timeOutInSeconds){
@@ -97,7 +108,7 @@ public class BrowserBot{
 	}
 	
 	public void waitForValue(final WebElement element, final String value) throws Exception{
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut) {
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut) {
     	}.until(new ExpectedCondition<Boolean>() {
     		public Boolean apply(WebDriver driver) {
     			return getValue(element).equals(value);
@@ -106,7 +117,7 @@ public class BrowserBot{
 	}
 	
 	public void waitForNotValue(final WebElement element, final String value) throws Exception{
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut) {
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut) {
     	}.until(new ExpectedCondition<Boolean>() {
     		public Boolean apply(WebDriver driver) {
     			return !getValue(element).equals(value);
@@ -133,7 +144,7 @@ public class BrowserBot{
 	}
 	
 	public void waitForEditable(final WebElement element) throws Exception{
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut) {
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut) {
     	}.until(new ExpectedCondition<Boolean>() {
     		public Boolean apply(WebDriver driver) {
     			return isElementPresent(element) && isVisible(element) && isEnabled(element);
@@ -142,7 +153,7 @@ public class BrowserBot{
 	}
 	
 	public void waitForNotEditable(final WebElement element) throws Exception{
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut) {
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut) {
     	}.until(new ExpectedCondition<Boolean>() {
     		public Boolean apply(WebDriver driver) {
     			return isElementPresent(element) && isVisible(element) && !isEnabled(element);
@@ -169,7 +180,7 @@ public class BrowserBot{
 	}
 	
 	public void waitForText(final WebElement element, final String value) throws Exception{
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut) {
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut) {
     	}.until(new ExpectedCondition<Boolean>() {
     		public Boolean apply(WebDriver driver) {
     			return getText(element).equals(value);
@@ -178,7 +189,7 @@ public class BrowserBot{
 	}
 	
 	public void waitForNotText(final WebElement element, final String value) throws Exception{
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut) {
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut) {
     	}.until(new ExpectedCondition<Boolean>() {
     		public Boolean apply(WebDriver driver) {
     			return !getText(element).equals(value);
@@ -205,7 +216,7 @@ public class BrowserBot{
 	}
 	
 	public void waitForAlert(final String pattern){
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut).until(new ExpectedCondition<Boolean>() {
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(new ExpectedCondition<Boolean>() {
             public Boolean apply(WebDriver d) {
             	return d.switchTo().alert().getText().equals(pattern);
             }
@@ -221,7 +232,7 @@ public class BrowserBot{
 	}
 	
 	public void waitForAlertPresent(){
-		new WebDriverWait(driver, implicitWaitAndWaitTimeOut).until(ExpectedConditions.alertIsPresent());
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(ExpectedConditions.alertIsPresent());
 	}
 	
 	public void waitForAlertPresent(long timeOutInSeconds){
@@ -229,59 +240,215 @@ public class BrowserBot{
 	}
 	
 	public void waitForTitle(String pageTitle){
-		new WebDriverWait(driver,implicitWaitAndWaitTimeOut).until(ExpectedConditions.titleIs(pageTitle));
+		new WebDriverWait(driver,pageWaitAndWaitTimeOut).until(ExpectedConditions.titleIs(pageTitle));
 	}
 	
 	public void waitForTitle(String pageTitle,long timeOutInSeconds){
 		new WebDriverWait(driver,timeOutInSeconds).until(ExpectedConditions.titleIs(pageTitle));
 	}
 	
+	public void assertFail(String errorMessage){
+		Assert.fail(errorMessage);
+	}
+	
+	public void verifyFail(String errorMessage) throws Exception{
+		try {
+			assertFail(errorMessage);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
+	public void assertTrue(boolean condition,String message){
+		Assert.assertTrue(condition, message);
+	}
+	
+	public void verifyTrue(boolean condition,String message) throws Exception{
+		try {
+			assertTrue(condition,message);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
+	public void assertTrue(boolean condition){
+		Assert.assertTrue(condition);
+	}
+	
+	public void verifyTrue(boolean condition) throws Exception{
+		try {
+			assertTrue(condition);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
+	public void assertFalse(boolean condition,String message){
+		Assert.assertFalse(condition, message);
+	}
+	
+	public void verifyFalse(boolean condition,String message) throws Exception{
+		try {
+			assertFalse(condition,message);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
+	public void assertFalse(boolean condition){
+		Assert.assertTrue(condition);
+	}
+	
+	public void verifyFalse(boolean condition) throws Exception{
+		try {
+			assertTrue(condition);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertTitle(String expectedTitle) throws Exception{
-		Assert.assertEquals(driver.getTitle(),expectedTitle);
+		Assert.assertEquals(getTitle(),expectedTitle);
+	}
+	
+	public void verifyTitle(String expectedTitle) throws Exception{
+		try {
+			assertTitle(expectedTitle);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
 	}
 	
 	public void assertNotTitle(String unexpectedTitle) throws Exception{
-		Assert.assertNotEquals(driver.getTitle(),unexpectedTitle);
+		Assert.assertNotEquals(getTitle(),unexpectedTitle);
+	}
+	
+	public void verifyNotTitle(String unexpectedTitle) throws Exception{
+		try {
+			assertNotTitle(unexpectedTitle);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
 	}
 	
 	public void assertValue(WebElement element, String expectedValue){
 		Assert.assertEquals(getAttribute(element,"value") , expectedValue);
 	}
 	
+	public void verifyValue(WebElement element, String expectedValue) throws Exception{
+		try {
+			assertValue(element, expectedValue);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertNotValue(WebElement element,String unexpectedValue) throws Exception {
 		Assert.assertNotEquals(getAttribute(element,"value"),unexpectedValue);
+	}
+	
+	public void verifyNotValue(WebElement element,String unexpectedValue) throws Exception {
+		try {
+			assertNotValue(element, unexpectedValue);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
 	}
 	
 	public void assertText(WebElement element, String expectedText){
 		Assert.assertEquals(getText(element).toString(), expectedText);
 	}
 	
+	public void verifyText(WebElement element, String expectedText) throws Exception{
+		try {
+			assertText(element, expectedText);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertNotText(WebElement element,String unexpectedText) throws Exception{
 		Assert.assertNotEquals(getText(element),unexpectedText);
+	}
+	
+	public void verifyNotText(WebElement element,String unexpectedText) throws Exception{
+		try {
+			assertNotText(element, unexpectedText);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
 	}
 	
 	public void assertSelectedText(WebElement element, String expectedSelectedText){
 		Assert.assertEquals(element.getAttribute("value"), expectedSelectedText);
 	}
 	
+	public void verifySelectedText(WebElement element, String expectedSelectedText) throws Exception{
+		try {
+			assertSelectedText(element, expectedSelectedText);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertNotSelectedText(WebElement element, String unexpectedSelectedText){
 		Assert.assertNotEquals(element.getAttribute("value"), unexpectedSelectedText);
+	}
+	
+	public void verifyNotSelectedText(WebElement element, String unexpectedSelectedText) throws Exception{
+		try {
+			assertSelectedText(element, unexpectedSelectedText);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
 	}
 	
 	public void assertElementPresent(WebElement element){
 		Assert.assertTrue(isElementPresent(element));
 	}
 	
+	public void verifyElementPresent(WebElement element) throws Exception{
+		try {
+			assertElementPresent(element);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertElementNotPresent(WebElement element) throws Exception{
 		Assert.assertFalse(isElementPresent(element));
+	}
+	
+	public void verifyElementNotPresent(WebElement element) throws Exception{
+		try {
+			assertElementNotPresent(element);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
 	}
 	
 	public void assertChecked(WebElement element){
 		Assert.assertTrue(element.isSelected());
 	}
 	
+	public void verifyChecked(WebElement element) throws Exception{
+		try {
+			assertChecked(element);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertNotChecked(WebElement element){
 		Assert.assertFalse(element.isSelected());
+	}
+	
+	public void verifyNotChecked(WebElement element) throws Exception{
+		try {
+			assertNotChecked(element);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
 	}
 	
 	public void assertSelectOptions(WebElement element,String expectedOptions) throws Exception{
@@ -294,6 +461,14 @@ public class BrowserBot{
 		Assert.assertEquals(actual, expected);
 	}
 	
+	public void verifySelectOptions(WebElement element,String expectedOptions) throws Exception{
+		try {
+			assertSelectOptions(element, expectedOptions);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertNotSelectOptions(WebElement element,String unexpectedOptions) throws Exception{
 		String expected[] = unexpectedOptions.split(",");
 		List<WebElement> dropDownElement = select(element).getOptions();
@@ -304,44 +479,132 @@ public class BrowserBot{
 		Assert.assertNotEquals(actual, expected);
 	}
 	
+	public void verifyNotSelectOptions(WebElement element,String unexpectedOptions) throws Exception{
+		try {
+			assertNotSelectOptions(element, unexpectedOptions);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertSelectOptionsSize(WebElement element,String expectedSize) throws Exception {
 		Assert.assertEquals(select(element).getOptions().size(),expectedSize);
+	}
+	
+	public void verifySelectOptionsSize(WebElement element,String expectedSize) throws Exception {
+		try {
+			assertSelectOptionsSize(element, expectedSize);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
 	}
 	
 	public void assertNotSelectOptionsSize(WebElement element,String expectedNotSize) throws Exception {
 		Assert.assertNotEquals(select(element).getOptions().size(),expectedNotSize);
 	}
 	
+	public void verifyNotSelectOptionsSize(WebElement element,String expectedNotSize) throws Exception {
+		try {
+			assertNotSelectOptionsSize(element, expectedNotSize);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertVisible(WebElement element) throws Exception {
 		Assert.assertTrue(isVisible(element));
+	}
+	
+	public void verifyVisible(WebElement element) throws Exception {
+		try {
+			assertVisible(element);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
 	}
 	
 	public void assertNotVisible(WebElement element) throws Exception{
 		Assert.assertFalse(isVisible(element));
 	}
 	
+	public void verifyNotVisible(WebElement element) throws Exception{
+		try {
+			assertNotVisible(element);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertEditable(WebElement element) throws Exception {
 		Assert.assertTrue(isEnabled(element));
+	}
+	
+	public void verifyEditable(WebElement element) throws Exception {
+		try {
+			assertEditable(element);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
 	}
 	
 	public void assertNotEditable(WebElement element) throws Exception{
 		Assert.assertFalse(isEnabled(element));
 	}
 	
+	public void verifyNotEditable(WebElement element) throws Exception{
+		try {
+			assertNotEditable(element);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertAlert(String expectedAlertText) throws Exception{
 		Assert.assertEquals(driver.switchTo().alert().getText(), expectedAlertText);
+	}
+	
+	public void verifyAlert(String expectedAlertText) throws Exception{
+		try {
+			assertAlert(expectedAlertText);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
 	}
 	
 	public void assertNotAlert(String unexpectedAlertText) throws Exception{
 		Assert.assertNotEquals(driver.switchTo().alert().getText(), unexpectedAlertText);
 	}
 	
+	public void verifyNotAlert(String unexpectedAlertText) throws Exception{
+		try {
+			assertNotAlert(unexpectedAlertText);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertAttribute(WebElement element,String attributeName,String expectedAttributeValue) throws Exception{
 		Assert.assertEquals(getAttribute(element, attributeName), expectedAttributeValue);
 	}
 	
+	public void verifyAttribute(WebElement element,String attributeName,String expectedAttributeValue) throws Exception{
+		try {
+			assertAttribute(element, attributeName, expectedAttributeValue);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertNotAttribute(WebElement element,String attributeName,String unexpectedAttributeValue) throws Exception{
 		Assert.assertNotEquals(getAttribute(element, attributeName), unexpectedAttributeValue);
+	}
+	
+	public void verifyNotAttribute(WebElement element,String attributeName,String unexpectedAttributeValue) throws Exception{
+		try {
+			assertNotAttribute(element, attributeName, unexpectedAttributeValue);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
 	}
 	
 	public Select select(WebElement element){
@@ -360,8 +623,20 @@ public class BrowserBot{
 		return new Actions(driver);
 	}
 	
+	public String getBrowserName(){
+		return ((RemoteWebDriver) driver).getCapabilities().getBrowserName();
+	}
+	
+	public String getBrowserVersion(){
+		return ((RemoteWebDriver) driver).getCapabilities().getVersion();
+	}
+	
 	public void get(String url){
 		driver.get(url);
+	}
+	
+	public String getTitle(){
+		return driver.getTitle();
 	}
 	
 	public boolean isElementPresent(WebElement element){
@@ -426,13 +701,58 @@ public class BrowserBot{
 		element.sendKeys(value);
 	}
 	
-	public void typeUnique(WebElement element,String value){
-		element.sendKeys(Commons.appendRandomNumber(value));
+	public void typeRandomAlphabets(WebElement element,String value){
+		element.sendKeys(value+RandomStringUtils.randomAlphabetic(8));
 	}
 	
-	public void clearAndTypeUnique(WebElement element,String value){
+	public void typeRandomRandomAlphabets(WebElement element){
+		element.sendKeys(RandomStringUtils.randomAlphabetic(8));
+	}
+	
+	public void clearAndTypeRandomAlphabets(WebElement element,String value){
 		element.clear();
-		element.sendKeys(Commons.appendRandomNumber(value));
+		element.sendKeys(value+RandomStringUtils.randomAlphabetic(8));
+	}
+	
+	public void clearAndTypeRandomAlphabets(WebElement element){
+		element.clear();
+		element.sendKeys(RandomStringUtils.randomAlphabetic(8));
+	}
+	
+	public void typeRandomNumbers(WebElement element,String value){
+		element.sendKeys(value+RandomStringUtils.randomNumeric(8));
+	}
+	
+	public void typeRandomNumbers(WebElement element){
+		element.sendKeys(RandomStringUtils.randomNumeric(8));
+	}
+	
+	public void clearAndTypeRandomNumbers(WebElement element,String value){
+		element.clear();
+		element.sendKeys(value+RandomStringUtils.randomNumeric(8));
+	}
+	
+	public void clearAndTypeRandomNumbers(WebElement element){
+		element.clear();
+		element.sendKeys(RandomStringUtils.randomNumeric(8));
+	}
+	
+	public void typeRandomAlphaNumeric(WebElement element,String value){
+		element.sendKeys(value+RandomStringUtils.randomAlphanumeric(8));
+	}
+	
+	public void typeRandomAlphaNumeric(WebElement element){
+		element.sendKeys(RandomStringUtils.randomAlphanumeric(8));
+	}
+	
+	public void clearAndTypeRandomAlphaNumeric(WebElement element,String value){
+		element.clear();
+		element.sendKeys(value+RandomStringUtils.randomAlphanumeric(8));
+	}
+	
+	public void clearAndTypeRandomAlphaNumeric(WebElement element){
+		element.clear();
+		element.sendKeys(RandomStringUtils.randomAlphanumeric(8));
 	}
 	
 	public void click(WebElement element) throws Exception{
@@ -576,7 +896,7 @@ public class BrowserBot{
 	}
 	
 	public long getTimeOut(){
-		return implicitWaitAndWaitTimeOut;
+		return pageWaitAndWaitTimeOut;
 	}
 	
 	public By byLocator(String locator) {
@@ -604,6 +924,23 @@ public class BrowserBot{
 		}else{
 			return By.id(locator);
 		}
+	}
+	
+	protected void addVerificationError(AssertionError e) throws Exception{
+		logger.error("Verification Error : "+e.getMessage());
+		ITestResult testResult = Reporter.getCurrentTestResult();
+		String screenShotFileName = System.currentTimeMillis()+".png";
+		String screenShotPath = testResult.getTestContext().getOutputDirectory()+File.separator+"screenshots"+File.separator+screenShotFileName;
+		captureScreenshot(screenShotPath);
+		HashMap<String, Object> errorDetails = new HashMap<String, Object>();
+		errorDetails.put("message", e.getMessage());
+		String stackTrace = null;
+		if(e.getStackTrace() != null) {
+			stackTrace = Commons.getStackTraceAsString(e);
+		}
+		errorDetails.put("stackTrace", stackTrace);
+		errorDetails.put("screenshot", screenShotFileName);
+		VerificationErrors.addError(testResult, errorDetails);
 	}
 	
 }

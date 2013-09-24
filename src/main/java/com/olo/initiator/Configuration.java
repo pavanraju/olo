@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.TakesScreenshot;
@@ -12,21 +14,22 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.testng.ITestResult;
 
+import com.olo.annotations.Reporter;
 import com.opera.core.systems.OperaDriver;
 
-public class WebDriverConfiguration {
+public class Configuration {
+	
+	private static final Logger logger = LogManager.getLogger(Configuration.class.getName());
 	
 	protected DesiredCapabilities getInternetExplorerCapabilities(){
-		DesiredCapabilities capabilities = null;
-		capabilities = DesiredCapabilities.internetExplorer();
-		capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-		return capabilities;
+		return DesiredCapabilities.internetExplorer();
 	}
 	
 	protected DesiredCapabilities getFirefoxCapabilities(){
@@ -57,6 +60,10 @@ public class WebDriverConfiguration {
 		return DesiredCapabilities.ipad();
 	}
 	
+	protected DesiredCapabilities getHtmlUnitCapabilities(){
+		return DesiredCapabilities.htmlUnit();
+	}
+	
 	protected DesiredCapabilities getCapabilities(String browser) throws Exception{
 		DesiredCapabilities capabilities = null;
 		if(browser.equals("Firefox")){
@@ -71,6 +78,8 @@ public class WebDriverConfiguration {
 			capabilities = getSafariCapabilities();
 		}else if(browser.equals("Android")){
 			capabilities = getAndroidCapabilities();
+		}else if(browser.equals("HtmlUnit")){
+			capabilities = getHtmlUnitCapabilities();
 		}else{
 			throw new Exception("Un Supported Browser");
 		}
@@ -101,6 +110,11 @@ public class WebDriverConfiguration {
 		return new AndroidDriver(capabilities);
 	}
 	
+	protected WebDriver getHtmlUnitDriver(DesiredCapabilities capabilities){
+		capabilities.setJavascriptEnabled(true);
+		return new HtmlUnitDriver(capabilities);
+	}
+	
 	protected WebDriver getRemoteWebDriverDriver(String hubURL, DesiredCapabilities capabilities) throws Exception{
 		return new RemoteWebDriver(new URL(hubURL),capabilities);
 	}
@@ -128,6 +142,8 @@ public class WebDriverConfiguration {
 			return getSafariDriver(capabilities);
 		}else if(browser.equals("Android")){
 			return getAndroidDriver(capabilities);
+		}else if(browser.equals("HtmlUnit")){
+			return getHtmlUnitDriver(capabilities);
 		}else{
 			throw new Exception("Unsupported Browser");
 		}
@@ -154,9 +170,34 @@ public class WebDriverConfiguration {
 		driver.switchTo().window(driver.getWindowHandle());
 	}
 	
-	protected void openUrlAndDeleteCookies(WebDriver driver,String url){
+	protected void openUrl(WebDriver driver,String url){
 		driver.get(url);
+	}
+	
+	protected void deleteCookies(WebDriver driver){
 		driver.manage().deleteAllCookies();
+	}
+	
+	protected void handleAfterMethod(WebDriver driver, ITestResult result){
+		if(driver!=null){
+			try{
+				if(result.getStatus() == ITestResult.FAILURE){
+					Reporter reporter = result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(com.olo.annotations.Reporter.class);
+					if(reporter == null && result.getAttribute("verificationFailures")==null){
+						try {
+							takeScreenShotForTest(result,driver);
+						} catch (Exception e2) {
+							logger.error(e2.getMessage());
+						}
+					}
+				}
+				logger.info("Trying to Stop WebDriver");
+				driver.quit();
+				logger.info("WebDriver Stopped");
+			}catch(Exception e){
+				logger.error("Error in stopping WebDriver "+e.getMessage());
+			}
+		}
 	}
 	
 }

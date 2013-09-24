@@ -6,13 +6,14 @@ import static com.olo.util.PropertyReader.app;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +28,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.testng.internal.Utils;
 
 import com.olo.exceptions.KeywordConfigurationException;
 import com.olo.propobject.KeywordPropObject;
@@ -36,7 +38,6 @@ public class Commons {
 	
 	private static final Logger logger = LogManager.getLogger(Commons.class.getName());
 	
-	public static final Random randomGenerator = new Random();
 	public static final Pattern messagesPattern = Pattern.compile("\\<\\{(.*?)\\}\\>");
 	public static final Pattern testDataPattern = Pattern.compile("\\<\\<(.*?)\\>\\>");
 	public static final Pattern dynamicPattern = Pattern.compile("\\<\\?(.*?)\\?\\>");
@@ -135,21 +136,7 @@ public class Commons {
 		getDataProviderData(headers, dataProvider, rows);
 		return dataProvider;
 	}
-	/*
-	public ArrayList<HashMap<String,String>> getDataProviderSheetData(URL xlsPathURL) throws Exception {
-		Sheet sheet = getSheetFromXlsPath(xlsPathURL);
-		ArrayList<HashMap<String,String>> dataProvider = new ArrayList<HashMap<String,String>>();
-		Iterator<Row> rows = sheet.rowIterator();
-		ArrayList<String> headers = new ArrayList<String>();
-		int columnCount = -1;
-		Row headerRow = sheet.getRow(0);
-		while (headerRow.getCell(++columnCount) != null) {
-			headers.add(headerRow.getCell(columnCount).toString());
-		}
-		getDataProviderData(headers, dataProvider, rows);
-		return dataProvider;
-	}
-	*/
+	
 	public ArrayList<KeywordPropObject> getExcelSteps(String xlsPath) throws Exception {
 		ArrayList<KeywordPropObject> excelSteps = new ArrayList<KeywordPropObject>();
 		Iterator<Row> rows = getRowsInExcel(xlsPath);
@@ -290,49 +277,7 @@ public class Commons {
 		value=value.trim();
 		return value;
 	}
-	/*
-	public ArrayList<KeywordPropObject> startDataProviderSteps(Iterator<Row> rows,String xlsPath) throws Exception{
-		ArrayList<HashMap<String,String>> dataProvider = getDataProviderSheetData(xlsPath);
-		ArrayList<KeywordPropObject> startDataProviderSteps = new ArrayList<KeywordPropObject>();
-		ArrayList<KeywordPropObject> lTemplate;
-		ArrayList<KeywordPropObject> mTemplate = getDataProviderTemplate(rows);
-		for (int i = 0; i < dataProvider.size(); i++) {
-			HashMap<String,String> localSteps = dataProvider.get(i);
-			lTemplate = new ArrayList<KeywordPropObject>(mTemplate);
-			for (KeywordPropObject lPropObj : lTemplate) {
-				KeywordPropObject localStep = lPropObj.clone();
-				localStep.setActualValue(Commons.replaceDataSetHeaderMatchers(localStep.getValue(), localSteps));
-				startDataProviderSteps.add(localStep);
-			}
-		}
-		
-		return startDataProviderSteps;
-	}
 	
-	public ArrayList<KeywordPropObject> startDataProviderSteps(Iterator<Row> rows,URL xlsPathURL) throws Exception{
-		ArrayList<HashMap<String,String>> dataProvider = getDataProviderSheetData(xlsPathURL);
-		ArrayList<KeywordPropObject> startDataProviderSteps = new ArrayList<KeywordPropObject>();
-		ArrayList<KeywordPropObject> lTemplate;
-		ArrayList<KeywordPropObject> mTemplate = getDataProviderTemplate(rows);
-		for (int i = 0; i < dataProvider.size(); i++) {
-			HashMap<String,String> localSteps = dataProvider.get(i);
-			lTemplate = new ArrayList<KeywordPropObject>(mTemplate);
-			for (KeywordPropObject lPropObj : lTemplate) {
-				KeywordPropObject localStep = lPropObj.clone();
-				localStep.setActualValue(Commons.replaceDataSetHeaderMatchers(localStep.getValue(), localSteps));
-				startDataProviderSteps.add(localStep);
-			}
-		}
-		
-		return startDataProviderSteps;
-	}
-	
-	public ArrayList<KeywordPropObject> getDataProviderTemplate(Iterator<Row> rows) throws Exception {
-		ArrayList<KeywordPropObject> lDataProviderTemplate = new ArrayList<KeywordPropObject>();
-		lDataProviderTemplate.addAll(getStepsAsPropObject(rows));
-		return lDataProviderTemplate;
-	}
-	*/
 	private static void getDataProviderData(ArrayList<String> headers,
 			ArrayList<HashMap<String,String>> dataProvider, Iterator<Row> rows) {
 		Row row = rows.next();
@@ -404,14 +349,6 @@ public class Commons {
 	public static String percentageCalculator(int total,int whatis){
 		float percent = (whatis * 100.0f) / total;
 		return String.format("%.1f", percent);
-	}
-
-	public static String appendRandomNumber(String value){
-		return value+getRandomNumber();
-	}
-	
-	public static String getRandomNumber(){
-		return String.valueOf(randomGenerator.nextInt(100000));
 	}
 	
 	public static boolean expectedValueCheck(String expectedValue,String actualValue){
@@ -488,6 +425,15 @@ public class Commons {
 			}
 		}
 		return sb.toString();
+	}
+	
+	public static String getStackTraceAsString(Error e){
+		StringWriter sw = new StringWriter();
+	    PrintWriter pw = new PrintWriter(sw);
+	    e.printStackTrace(pw);
+	    pw.flush();
+	    String fullStackTrace = sw.getBuffer().toString();
+	    return Utils.escapeHtml(fullStackTrace);
 	}
 
 }

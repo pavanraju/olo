@@ -6,12 +6,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONObject;
 
 import com.olo.annotations.Keyword;
 import com.olo.bot.BrowserBot;
 import com.olo.propobject.KeywordPropObject;
-import com.olo.util.Commons;
 
 public class Keywords{
 	
@@ -121,17 +121,17 @@ public class Keywords{
 		browser.clearAndType(browser.findElement(step.getPropertyValue()),step.getActualValue());
 	}
 	
-	@Keyword("TypeUnique")
+	@Keyword("TypeRandomAlphabets")
 	public void typeUnique(KeywordPropObject step){
-		String typeValue = step.getActualValue()+Commons.getRandomNumber();
+		String typeValue = step.getActualValue()+RandomStringUtils.randomAlphabetic(8);
 		browser.type(browser.findElement(step.getPropertyValue()),typeValue);
 		step.setActualValue(typeValue);
 	}
 	
-	@Keyword("ClearAndTypeUnique")
+	@Keyword("ClearAndTypeRandomAlphabets")
 	public void clearAndTypeUnique(KeywordPropObject step){
-		String typeValue = step.getActualValue()+Commons.getRandomNumber();
-		browser.clearAndTypeUnique(browser.findElement(step.getPropertyValue()),typeValue);
+		String typeValue = step.getActualValue()+RandomStringUtils.randomAlphabetic(8);
+		browser.clearAndType(browser.findElement(step.getPropertyValue()),typeValue);
 		step.setActualValue(typeValue);
 	}
 	
