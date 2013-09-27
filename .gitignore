@@ -4,3 +4,4 @@ drivers/
 test-output/
 suiteFiles/
 src/test/
+Application.log
