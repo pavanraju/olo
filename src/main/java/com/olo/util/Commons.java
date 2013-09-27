@@ -41,6 +41,7 @@ public class Commons {
 	public static final Pattern messagesPattern = Pattern.compile("\\<\\{(.*?)\\}\\>");
 	public static final Pattern testDataPattern = Pattern.compile("\\<\\<(.*?)\\>\\>");
 	public static final Pattern dynamicPattern = Pattern.compile("\\<\\?(.*?)\\?\\>");
+	public static final String verificationFailuresMessage = "Verification Failures";
 	
 	public static Workbook getWorkbookFromXls(String xlsPath) throws Exception{
 		try {

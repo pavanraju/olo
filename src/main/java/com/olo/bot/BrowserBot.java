@@ -927,7 +927,6 @@ public class BrowserBot{
 	}
 	
 	protected void addVerificationError(AssertionError e) throws Exception{
-		logger.error("Verification Error : "+e.getMessage());
 		ITestResult testResult = Reporter.getCurrentTestResult();
 		String screenShotFileName = System.currentTimeMillis()+".png";
 		String screenShotPath = testResult.getTestContext().getOutputDirectory()+File.separator+"screenshots"+File.separator+screenShotFileName;
@@ -937,6 +936,9 @@ public class BrowserBot{
 		String stackTrace = null;
 		if(e.getStackTrace() != null) {
 			stackTrace = Commons.getStackTraceAsString(e);
+			logger.error("Verification Error : "+stackTrace);
+		}else{
+			logger.error("Verification Error : Null");
 		}
 		errorDetails.put("stackTrace", stackTrace);
 		errorDetails.put("screenshot", screenShotFileName);

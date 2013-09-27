@@ -22,6 +22,7 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.testng.ITestResult;
 
 import com.olo.annotations.Reporter;
+import com.olo.util.Commons;
 import com.opera.core.systems.OperaDriver;
 
 public class Configuration {
@@ -183,7 +184,13 @@ public class Configuration {
 			try{
 				if(result.getStatus() == ITestResult.FAILURE){
 					Reporter reporter = result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(com.olo.annotations.Reporter.class);
-					if(reporter == null && result.getAttribute("verificationFailures")==null){
+					boolean verificationFailuresOnly = false;
+					if(result.getThrowable()!=null){
+						if(result.getThrowable().getMessage().equals(Commons.verificationFailuresMessage)){
+							verificationFailuresOnly = true;
+						}
+					}
+					if(reporter == null && verificationFailuresOnly == false){
 						try {
 							takeScreenShotForTest(result,driver);
 						} catch (Exception e2) {

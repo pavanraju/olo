@@ -285,7 +285,7 @@ public class SuiteListener implements ISuiteListener{
 				suiteReportPassed.append(passedTextContextReport);
 				suiteReportPassed.append("</div>");
 				suiteReportPassed.append(errorModelWindow);
-				suiteReport.append("</div></div>"+Utility.getDescriptionTooltipJs()+"</body></html>");
+				suiteReportPassed.append("</div></div>"+Utility.getDescriptionTooltipJs()+"</body></html>");
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-passed.html", suiteReportPassed.toString());
 		    }
 		    
@@ -333,7 +333,7 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportFailed.append(failedTextContextReport);
 		    	suiteReportFailed.append("</div>");
 		    	suiteReportFailed.append(errorModelWindow);
-		    	suiteReport.append("</div></div>"+Utility.getDescriptionTooltipJs()+"</body></html>");
+		    	suiteReportFailed.append("</div></div>"+Utility.getDescriptionTooltipJs()+"</body></html>");
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-failed.html", suiteReportFailed.toString());
 		    }
 		    
@@ -381,7 +381,7 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportSkipped.append(skippedTextContextReport);
 		    	suiteReportSkipped.append("</div>");
 		    	suiteReportSkipped.append(errorModelWindow);
-		    	suiteReport.append("</div></div>"+Utility.getDescriptionTooltipJs()+"</body></html>");
+		    	suiteReportSkipped.append("</div></div>"+Utility.getDescriptionTooltipJs()+"</body></html>");
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-skipped.html", suiteReportSkipped.toString());
 		    }
 		    

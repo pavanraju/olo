@@ -24,4 +24,12 @@ public class VerificationErrors {
 		}
 	}
 	
+	public static boolean hasVerificationErrors(ITestResult result){
+		if(testErrorDetails.containsKey(result)){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 }
