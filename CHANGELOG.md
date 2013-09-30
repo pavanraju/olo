@@ -1,3 +1,25 @@
+0.14.0
+------------
+
+**Enhancements**
+
+* Upgraded TestNg to 6.8.7
+* Added Verifications in BrowserBot, verification failures are handled by InvokedMethodListener.
+* Added new methods to BrowserBot.
+* Enhanced Logs show the testname started and testname completed.
+* New property 'implicitWait' added in config.properties('implicitWaitAndWaitTimeOut' property splitted into two different properties, 'implicitWait' and 'pageWaitAndWaitTimeOut')
+* Test description will be shown as tooltip in reports.
+
+**Bug Fixes**
+
+* WaitForElementNotPresent not working as expected.
+
+**Breaking Changes**
+
+* TypeUnique keyword renamed to TypeRandomAlphabets, ClearAndTypeUnique renamed to ClearAndTypeRandomAlphabets
+* 'implicitWaitAndWaitTimeOut' renamed to 'pageWaitAndWaitTimeOut'
+
+
 0.13.0
 ------------
 

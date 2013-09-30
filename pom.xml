@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.olo</groupId>
   <artifactId>olo</artifactId>
-  <version>0.13.0-SNAPSHOT</version>
+  <version>0.14.0</version>
   
   <dependencies>
   	<dependency>
@@ -38,7 +38,7 @@
 	<dependency>
 		<groupId>org.testng</groupId>
 		<artifactId>testng</artifactId>
-		<version>6.8.5</version>
+		<version>6.8.7</version>
 	</dependency>
 	<dependency>
 		<groupId>xml-apis</groupId>
@@ -96,6 +96,18 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
+            <plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-source-plugin</artifactId>
+			  <executions>
+			    <execution>
+			      <id>attach-sources</id>
+			      <goals>
+			        <goal>jar</goal>
+			      </goals>
+			    </execution>
+			  </executions>
+			</plugin>
         </plugins>
   </build>
   
