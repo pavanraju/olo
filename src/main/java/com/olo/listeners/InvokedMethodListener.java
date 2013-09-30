@@ -1,16 +1,10 @@
 package com.olo.listeners;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.ITestResult;
-import org.testng.internal.Utils;
 
 import com.olo.util.Commons;
 import com.olo.util.VerificationErrors;
@@ -24,7 +18,7 @@ public class InvokedMethodListener implements IInvokedMethodListener{
 		if(method.isTestMethod()){
 			logger.info("Test execution started : "+testResult.getName());
 		}else{
-			logger.info("Test configurations started : "+testResult.getName());
+			logger.info("Test configuration started : "+testResult.getName());
 		}
 	}
 
@@ -83,7 +77,7 @@ public class InvokedMethodListener implements IInvokedMethodListener{
 				}
 			}
 		}else{
-			logger.info("Test configurations completed : "+testResult.getName());
+			logger.info("Test configuration completed : "+testResult.getName());
 		}
 		
 	}

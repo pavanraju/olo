@@ -639,6 +639,10 @@ public class BrowserBot{
 		return driver.getTitle();
 	}
 	
+	public String getCurrentUrl(){
+		return driver.getCurrentUrl();
+	}
+	
 	public boolean isElementPresent(WebElement element){
 		try {
 			element.getTagName();
