@@ -174,7 +174,7 @@ public class Execution {
 		
 		addVariables(ctx,level3FinalReport,totalVerification,totalVerificationFailures,keywordExecutionSteps, testFilePath, testName, testCount);
 		if(verificationFailures){
-			Assert.fail("Verification Failures");
+			Assert.fail(Commons.verificationFailuresMessage);
 		}
 	}
 	
