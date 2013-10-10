@@ -664,6 +664,10 @@ public class BrowserBot{
 		return element.getText();
 	}
 	
+	public String getTextFromHiddenElement(WebElement element){
+		return executeJavascript(element, "return arguments[0].getText();");
+	}
+	
 	public String getValue(WebElement element){
 		return element.getAttribute("value");
 	}

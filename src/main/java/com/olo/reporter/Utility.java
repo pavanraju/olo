@@ -311,7 +311,7 @@ public class Utility {
 	    	resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>");
 	    	resultsStringBuffer.append("<td>"+tikeTakenForResult(eachTestResult)+"</td>");
 	    	String testStatus = statusForResult(eachTestResult);
-	    	String errorMessage = null;
+	    	String errorMessage = "";
 	    	if(eachTestResult.getStatus() != ITestResult.SUCCESS){
 	    		if(eachTestResult.getThrowable()!= null) {
 	    			if(eachTestResult.getThrowable().getMessage().equals(Commons.verificationFailuresMessage)){
@@ -324,7 +324,9 @@ public class Utility {
 							errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.get("screenshot")+"\">Screenshot</a><br>";
 	    				}
 	    			}else{
+	    				boolean hasVerificationFailures = false;
 	    				if(VerificationErrors.hasVerificationErrors(eachTestResult)){
+	    					hasVerificationFailures = true;
 	    					List<HashMap<String, Object>> verificationErrors = VerificationErrors.getTestErrors(eachTestResult);
 		    				Iterator<HashMap<String, Object>> iter = verificationErrors.iterator();
 		    				errorMessage = "Verification Failures <br>";
@@ -333,24 +335,23 @@ public class Utility {
 								errorMessage+="<div>"+errorDetails.get("stackTrace")+"</div><br>";
 								errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.get("screenshot")+"\">Screenshot</a><br>";
 		    				}
-	    				}else{
+	    				}/*else{
 	    					if(eachTestResult.getThrowable()!=null){
 	    						errorMessage+="<hr>";
 	    						String[] stackTraces = Utils.stackTrace(eachTestResult.getThrowable(), true);
 	    						errorMessage+="<div>"+stackTraces[1]+"</div><br>";
 	    					}
 	    				}
+	    				*/
+	    				if(eachTestResult.getThrowable()!=null){
+	    					if(hasVerificationFailures){
+	    						errorMessage+="<hr>";
+	    					}
+    						String[] stackTraces = Utils.stackTrace(eachTestResult.getThrowable(), true);
+    						errorMessage+="<div>"+stackTraces[1]+"</div><br>";
+    					}
 	    			}
 	    			
-	    			
-	    			/*
-	    			if(VerificationErrors.hasVerificationErrors(eachTestResult)){
-	    				errorMessage = Utils.escapeHtml(eachTestResult.getThrowable().getMessage());
-	    			}else{
-	    				String[] stackTraces = Utils.stackTrace(eachTestResult.getThrowable(), true);
-						errorMessage="<div>"+stackTraces[1]+"</div><br>";
-	    			}
-	    			*/
 				}
 	    	}
 	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a href='#myModal' role='button' class='openDialog btn btn-small' data-toggle='modal' data-showthismessage='"+(errorMessage!=null ? errorMessage : "")+" "+(eachTestResult.getAttribute("screenshot")!=null? "<a href=\"screenshots"+File.separator+eachTestResult.getAttribute("screenshot").toString()+"\">Screenshot</a>" : "")+" '>"+testStatus+"</a>") +"</td>");
