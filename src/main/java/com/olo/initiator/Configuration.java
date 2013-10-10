@@ -31,57 +31,49 @@ public class Configuration {
 	
 	private static final Logger logger = LogManager.getLogger(Configuration.class.getName());
 	
-	protected DesiredCapabilities getInternetExplorerCapabilities(){
+	public DesiredCapabilities getInternetExplorerCapabilities(){
 		return DesiredCapabilities.internetExplorer();
 	}
 	
-	protected DesiredCapabilities getFirefoxCapabilities(){
+	public DesiredCapabilities getFirefoxCapabilities(){
 		return DesiredCapabilities.firefox();
 	}
 	
-	protected DesiredCapabilities getChromeCapabilities(){
+	public DesiredCapabilities getChromeCapabilities(){
 		return DesiredCapabilities.chrome();
 	}
 	
-	protected DesiredCapabilities getOperaCapabilities(){
+	public DesiredCapabilities getOperaCapabilities(){
 		return DesiredCapabilities.opera();
 	}
 	
-	protected DesiredCapabilities getSafariCapabilities(){
+	public DesiredCapabilities getSafariCapabilities(){
 		return DesiredCapabilities.safari();
 	}
 	
-	protected DesiredCapabilities getAndroidCapabilities(){
+	public DesiredCapabilities getAndroidCapabilities(){
 		return DesiredCapabilities.android();
 	}
 	
-	protected DesiredCapabilities getIphoneCapabilities(){
-		return DesiredCapabilities.iphone();
-	}
-	
-	protected DesiredCapabilities getIpadCapabilities(){
-		return DesiredCapabilities.ipad();
-	}
-	
-	protected DesiredCapabilities getHtmlUnitCapabilities(){
+	public DesiredCapabilities getHtmlUnitCapabilities(){
 		return DesiredCapabilities.htmlUnit();
 	}
 	
-	protected DesiredCapabilities getCapabilities(String browser) throws Exception{
+	public DesiredCapabilities getCapabilities(String browser) throws Exception{
 		DesiredCapabilities capabilities = null;
-		if(browser.equals("Firefox")){
+		if(browser.equals("firefox")){
 			capabilities = getFirefoxCapabilities();
-		}else if(browser.equals("Explorer")){
+		}else if(browser.equals("internet explorer")){
 			capabilities = getInternetExplorerCapabilities();
-		}else if(browser.equals("Chrome")){
+		}else if(browser.equals("chrome")){
 			capabilities = getChromeCapabilities();
-		}else if(browser.equals("Opera")){
+		}else if(browser.equals("opera")){
 			capabilities = getOperaCapabilities();
-		}else if(browser.equals("Safari")){
+		}else if(browser.equals("safari")){
 			capabilities = getSafariCapabilities();
-		}else if(browser.equals("Android")){
+		}else if(browser.equals("android")){
 			capabilities = getAndroidCapabilities();
-		}else if(browser.equals("HtmlUnit")){
+		}else if(browser.equals("htmlunit")){
 			capabilities = getHtmlUnitCapabilities();
 		}else{
 			throw new Exception("Un Supported Browser");
@@ -89,16 +81,16 @@ public class Configuration {
 		return capabilities;
 	}
 	
-	protected WebDriver getInternetExplorerDriver(DesiredCapabilities capabilities){
+	public WebDriver getInternetExplorerDriver(DesiredCapabilities capabilities){
 		System.setProperty("webdriver.ie.driver", System.getProperty("user.dir")+"/drivers/win/IEDriverServer.exe");
 		return new InternetExplorerDriver(capabilities);
 	}
 	
-	protected WebDriver getFirefoxDriver(DesiredCapabilities capabilities){
+	public WebDriver getFirefoxDriver(DesiredCapabilities capabilities){
 		return new FirefoxDriver(capabilities);
 	}
 	
-	protected WebDriver getChromeDriver(DesiredCapabilities capabilities){
+	public WebDriver getChromeDriver(DesiredCapabilities capabilities){
 		String driverFolder=null;
 		if(Platform.getCurrent().is(Platform.WINDOWS)){
 			driverFolder="win";
@@ -111,47 +103,47 @@ public class Configuration {
 		return new ChromeDriver(capabilities);
 	}
 	
-	protected WebDriver getOperaDriver(DesiredCapabilities capabilities){
+	public WebDriver getOperaDriver(DesiredCapabilities capabilities){
 		return new OperaDriver(capabilities);
 	}
 	
-	protected WebDriver getSafariDriver(DesiredCapabilities capabilities){
+	public WebDriver getSafariDriver(DesiredCapabilities capabilities){
 		return new SafariDriver(capabilities);
 	}
 	
-	protected WebDriver getAndroidDriver(DesiredCapabilities capabilities){
+	public WebDriver getAndroidDriver(DesiredCapabilities capabilities){
 		return new AndroidDriver(capabilities);
 	}
 	
-	protected WebDriver getHtmlUnitDriver(DesiredCapabilities capabilities){
+	public WebDriver getHtmlUnitDriver(DesiredCapabilities capabilities){
 		capabilities.setJavascriptEnabled(true);
 		return new HtmlUnitDriver(capabilities);
 	}
 	
-	protected WebDriver getRemoteWebDriverDriver(String hubURL, DesiredCapabilities capabilities) throws Exception{
+	public WebDriver getRemoteWebDriverDriver(String hubURL, DesiredCapabilities capabilities) throws Exception{
 		return new RemoteWebDriver(new URL(hubURL),capabilities);
 	}
 	
-	protected WebDriver getDriver(ITestContext ctx) throws Exception{
+	public WebDriver getDriver(ITestContext ctx) throws Exception{
 		String browser = configProp.getProperty("browser");
 		DesiredCapabilities capabilities =  getCapabilities(browser);
 		if(!ctx.getSuite().getParallel().equals("false") && configProp.containsKey("remoteExecution") && configProp.getProperty("remoteExecution").equals("true")){
 			String hubURL = configProp.getProperty("hubURL");
 			return getRemoteWebDriverDriver(hubURL, capabilities);
 		}else{
-			if(browser.equals("Firefox")){
+			if(browser.equals("firefox")){
 				return getFirefoxDriver(capabilities);
-			}else if(browser.equals("Explorer")){
+			}else if(browser.equals("internet explorer")){
 				return getInternetExplorerDriver(capabilities);
-			}else if(browser.equals("Chrome")){
+			}else if(browser.equals("chrome")){
 				return getChromeDriver(capabilities);
-			}else if(browser.equals("Opera")){
+			}else if(browser.equals("opera")){
 				return getOperaDriver(capabilities);
-			}else if(browser.equals("Safari")){
+			}else if(browser.equals("safari")){
 				return getSafariDriver(capabilities);
-			}else if(browser.equals("Android")){
+			}else if(browser.equals("android")){
 				return getAndroidDriver(capabilities);
-			}else if(browser.equals("HtmlUnit")){
+			}else if(browser.equals("htmlunit")){
 				return getHtmlUnitDriver(capabilities);
 			}else{
 				throw new Exception("Unsupported Browser");
@@ -159,11 +151,11 @@ public class Configuration {
 		}
 	}
 	
-	protected WebDriver getDriverInstanceByOpeningUrlAndSetTimeOuts(ITestContext ctx) throws Exception{
+	public WebDriver getDriverInstanceByOpeningUrlAndSetTimeOuts(ITestContext ctx) throws Exception{
 		return getDriverInstanceByOpeningUrlAndSetTimeOuts(ctx,configProp.getProperty("url"));
 	}
 	
-	protected WebDriver getDriverInstanceByOpeningUrlAndSetTimeOuts(ITestContext ctx,String url) throws Exception{
+	public WebDriver getDriverInstanceByOpeningUrlAndSetTimeOuts(ITestContext ctx,String url) throws Exception{
 		try {
 			WebDriver driver = getDriver(ctx);
 			if(configProp.containsKey("pageWaitAndWaitTimeOut")){
@@ -192,7 +184,7 @@ public class Configuration {
 		}
 	}
 	
-	protected void takeScreenShotForTest(WebDriver driver) throws Exception{
+	public void takeScreenShotForTest(WebDriver driver) {
 		ITestResult result = org.testng.Reporter.getCurrentTestResult();
 		if(result.getTestContext().getSuite().getParallel().equals("false") && configProp.containsKey("remoteExecution") && configProp.getProperty("remoteExecution").equals("false")){
 			try {
@@ -207,31 +199,30 @@ public class Configuration {
 				}
 			}
 		}
-		
 	}
 	
-	protected void setWaitForPageToLoadInSec(WebDriver driver,long sec){
+	public void setWaitForPageToLoadInSec(WebDriver driver,long sec){
 		driver.manage().timeouts().pageLoadTimeout(sec, TimeUnit.SECONDS);
 	}
 	
-	protected void setImplicitWaitInSec(WebDriver driver,long sec){
+	public void setImplicitWaitInSec(WebDriver driver,long sec){
 		driver.manage().timeouts().implicitlyWait(sec, TimeUnit.SECONDS);
 	}
 	
-	protected void windowMaximizeAndWindowFocus(WebDriver driver){
+	public void windowMaximizeAndWindowFocus(WebDriver driver){
 		driver.manage().window().maximize();
 		driver.switchTo().window(driver.getWindowHandle());
 	}
 	
-	protected void openUrl(WebDriver driver,String url){
+	public void openUrl(WebDriver driver,String url){
 		driver.get(url);
 	}
 	
-	protected void deleteCookies(WebDriver driver){
+	public void deleteCookies(WebDriver driver){
 		driver.manage().deleteAllCookies();
 	}
 	
-	protected void closeDriver(WebDriver driver){
+	public void closeDriver(WebDriver driver){
 		if(driver!=null){
 			try {
 				logger.info("Trying to Stop WebDriver");
