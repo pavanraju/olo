@@ -418,7 +418,7 @@ public class Utility {
 	
 	private static StringBuffer getContextDetailedReport(String contextName,Set<ITestResult> results, boolean isMail){
 		StringBuffer contextReport = new StringBuffer();
-		contextReport.append("<table class='table table-bordered'>");
+		contextReport.append("<table class='table table-bordered' id='"+contextName+"' >");
 		contextReport.append("<caption>Detailed report of "+contextName+" Tests</caption>");
 		contextReport.append(headerContextDetailedReport());
 		if(isMail){
