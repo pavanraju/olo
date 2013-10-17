@@ -195,6 +195,10 @@ public class Configuration {
 	
 	public void takeScreenShotForTest(WebDriver driver) {
 		ITestResult result = org.testng.Reporter.getCurrentTestResult();
+		takeScreenShotForTest(driver, result);
+	}
+	
+	public void takeScreenShotForTest(WebDriver driver, ITestResult result){
 		boolean takeScreenshot = true;
 		if(result.getTestContext().getSuite().getParallel().equals("true") && configProp.containsKey("remoteExecution") && configProp.getProperty("remoteExecution").equals("true")){
 			takeScreenshot = false;

@@ -332,7 +332,9 @@ public class BrowserBot{
 	}
 	
 	public void assertValue(WebElement element, String expectedValue){
-		Assert.assertEquals(getAttribute(element,"value") , expectedValue);
+		String actualValue = getAttribute(element,"value");
+		logger.info("Comparing elementValue : "+actualValue +" equals to expectedValue : "+expectedValue);
+		Assert.assertEquals( actualValue, expectedValue);
 	}
 	
 	public void verifyValue(WebElement element, String expectedValue) throws Exception{
@@ -344,7 +346,9 @@ public class BrowserBot{
 	}
 	
 	public void assertNotValue(WebElement element,String unexpectedValue) throws Exception {
-		Assert.assertNotEquals(getAttribute(element,"value"),unexpectedValue);
+		String actualValue = getAttribute(element,"value");
+		logger.info("Comparing elementValue : "+actualValue +" not equals to unexpectedValue : "+unexpectedValue);
+		Assert.assertNotEquals(actualValue, unexpectedValue);
 	}
 	
 	public void verifyNotValue(WebElement element,String unexpectedValue) throws Exception {
@@ -356,7 +360,9 @@ public class BrowserBot{
 	}
 	
 	public void assertText(WebElement element, String expectedText){
-		Assert.assertEquals(getText(element).toString(), expectedText);
+		String actualText = getText(element).toString();
+		logger.info("Comparing elementText : "+actualText +" equals to expectedText : "+expectedText);
+		Assert.assertEquals(actualText, expectedText);
 	}
 	
 	public void verifyText(WebElement element, String expectedText) throws Exception{
@@ -368,7 +374,9 @@ public class BrowserBot{
 	}
 	
 	public void assertNotText(WebElement element,String unexpectedText) throws Exception{
-		Assert.assertNotEquals(getText(element),unexpectedText);
+		String actualText = getText(element);
+		logger.info("Comparing elementText : "+actualText +" not equals to unexpectedText : "+unexpectedText);
+		Assert.assertNotEquals(actualText, unexpectedText);
 	}
 	
 	public void verifyNotText(WebElement element,String unexpectedText) throws Exception{

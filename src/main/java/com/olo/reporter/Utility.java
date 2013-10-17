@@ -318,7 +318,7 @@ public class Utility {
 	    				List<HashMap<String, Object>> verificationErrors = VerificationErrors.getTestErrors(eachTestResult);
 	    				Iterator<HashMap<String, Object>> iter = verificationErrors.iterator();
 	    				while(iter.hasNext()){
-	    					errorMessage = "Verification Failure <br>";
+	    					errorMessage+="Verification Failure <br>";
 							HashMap<String, Object> errorDetails = iter.next();
 							errorMessage+="<div>"+errorDetails.get("stackTrace")+"</div><br>";
 							errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.get("screenshot")+"\">Screenshot</a><br><hr>";
@@ -328,7 +328,7 @@ public class Utility {
 	    					List<HashMap<String, Object>> verificationErrors = VerificationErrors.getTestErrors(eachTestResult);
 		    				Iterator<HashMap<String, Object>> iter = verificationErrors.iterator();
 		    				while(iter.hasNext()){
-		    					errorMessage = "Verification Failure <br>";
+		    					errorMessage+="Verification Failure <br>";
 								HashMap<String, Object> errorDetails = iter.next();
 								errorMessage+="<div>"+errorDetails.get("stackTrace")+"</div><br>";
 								errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.get("screenshot")+"\">Screenshot</a><br><hr>";
@@ -345,7 +345,7 @@ public class Utility {
 	    			
 				}
 	    	}
-	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a href='#myModal' role='button' class='openDialog btn btn-small' data-toggle='modal' data-showthismessage='"+(errorMessage!=null ? errorMessage : "")+"'>"+testStatus+"</a>") +"</td>");
+	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a href='#myModal' role='button' class='openDialog btn btn-small' data-toggle='modal' data-showthismessage='"+(errorMessage!="" ? errorMessage : "")+"'>"+testStatus+"</a>") +"</td>");
 	    	resultsStringBuffer.append("</tr>");
     		i++;
     	}
