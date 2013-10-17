@@ -317,44 +317,35 @@ public class Utility {
 	    			if(eachTestResult.getThrowable().getMessage().equals(Commons.verificationFailuresMessage)){
 	    				List<HashMap<String, Object>> verificationErrors = VerificationErrors.getTestErrors(eachTestResult);
 	    				Iterator<HashMap<String, Object>> iter = verificationErrors.iterator();
-	    				errorMessage = "Verification Failures <br>";
 	    				while(iter.hasNext()){
+	    					errorMessage = "Verification Failure <br>";
 							HashMap<String, Object> errorDetails = iter.next();
 							errorMessage+="<div>"+errorDetails.get("stackTrace")+"</div><br>";
-							errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.get("screenshot")+"\">Screenshot</a><br>";
+							errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.get("screenshot")+"\">Screenshot</a><br><hr>";
 	    				}
 	    			}else{
-	    				boolean hasVerificationFailures = false;
 	    				if(VerificationErrors.hasVerificationErrors(eachTestResult)){
-	    					hasVerificationFailures = true;
 	    					List<HashMap<String, Object>> verificationErrors = VerificationErrors.getTestErrors(eachTestResult);
 		    				Iterator<HashMap<String, Object>> iter = verificationErrors.iterator();
-		    				errorMessage = "Verification Failures <br>";
 		    				while(iter.hasNext()){
+		    					errorMessage = "Verification Failure <br>";
 								HashMap<String, Object> errorDetails = iter.next();
 								errorMessage+="<div>"+errorDetails.get("stackTrace")+"</div><br>";
-								errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.get("screenshot")+"\">Screenshot</a><br>";
+								errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.get("screenshot")+"\">Screenshot</a><br><hr>";
 		    				}
-	    				}/*else{
-	    					if(eachTestResult.getThrowable()!=null){
-	    						errorMessage+="<hr>";
-	    						String[] stackTraces = Utils.stackTrace(eachTestResult.getThrowable(), true);
-	    						errorMessage+="<div>"+stackTraces[1]+"</div><br>";
-	    					}
 	    				}
-	    				*/
 	    				if(eachTestResult.getThrowable()!=null){
-	    					if(hasVerificationFailures){
-	    						errorMessage+="<hr>";
-	    					}
     						String[] stackTraces = Utils.stackTrace(eachTestResult.getThrowable(), true);
     						errorMessage+="<div>"+stackTraces[1]+"</div><br>";
+    						if(eachTestResult.getAttribute("screenshot")!=null){
+    							errorMessage+="<a href=\"screenshots"+File.separator+eachTestResult.getAttribute("screenshot")+"\">Screenshot</a>";
+    						}
     					}
 	    			}
 	    			
 				}
 	    	}
-	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a href='#myModal' role='button' class='openDialog btn btn-small' data-toggle='modal' data-showthismessage='"+(errorMessage!=null ? errorMessage : "")+" "+(eachTestResult.getAttribute("screenshot")!=null? "<a href=\"screenshots"+File.separator+eachTestResult.getAttribute("screenshot").toString()+"\">Screenshot</a>" : "")+" '>"+testStatus+"</a>") +"</td>");
+	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a href='#myModal' role='button' class='openDialog btn btn-small' data-toggle='modal' data-showthismessage='"+(errorMessage!=null ? errorMessage : "")+"'>"+testStatus+"</a>") +"</td>");
 	    	resultsStringBuffer.append("</tr>");
     		i++;
     	}

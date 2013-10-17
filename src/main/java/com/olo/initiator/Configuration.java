@@ -23,6 +23,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
+import org.testng.Reporter;
 import org.testng.SkipException;
 
 import com.opera.core.systems.OperaDriver;
@@ -151,6 +152,14 @@ public class Configuration {
 		}
 	}
 	
+	public WebDriver getDriverInstanceByOpeningUrlAndSetTimeOuts() throws Exception{
+		return getDriverInstanceByOpeningUrlAndSetTimeOuts(Reporter.getCurrentTestResult().getTestContext());
+	}
+	
+	public WebDriver getDriverInstanceByOpeningUrlAndSetTimeOuts(String url) throws Exception{
+		return getDriverInstanceByOpeningUrlAndSetTimeOuts(Reporter.getCurrentTestResult().getTestContext(), url);
+	}
+	
 	public WebDriver getDriverInstanceByOpeningUrlAndSetTimeOuts(ITestContext ctx) throws Exception{
 		return getDriverInstanceByOpeningUrlAndSetTimeOuts(ctx,configProp.getProperty("url"));
 	}
@@ -186,7 +195,11 @@ public class Configuration {
 	
 	public void takeScreenShotForTest(WebDriver driver) {
 		ITestResult result = org.testng.Reporter.getCurrentTestResult();
-		if(result.getTestContext().getSuite().getParallel().equals("false") && configProp.containsKey("remoteExecution") && configProp.getProperty("remoteExecution").equals("false")){
+		boolean takeScreenshot = true;
+		if(result.getTestContext().getSuite().getParallel().equals("true") && configProp.containsKey("remoteExecution") && configProp.getProperty("remoteExecution").equals("true")){
+			takeScreenshot = false;
+		}
+		if(takeScreenshot){
 			try {
 				String screenShotFileName=System.currentTimeMillis()+".png";
 				String screenShotPath=result.getTestContext().getOutputDirectory()+"/"+"screenshots"+"/"+screenShotFileName;

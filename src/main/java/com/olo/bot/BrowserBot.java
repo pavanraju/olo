@@ -665,7 +665,7 @@ public class BrowserBot{
 	}
 	
 	public String getTextFromHiddenElement(WebElement element){
-		return executeJavascript(element, "return arguments[0].getText();");
+		return executeJavascript(element, "return arguments[0].innerHTML");
 	}
 	
 	public String getValue(WebElement element){
