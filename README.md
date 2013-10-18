@@ -35,7 +35,7 @@ REQUIRED LIBRARIES BY OLO
       javamail-1.4.7       Required to send email.
       log4j-1.2.17         Required to write logs.
       apache-poi-3.9       Required to read/write excel files.
-      selenium-server-standalone-2.35.0.jar  Required to use WebDriver, TestNG and other dependencies.
+      selenium-server-standalone-2.36.0.jar  Required to use WebDriver, TestNG and other dependencies.
       
 
 HOW TO START EXECUTION
