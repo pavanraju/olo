@@ -45,7 +45,7 @@ public class DataDrivenRunner extends Configuration implements ITest{
 	@Reporter(com.olo.annotations.KeywordDriven.class)
 	@Test(dataProvider="getTestData")
 	public void keywordTest(ITestContext ctx,int testCount,HashMap<String, String> testData) throws Exception{
-		WebDriver driver = getDriverInstanceByOpeningUrlAndSetTimeOuts(ctx);
+		WebDriver driver = getDriverByOpeningUrlAndSetTimeOuts(ctx);
 		try {
 			BrowserBot browser = new BrowserBot(driver);
 			ArrayList<KeywordPropObject> excelSteps = new KeywordUtility().getExcelSteps(testFilePath);

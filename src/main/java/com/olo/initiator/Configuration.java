@@ -152,37 +152,24 @@ public class Configuration {
 		}
 	}
 	
-	public WebDriver getDriverInstanceByOpeningUrlAndSetTimeOuts() throws Exception{
-		return getDriverInstanceByOpeningUrlAndSetTimeOuts(Reporter.getCurrentTestResult().getTestContext());
+	public WebDriver getDriverByOpeningUrlAndSetTimeOuts() throws Exception{
+		return getDriverByOpeningUrlAndSetTimeOuts(Reporter.getCurrentTestResult().getTestContext());
 	}
 	
-	public WebDriver getDriverInstanceByOpeningUrlAndSetTimeOuts(String url) throws Exception{
-		return getDriverInstanceByOpeningUrlAndSetTimeOuts(Reporter.getCurrentTestResult().getTestContext(), url);
+	public WebDriver getDriverByOpeningUrlAndSetTimeOuts(String url) throws Exception{
+		return getDriverByOpeningUrlAndSetTimeOuts(Reporter.getCurrentTestResult().getTestContext(), url);
 	}
 	
-	public WebDriver getDriverInstanceByOpeningUrlAndSetTimeOuts(ITestContext ctx) throws Exception{
-		return getDriverInstanceByOpeningUrlAndSetTimeOuts(ctx,configProp.getProperty("url"));
+	public WebDriver getDriverByOpeningUrlAndSetTimeOuts(ITestContext ctx) throws Exception{
+		return getDriverByOpeningUrlAndSetTimeOuts(ctx,configProp.getProperty("url"));
 	}
 	
-	public WebDriver getDriverInstanceByOpeningUrlAndSetTimeOuts(ITestContext ctx,String url) throws Exception{
+	public WebDriver getDriverByOpeningUrlAndSetTimeOuts(ITestContext ctx,String url) throws Exception{
 		try {
 			WebDriver driver = getDriver(ctx);
-			if(configProp.containsKey("pageWaitAndWaitTimeOut")){
-				int timeout = Integer.parseInt(configProp.getProperty("pageWaitAndWaitTimeOut"));
-				logger.info("Setting pageloadtimeout");
-				setWaitForPageToLoadInSec(driver, timeout);
-			}
-			if(configProp.containsKey("implicitWait")){
-				int implicitWait = Integer.parseInt(configProp.getProperty("implicitWait"));
-				logger.info("Setting implicit wait");
-				setImplicitWaitInSec(driver, implicitWait);
-			}
-			logger.info("Trying to open url "+url);
+			setWaitForPageToLoadInSec(driver);
+			setImplicitWaitInSec(driver);
 			openUrl(driver, url);
-			logger.info("current url is "+driver.getCurrentUrl());
-			logger.info("Trying to delete cookies");
-			deleteCookies(driver);
-			logger.info("Trying to maximize and focus the window");
 			windowMaximizeAndWindowFocus(driver);
 			logger.info("setting up browser preferences completed");
 			return driver;
@@ -218,21 +205,40 @@ public class Configuration {
 		}
 	}
 	
+	public void setWaitForPageToLoadInSec(WebDriver driver){
+		if(configProp.containsKey("pageWaitAndWaitTimeOut")){
+			int timeout = Integer.parseInt(configProp.getProperty("pageWaitAndWaitTimeOut"));
+			setWaitForPageToLoadInSec(driver, timeout);
+		}
+	}
+	
 	public void setWaitForPageToLoadInSec(WebDriver driver,long sec){
+		logger.info("Setting pageLoadTimeout to "+sec+" seconds");
 		driver.manage().timeouts().pageLoadTimeout(sec, TimeUnit.SECONDS);
 	}
 	
+	public void setImplicitWaitInSec(WebDriver driver){
+		if(configProp.containsKey("implicitWait")){
+			int implicitWait = Integer.parseInt(configProp.getProperty("implicitWait"));
+			setImplicitWaitInSec(driver, implicitWait);
+		}
+	}
+	
 	public void setImplicitWaitInSec(WebDriver driver,long sec){
+		logger.info("Setting implicitlyWait to "+sec+" seconds");
 		driver.manage().timeouts().implicitlyWait(sec, TimeUnit.SECONDS);
 	}
 	
 	public void windowMaximizeAndWindowFocus(WebDriver driver){
+		logger.info("Trying to maximize and focus the window");
 		driver.manage().window().maximize();
 		driver.switchTo().window(driver.getWindowHandle());
 	}
 	
 	public void openUrl(WebDriver driver,String url){
+		logger.info("Trying to open url "+url);
 		driver.get(url);
+		logger.info("current url is "+driver.getCurrentUrl());
 	}
 	
 	public void deleteCookies(WebDriver driver){
