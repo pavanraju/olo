@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.olo</groupId>
   <artifactId>olo</artifactId>
-  <version>0.14.0</version>
+  <version>0.15.0</version>
   
   <dependencies>
   	<dependency>
@@ -23,17 +23,17 @@
 	<dependency>
         <groupId>org.seleniumhq.selenium</groupId>
         <artifactId>selenium-java</artifactId>
-        <version>2.35.0</version>
+        <version>2.36.0</version>
     </dependency>
     <dependency>
         <groupId>org.seleniumhq.selenium</groupId>
         <artifactId>selenium-server</artifactId>
-        <version>2.35.0</version>
+        <version>2.36.0</version>
     </dependency>
     <dependency>
 		<groupId>com.opera</groupId>
 		<artifactId>operadriver</artifactId>
-		<version>1.4</version>
+		<version>1.5</version>
 	</dependency>
 	<dependency>
 		<groupId>org.testng</groupId>

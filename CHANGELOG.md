@@ -1,3 +1,25 @@
+0.15.0
+------------
+
+**Enhancements**
+
+* Added new property 'remoteExecution' in config.properties to run tests using grid.
+* Added new methods to BrowserBot.
+* Supporting 'HtmlUnit' which is a browser configuration in config.properties
+* Updated selenium to 2.36
+* Updated operadriver to 1.5
+* Logger enhancements
+
+**Bug Fixes**
+
+* Fixed issue in SuiteListener.
+
+
+**Breaking Changes**
+
+* Removed WebDriverInitiator as it will create errors when running tests with grid.
+
+
 0.14.0
 ------------
 
