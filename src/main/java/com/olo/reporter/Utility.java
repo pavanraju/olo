@@ -105,11 +105,13 @@ public class Utility {
 	}
 	
 	public static String getBootstrapCss(){
-		return "<link href='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet'>";
+		//return "<link href='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet'>";
+		return "<link rel=\"stylesheet\" href=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css\">";
 	}
 	
 	public static String getBootstrapJs(){
-		return "<script src='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js'></script>";
+		//return "<script src='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js'></script>";
+		return "<script src=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js\"></script>";
 	}
 	
 	public static String getJqueryJs(){
@@ -117,7 +119,7 @@ public class Utility {
 	}
 	
 	public static String getInlineCss(){
-		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;} th.success,td.success{background-color: #dff0d8;} th.error,td.error{background-color: #f2dede;} th.warning,td.warning{background-color: #fcf8e3;}</style>";
+		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;}</style>";
 	}
 	
 	public static String getMailCss(){
@@ -175,9 +177,9 @@ public class Utility {
 	
 	public static StringBuffer configTableDiv(){
 		StringBuffer summaryTable = new StringBuffer();
-		summaryTable.append("<div class='span4'>");
-		summaryTable.append("<table align='center' class='table table-bordered span4'>");
-		summaryTable.append("<tr><th colspan='2'><p class='text-center'>Configuration</p></th></tr>");
+		summaryTable.append("<div class='col-md-7'>");
+		summaryTable.append("<table class='table table-bordered col-md-6'>");
+		summaryTable.append("<thead><tr><th colspan='2'><p class='text-center'>Configuration</p></th></tr></thead>");
 	    if(configProp.containsKey("url")){
 	    	summaryTable.append("<tr><th>URL</th><td>"+configProp.getProperty("url")+"</td></tr>");
 	    }
@@ -187,13 +189,13 @@ public class Utility {
 	    summaryTable.append("</div>");
 	    return summaryTable;
 	}
-	
+	/*
 	public static StringBuffer spaceDiv(){
 		return new StringBuffer().append("<div class='span1'></div>");
 	}
-	
+	*/
 	public static StringBuffer chartDiv(){
-		return new StringBuffer().append("<div id='visualization' class='span4'></div>");
+		return new StringBuffer().append("<div class='col-md-4'><div id='visualization' ></div></div>");
 	}
 	
 	public static StringBuffer endRow(){
@@ -201,11 +203,12 @@ public class Utility {
 	}
 	
 	public static StringBuffer startTable(){
-		return new StringBuffer().append("<table class='table table-bordered' align='center'>");
+		return new StringBuffer().append("<table class='table table-bordered'>");
 	}
 	
 	public static StringBuffer suiteListTableHeaderRow(){
 		StringBuffer suiteListHeader = new StringBuffer();
+		suiteListHeader.append("<thead>");
 		suiteListHeader.append("<tr>");
 		suiteListHeader.append("<th>Suite</th>");
 		suiteListHeader.append("<th>Start Time</th>");
@@ -216,12 +219,13 @@ public class Utility {
 		suiteListHeader.append("<th>Failed</th>");
 		suiteListHeader.append("<th>Skipped</th>");
 		suiteListHeader.append("</tr>");
+		suiteListHeader.append("</thead>");
 		return suiteListHeader;
 	}
 	
 	public static StringBuffer suiteListTableDetailsRow(boolean isMail,String suiteName, long suiteStartTime, long suiteEndTime, int suitePassedTests, int suiteFailedTests, int suiteSkippedTests){
 		int suiteTotalTests = suitePassedTests+suiteFailedTests+suiteSkippedTests;
-		String cls = suiteFailedTests > 0 ? "error" : ( (suitePassedTests > 0 && suiteSkippedTests==0 )  ? "success" :  "error"  );
+		String cls = suiteFailedTests > 0 ? "danger" : ( (suitePassedTests > 0 && suiteSkippedTests==0 )  ? "success" :  "danger"  );
 		StringBuffer suiteDetailRow = new StringBuffer();
 		suiteDetailRow.append("<tr class='"+cls+"'>");
 		
@@ -286,7 +290,7 @@ public class Utility {
 	}
 	
 	public static StringBuffer suiteContextSummaryFooter(int suiteTotalTests, int suitePassedTests, int suiteFailedTests, int suiteSkippedTests){
-		return new StringBuffer().append("<tr><th>Total</th><th class='success'>"+suitePassedTests+(suitePassedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suitePassedTests)+"%)" : "")+"</th><th class='error'>"+suiteFailedTests+(suiteFailedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suiteFailedTests)+"%)" : "")+"</th><th class='warning'>"+suiteSkippedTests+(suiteSkippedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suiteSkippedTests)+"%)" : "")+"</th><th>"+suiteTotalTests+"</th></tr>");
+		return new StringBuffer().append("<tr><th>Total</th><th class='success'>"+suitePassedTests+(suitePassedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suitePassedTests)+"%)" : "")+"</th><th class='danger'>"+suiteFailedTests+(suiteFailedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suiteFailedTests)+"%)" : "")+"</th><th class='warning'>"+suiteSkippedTests+(suiteSkippedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suiteSkippedTests)+"%)" : "")+"</th><th>"+suiteTotalTests+"</th></tr>");
 	}
 	
 	public static StringBuffer testDetailReport(List<ITestResult> testResults){
@@ -298,7 +302,7 @@ public class Utility {
 	    	if(eachTestResult.getAttribute("reporterFilePath")!=null){
 	    		testCasePath=eachTestResult.getAttribute("reporterFilePath").toString();
 	    	}
-	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "error" : "warning") )+"'>");
+	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "danger" : "warning") )+"'>");
 	    	
 	    	resultsStringBuffer.append("<td>"+i+"</td>");
 	    	String testDescription = eachTestResult.getMethod().getDescription();
@@ -345,7 +349,7 @@ public class Utility {
 	    			
 				}
 	    	}
-	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a href='#myModal' role='button' class='openDialog btn btn-small' data-toggle='modal' data-showthismessage='"+(errorMessage!="" ? errorMessage : "")+"'>"+testStatus+"</a>") +"</td>");
+	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a data-toggle='modal' href='#myModal' class='openDialog btn btn-sm btn-default' data-showthismessage='"+(errorMessage!="" ? errorMessage : "")+"'>"+testStatus+"</a>") +"</td>");
 	    	resultsStringBuffer.append("</tr>");
     		i++;
     	}
@@ -357,7 +361,7 @@ public class Utility {
 		int i=1;
 		for (ITestResult eachTestResult : testResults) {
 			String testName = eachTestResult.getName();
-	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "error" : "warning") )+"'>");
+	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "danger" : "warning") )+"'>");
 	    	resultsStringBuffer.append("<td>"+i+"</td>");
 	    	resultsStringBuffer.append("<td>"+testName+"</td>");
 	    	resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>");

@@ -60,7 +60,15 @@ public class SuiteListener implements ISuiteListener{
 			StringBuffer skippedTextContextReport = new StringBuffer();
 			
 			StringBuffer errorModelWindow = new StringBuffer();
-			errorModelWindow.append("<div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>  <div class='modal-header'>   <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>   <h4 id='myModalLabel'>Error Details</h4>  </div>  <div class='modal-body'>   <p id='modelbodyerror'></p>  </div>	</div>");
+			//errorModelWindow.append("<div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>  <div class='modal-header'>   <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>   <h4 id='myModalLabel'>Error Details</h4>  </div>  <div class='modal-body'>   <p id='modelbodyerror'></p>  </div>	</div>");
+			errorModelWindow.append("<div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>");
+			errorModelWindow.append("<div class='modal-dialog'>");
+			errorModelWindow.append("<div class='modal-content'>");
+			errorModelWindow.append("<div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title'>Error Details</h4></div>");
+			errorModelWindow.append("<div class='modal-body'><p id='modelbodyerror'></p></div>");
+			errorModelWindow.append("</div>");
+			errorModelWindow.append("</div>");
+			errorModelWindow.append("</div>");
 			
 			for (ISuiteResult suiteResult : results.values()) {
 				ITestContext suiteTestContext = suiteResult.getTestContext();
@@ -89,13 +97,13 @@ public class SuiteListener implements ISuiteListener{
 				String contextTimeTaken=Utility.timeTaken(suiteTestContext.getEndDate().getTime()-suiteTestContext.getStartDate().getTime());
 				int contextTotalTests=contextPassedTests+contextFailedTests+contextSkippedTests;
 			    
-				suiteContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td><td class='error'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
-				mailSuiteContextSummaryReport.append("<tr><td>"+suiteTestContext.getName()+"</td><td class='success'>"+contextPassedTests+"</td><td class='error'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
+				suiteContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td><td class='danger'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
+				mailSuiteContextSummaryReport.append("<tr><td>"+suiteTestContext.getName()+"</td><td class='success'>"+contextPassedTests+"</td><td class='danger'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
 			    /**
 			     * All Context
 			     */
 			    StringBuffer textContextSummary = new StringBuffer();
-			    textContextSummary.append("<div class='span6'><table class='table table-bordered' id='"+suiteTestContext.getName()+"'><tr><th>Test</th><td>"+suiteTestContext.getName()+"</td></tr>");
+			    textContextSummary.append("<div class='col-md-6'><table class='table table-bordered' id='"+suiteTestContext.getName()+"'><tr><th>Test</th><td>"+suiteTestContext.getName()+"</td></tr>");
 			    textContextSummary.append("<tr><th>Start Time</th><td>"+contextStartTime+"</td></tr>");
 			    textContextSummary.append("<tr><th>End Time</th><td>"+contextEndTime+"</td></tr>");
 			    textContextSummary.append("<tr><th>Time Taken</th><td>"+contextTimeTaken+"</td></tr>");
@@ -119,7 +127,7 @@ public class SuiteListener implements ISuiteListener{
 			     */
 			    
 			    if(contextFailedTests>0){
-			    	failedtextContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='error'>"+contextFailedTests+"</td></tr>");
+			    	failedtextContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='danger'>"+contextFailedTests+"</td></tr>");
 			    	failedTextContextReport.append(Utility.failedContextDetailedReport(suiteTestContext));
 			    }
 			    
@@ -143,14 +151,14 @@ public class SuiteListener implements ISuiteListener{
 			StringBuffer suiteReport = new StringBuffer();
 			suiteReport.append("<!DOCTYPE html><html><head><title>"+suiteName+" Suite Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var myBookId = $(this).data('showthismessage');   $('.modal-body #modelbodyerror').html( myBookId ); });  });</script></head><body>");
 			
-			suiteReport.append("<div class='navbar navbar-inverse navbar-fixed-top'>");
-			suiteReport.append("<ul class='breadcrumb'>");
-			suiteReport.append("<li><a href='../suites-summary-index.html'>Suite Summary</a> <span class='divider'>/</span></li>");
-			suiteReport.append("<li><a href='suite-"+suiteName+"-index.html'>"+suiteName+"</a> <span class='divider'>/</span></li>");
-			suiteReport.append("<li class='active'>All<span class='divider'></span></li>");
+			suiteReport.append("<div class='navbar navbar-fixed-top' role='navigation'>");
+			suiteReport.append("<ol class='breadcrumb'>");
+			suiteReport.append("<li><a href='../suites-summary-index.html'>Suite Summary</a></li>");
+			suiteReport.append("<li><a href='suite-"+suiteName+"-index.html'>"+suiteName+"</a></li>");
+			suiteReport.append("<li class='active'>All&nbsp;</li>");
 			suiteReport.append("<div class='btn-group'>");
-			suiteReport.append("<button class='btn dropdown-toggle' data-toggle='dropdown'><i class='icon-filter'></i> <span class='caret'></span></button>");
-			suiteReport.append("<ul class='dropdown-menu'>");
+			suiteReport.append("<button type='button' class='btn btn-default btn-sm dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-filter'></span> <span class='caret'></span></button>");
+			suiteReport.append("<ul class='dropdown-menu' role='menu'>");
             if(suitePassedTests>0){
             	suiteReport.append("<li><a href='suite-"+suiteName+"-passed.html'>Passed</a></li>");
             }
@@ -162,12 +170,12 @@ public class SuiteListener implements ISuiteListener{
             }
             suiteReport.append("</ul>");
             suiteReport.append("</div>");
-            suiteReport.append("</ul>");
+            suiteReport.append("</ol>");
             suiteReport.append("</div>");
 			
-			suiteReport.append("<div class='container-fluid' style='margin-top:60px;'>");
-			suiteReport.append("<div class='row-fluid'>");
-			suiteReport.append("<div class='span4'><div class='span4 affix'>");
+			suiteReport.append("<div class='container' style='margin-top:60px;'>");
+			suiteReport.append("<div class='row'>");
+			suiteReport.append("<div class='col-md-4'><div class='affix'>");
 			suiteReport.append("<table class='table table-bordered table-condensed'>");
 			suiteReport.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
 			suiteReport.append("<tr><th>Start Time</th><td>"+Utility.sdf.format(suiteStartTime)+"</td></tr>");
@@ -182,7 +190,7 @@ public class SuiteListener implements ISuiteListener{
 			suiteReport.append("</table>");
 			
 			suiteReport.append("</div></div>");
-			suiteReport.append("<div class='span8'>");
+			suiteReport.append("<div class='col-md-8'>");
 			suiteReport.append(textContextReport);
 			suiteReport.append("</div>");
 			suiteReport.append(errorModelWindow);
@@ -248,14 +256,14 @@ public class SuiteListener implements ISuiteListener{
 		    	StringBuffer suiteReportPassed = new StringBuffer();
 		    	suiteReportPassed.append("<!DOCTYPE html><html><head><title>"+suiteName+" Passed Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var myBookId = $(this).data('showthismessage');   $('.modal-body #modelbodyerror').html( myBookId ); });  });</script></head><body>");
 		    	
-		    	suiteReportPassed.append("<div class='navbar navbar-inverse navbar-fixed-top'>");
-		    	suiteReportPassed.append("<ul class='breadcrumb'>");
-		    	suiteReportPassed.append("<li><a href='../suites-summary-index.html'>Suite Summary</a> <span class='divider'>/</span></li>");
-		    	suiteReportPassed.append("<li><a href='suite-"+suiteName+"-index.html'>"+suiteName+"</a> <span class='divider'>/</span></li>");
-		    	suiteReportPassed.append("<li class='active'>Passed<span class='divider'></span></li>");
+		    	suiteReportPassed.append("<div class='navbar navbar-fixed-top' role='navigation'>");
+		    	suiteReportPassed.append("<ol class='breadcrumb'>");
+		    	suiteReportPassed.append("<li><a href='../suites-summary-index.html'>Suite Summary</a></li>");
+		    	suiteReportPassed.append("<li><a href='suite-"+suiteName+"-index.html'>"+suiteName+"</a></li>");
+		    	suiteReportPassed.append("<li class='active'>Passed&nbsp;</li>");
 		    	suiteReportPassed.append("<div class='btn-group'>");
-		    	suiteReportPassed.append("<button class='btn dropdown-toggle' data-toggle='dropdown'><i class='icon-filter'></i> <span class='caret'></span></button>");
-		    	suiteReportPassed.append("<ul class='dropdown-menu'>");
+		    	suiteReportPassed.append("<button type='button' class='btn btn-default btn-sm dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-filter'></span> <span class='caret'></span></button>");
+		    	suiteReportPassed.append("<ul class='dropdown-menu' role='menu'>");
 		    	suiteReportPassed.append("<li><a href='suite-"+suiteName+"-index.html'>All</a></li>");
 	            if(suiteFailedTests>0){
 	            	suiteReportPassed.append("<li><a href='suite-"+suiteName+"-failed.html'>Failed</a></li>");
@@ -265,12 +273,12 @@ public class SuiteListener implements ISuiteListener{
 	            }
 	            suiteReportPassed.append("</ul>");
 	            suiteReportPassed.append("</div>");
-	            suiteReportPassed.append("</ul>");
+	            suiteReportPassed.append("</ol>");
 	            suiteReportPassed.append("</div>");
 	            
-		    	suiteReportPassed.append("<div class='container-fluid' style='margin-top:60px;'>");
-	            suiteReportPassed.append("<div class='row-fluid'>");
-		    	suiteReportPassed.append("<div class='span3'><div class='affix span3'>");
+		    	suiteReportPassed.append("<div class='container' style='margin-top:60px;'>");
+	            suiteReportPassed.append("<div class='row'>");
+	            suiteReportPassed.append("<div class='col-md-3'><div class='affix'>");
 		    	suiteReportPassed.append("<table class='table table-bordered table-condensed'>");
 		    	suiteReportPassed.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
 				suiteReportPassed.append("</table>");
@@ -281,7 +289,7 @@ public class SuiteListener implements ISuiteListener{
 				suiteReportPassed.append("</table>");
 				
 				suiteReportPassed.append("</div></div>");
-				suiteReportPassed.append("<div class='span9'>");
+				suiteReportPassed.append("<div class='col-md-9'>");
 				suiteReportPassed.append(passedTextContextReport);
 				suiteReportPassed.append("</div>");
 				suiteReportPassed.append(errorModelWindow);
@@ -325,7 +333,7 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportFailed.append("<table class='table table-bordered table-condensed'>");
 		    	suiteReportFailed.append("<tr><th>Test</th><th>Failed</th></tr>");
 		    	suiteReportFailed.append(failedtextContextSummaryReport);
-		    	suiteReportFailed.append("<tr><th>Total</th><th class='error'>"+suiteFailedTests+"</th></tr>");
+		    	suiteReportFailed.append("<tr><th>Total</th><th class='danger'>"+suiteFailedTests+"</th></tr>");
 		    	suiteReportFailed.append("</table>");
 		    	
 		    	suiteReportFailed.append("</div></div>");

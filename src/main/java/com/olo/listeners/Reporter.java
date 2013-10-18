@@ -124,7 +124,7 @@ public class Reporter implements IReporter{
 	    suitesSummaryHtml.append(Utility.headerTitle(title));
 	    suitesSummaryHtml.append(Utility.startRow());
 	    suitesSummaryHtml.append(Utility.configTableDiv());
-	    suitesSummaryHtml.append(Utility.spaceDiv());
+	    //suitesSummaryHtml.append(Utility.spaceDiv());
 	    suitesSummaryHtml.append(Utility.chartDiv());
 	    suitesSummaryHtml.append(Utility.endRow());
 	    suitesSummaryHtml.append(Utility.startTable());
