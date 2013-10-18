@@ -125,7 +125,7 @@ public class Configuration {
 		return new RemoteWebDriver(new URL(hubURL),capabilities);
 	}
 	
-	public WebDriver getDriver(ITestContext ctx) throws Exception{
+	public WebDriver getWebDriver(ITestContext ctx) throws Exception{
 		String browser = configProp.getProperty("browser");
 		DesiredCapabilities capabilities =  getCapabilities(browser);
 		if(!ctx.getSuite().getParallel().equals("false") && configProp.containsKey("remoteExecution") && configProp.getProperty("remoteExecution").equals("true")){
@@ -166,7 +166,7 @@ public class Configuration {
 	
 	public WebDriver getDriverByOpeningUrlAndSetTimeOuts(ITestContext ctx,String url) throws Exception{
 		try {
-			WebDriver driver = getDriver(ctx);
+			WebDriver driver = getWebDriver(ctx);
 			setWaitForPageToLoadInSec(driver);
 			setImplicitWaitInSec(driver);
 			openUrl(driver, url);
@@ -255,6 +255,13 @@ public class Configuration {
 				logger.error("Error in stopping WebDriver "+e.getMessage());
 			}
 		}
+	}
+	
+	public void handleAfterMethod(WebDriver driver, ITestResult result){
+		if(result.getStatus()==ITestResult.FAILURE){
+			takeScreenShotForTest(driver, result);
+		}
+		closeDriver(driver);
 	}
 	
 }
