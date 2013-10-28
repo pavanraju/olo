@@ -168,7 +168,7 @@ public class Utility {
 	}
 	
 	public static StringBuffer headerTitle(String title){
-		return new StringBuffer().append("<h3 align='center'>"+title+"</h3>");
+		return new StringBuffer().append("<h3 class='text-center'>"+title+"</h3>");
 	}
 	
 	public static StringBuffer startRow(){
@@ -302,18 +302,18 @@ public class Utility {
 	    	if(eachTestResult.getAttribute("reporterFilePath")!=null){
 	    		testCasePath=eachTestResult.getAttribute("reporterFilePath").toString();
 	    	}
-	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "danger" : "warning") )+"'>");
+	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "danger" : "warning") )+"'>\n");
 	    	
-	    	resultsStringBuffer.append("<td>"+i+"</td>");
+	    	resultsStringBuffer.append("<td>"+i+"</td>\n");
 	    	String testDescription = eachTestResult.getMethod().getDescription();
 	    	if(testCasePath==null){
-	    		resultsStringBuffer.append("<td><div "+(testDescription != null ? "class='testNameToolTip' data-toggle='tooltip' data-placement='top' title='"+testDescription+"'" : "")+" >"+testName+"</div></td>");
+	    		resultsStringBuffer.append("<td><div "+(testDescription != null ? "class='testNameToolTip' data-toggle='tooltip' data-placement='top' title='"+testDescription+"'" : "")+" >"+testName+"</div></td>\n");
 	    	}else{
-	    		resultsStringBuffer.append("<td><a href='"+testCasePath+"' "+(testDescription != null ? "class='testNameToolTip' data-toggle='tooltip' data-placement='top' title='"+testDescription+"'" : "")+" >"+testName+"</a></td>");
+	    		resultsStringBuffer.append("<td><a href='"+testCasePath+"' "+(testDescription != null ? "class='testNameToolTip' data-toggle='tooltip' data-placement='top' title='"+testDescription+"'" : "")+" >"+testName+"</a></td>\n");
 	    	}
-	    	resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>");
-	    	resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>");
-	    	resultsStringBuffer.append("<td>"+tikeTakenForResult(eachTestResult)+"</td>");
+	    	resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>\n");
+	    	resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>\n");
+	    	resultsStringBuffer.append("<td>"+tikeTakenForResult(eachTestResult)+"</td>\n");
 	    	String testStatus = statusForResult(eachTestResult);
 	    	String errorMessage = "";
 	    	if(eachTestResult.getStatus() != ITestResult.SUCCESS){
@@ -349,8 +349,8 @@ public class Utility {
 	    			
 				}
 	    	}
-	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a data-toggle='modal' href='#myModal' class='openDialog btn btn-sm btn-default' data-showthismessage='"+(errorMessage!="" ? errorMessage : "")+"'>"+testStatus+"</a>") +"</td>");
-	    	resultsStringBuffer.append("</tr>");
+	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a data-toggle='modal' href='#myModal' class='openDialog btn btn-sm btn-default' data-showthismessage='"+(errorMessage!="" ? errorMessage : "")+"'>"+testStatus+"</a>") +"</td>\n");
+	    	resultsStringBuffer.append("</tr>\n");
     		i++;
     	}
 		return resultsStringBuffer;

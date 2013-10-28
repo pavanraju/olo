@@ -68,7 +68,7 @@ public class SuiteListener implements ISuiteListener{
 			errorModelWindow.append("<div class='modal-body'><p id='modelbodyerror'></p></div>");
 			errorModelWindow.append("</div>");
 			errorModelWindow.append("</div>");
-			errorModelWindow.append("</div>");
+			errorModelWindow.append("</div>\n");
 			
 			for (ISuiteResult suiteResult : results.values()) {
 				ITestContext suiteTestContext = suiteResult.getTestContext();
@@ -107,7 +107,7 @@ public class SuiteListener implements ISuiteListener{
 			    textContextSummary.append("<tr><th>Start Time</th><td>"+contextStartTime+"</td></tr>");
 			    textContextSummary.append("<tr><th>End Time</th><td>"+contextEndTime+"</td></tr>");
 			    textContextSummary.append("<tr><th>Time Taken</th><td>"+contextTimeTaken+"</td></tr>");
-			    textContextSummary.append("</table></div>");
+			    textContextSummary.append("</table></div>\n");
 			    textContextReport.append(textContextSummary);
 			    textContextReport.append(Utility.contextDetailedReport(suiteTestContext, false));
 			    mailTextContextReport.append(textContextSummary);
@@ -149,7 +149,7 @@ public class SuiteListener implements ISuiteListener{
 		     */
 			
 			StringBuffer suiteReport = new StringBuffer();
-			suiteReport.append("<!DOCTYPE html><html><head><title>"+suiteName+" Suite Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var myBookId = $(this).data('showthismessage');   $('.modal-body #modelbodyerror').html( myBookId ); });  });</script></head><body>");
+			suiteReport.append("<!DOCTYPE html><html><head><title>"+suiteName+" Suite Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var myBookId = $(this).data('showthismessage');   $('.modal-body #modelbodyerror').html( myBookId ); });  });</script></head>\n<body>");
 			
 			suiteReport.append("<div class='navbar navbar-fixed-top' role='navigation'>");
 			suiteReport.append("<ol class='breadcrumb'>");
@@ -189,7 +189,7 @@ public class SuiteListener implements ISuiteListener{
 			suiteReport.append(Utility.suiteContextSummaryFooter(suiteTotalTests, suitePassedTests, suiteFailedTests, suiteSkippedTests));
 			suiteReport.append("</table>");
 			
-			suiteReport.append("</div></div>");
+			suiteReport.append("</div></div>\n");
 			suiteReport.append("<div class='col-md-8'>");
 			suiteReport.append(textContextReport);
 			suiteReport.append("</div>");
@@ -304,14 +304,14 @@ public class SuiteListener implements ISuiteListener{
 		    	StringBuffer suiteReportFailed = new StringBuffer();
 		    	suiteReportFailed.append("<!DOCTYPE html><html><head><title>"+suiteName+" Failed Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var myBookId = $(this).data('showthismessage');   $('.modal-body #modelbodyerror').html( myBookId ); });  });</script></head><body>");
 		    	
-		    	suiteReportFailed.append("<div class='navbar navbar-inverse navbar-fixed-top'>");
-		    	suiteReportFailed.append("<ul class='breadcrumb'>");
-		    	suiteReportFailed.append("<li><a href='../suites-summary-index.html'>Suite Summary</a> <span class='divider'>/</span></li>");
-		    	suiteReportFailed.append("<li><a href='suite-"+suiteName+"-index.html'>"+suiteName+"</a> <span class='divider'>/</span></li>");
-		    	suiteReportFailed.append("<li class='active'>Failed<span class='divider'></span></li>");
+		    	suiteReportFailed.append("<div class='navbar navbar-fixed-top' role='navigation'>");
+		    	suiteReportFailed.append("<ol class='breadcrumb'>");
+		    	suiteReportFailed.append("<li><a href='../suites-summary-index.html'>Suite Summary</a></li>");
+		    	suiteReportFailed.append("<li><a href='suite-"+suiteName+"-index.html'>"+suiteName+"</a></li>");
+		    	suiteReportFailed.append("<li class='active'>Failed&nbsp;</li>");
 		    	suiteReportFailed.append("<div class='btn-group'>");
-		    	suiteReportFailed.append("<button class='btn dropdown-toggle' data-toggle='dropdown'><i class='icon-filter'></i> <span class='caret'></span></button>");
-		    	suiteReportFailed.append("<ul class='dropdown-menu'>");
+		    	suiteReportFailed.append("<button type='button' class='btn btn-default btn-sm dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-filter'></span> <span class='caret'></span></button>");
+		    	suiteReportFailed.append("<ul class='dropdown-menu' role='menu'>");
 		    	suiteReportFailed.append("<li><a href='suite-"+suiteName+"-index.html'>All</a></li>");
 	            if(suitePassedTests>0){
 	            	suiteReportFailed.append("<li><a href='suite-"+suiteName+"-passed.html'>Passed</a></li>");
@@ -321,12 +321,12 @@ public class SuiteListener implements ISuiteListener{
 	            }
 	            suiteReportFailed.append("</ul>");
 	            suiteReportFailed.append("</div>");
-	            suiteReportFailed.append("</ul>");
+	            suiteReportFailed.append("</ol>");
 		    	suiteReportFailed.append("</div>");
 		    	
-		    	suiteReportFailed.append("<div class='container-fluid' style='margin-top:60px;'>");
-	            suiteReportFailed.append("<div class='row-fluid'>");
-		    	suiteReportFailed.append("<div class='span3'><div class='affix span3'>");
+		    	suiteReportFailed.append("<div class='container' style='margin-top:60px;'>");
+	            suiteReportFailed.append("<div class='row'>");
+		    	suiteReportFailed.append("<div class='col-md-3'><div class='affix'>");
 		    	suiteReportFailed.append("<table class='table table-bordered table-condensed'>");
 		    	suiteReportFailed.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
 		    	suiteReportFailed.append("</table>");
@@ -337,7 +337,7 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportFailed.append("</table>");
 		    	
 		    	suiteReportFailed.append("</div></div>");
-		    	suiteReportFailed.append("<div class='span9'>");
+		    	suiteReportFailed.append("<div class='col-md-9'>");
 		    	suiteReportFailed.append(failedTextContextReport);
 		    	suiteReportFailed.append("</div>");
 		    	suiteReportFailed.append(errorModelWindow);
@@ -352,14 +352,14 @@ public class SuiteListener implements ISuiteListener{
 		    	StringBuffer suiteReportSkipped = new StringBuffer();
 		    	suiteReportSkipped.append("<!DOCTYPE html><html><head><title>"+suiteName+" Skipped Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var myBookId = $(this).data('showthismessage');   $('.modal-body #modelbodyerror').html( myBookId ); });  });</script></head><body>");
 		    	
-		    	suiteReportSkipped.append("<div class='navbar navbar-inverse navbar-fixed-top'>");
-		    	suiteReportSkipped.append("<ul class='breadcrumb'>");
-		    	suiteReportSkipped.append("<li><a href='../suites-summary-index.html'>Suite Summary</a> <span class='divider'>/</span></li>");
-		    	suiteReportSkipped.append("<li><a href='suite-"+suiteName+"-index.html'>"+suiteName+"</a> <span class='divider'>/</span></li>");
-		    	suiteReportSkipped.append("<li class='active'>Skipped<span class='divider'></span></li>");
+		    	suiteReportSkipped.append("<div class='navbar navbar-fixed-top' role='navigation'>");
+		    	suiteReportSkipped.append("<ol class='breadcrumb'>");
+		    	suiteReportSkipped.append("<li><a href='../suites-summary-index.html'>Suite Summary</a></li>");
+		    	suiteReportSkipped.append("<li><a href='suite-"+suiteName+"-index.html'>"+suiteName+"</a></li>");
+		    	suiteReportSkipped.append("<li class='active'>Skipped&nbsp;</li>");
 		    	suiteReportSkipped.append("<div class='btn-group'>");
-				suiteReportSkipped.append("<button class='btn dropdown-toggle' data-toggle='dropdown'><i class='icon-filter'></i> <span class='caret'></span></button>");
-				suiteReportSkipped.append("<ul class='dropdown-menu'>");
+		    	suiteReportSkipped.append("<button type='button' class='btn btn-default btn-sm dropdown-toggle' data-toggle='dropdown'><span class='glyphicon glyphicon-filter'></span> <span class='caret'></span></button>");
+		    	suiteReportSkipped.append("<ul class='dropdown-menu' role='menu'>");
 				suiteReportSkipped.append("<li><a href='suite-"+suiteName+"-index.html'>All</a></li>");
 	            if(suitePassedTests>0){
 	            	suiteReportSkipped.append("<li><a href='suite-"+suiteName+"-passed.html'>Passed</a></li>");
@@ -369,12 +369,12 @@ public class SuiteListener implements ISuiteListener{
 	            }
 	            suiteReportSkipped.append("</ul>");
 	            suiteReportSkipped.append("</div>");
-	            suiteReportSkipped.append("</ul>");
+	            suiteReportSkipped.append("</ol>");
 		    	suiteReportSkipped.append("</div>");
 		    	
-		    	suiteReportSkipped.append("<div class='container-fluid' style='margin-top:60px;'>");
-	            suiteReportSkipped.append("<div class='row-fluid'>");
-		    	suiteReportSkipped.append("<div class='span3'><div class='affix span3'>");
+		    	suiteReportSkipped.append("<div class='container' style='margin-top:60px;'>");
+	            suiteReportSkipped.append("<div class='row'>");
+		    	suiteReportSkipped.append("<div class='col-md-3'><div class='affix'>");
 		    	suiteReportSkipped.append("<table class='table table-bordered table-condensed'>");
 		    	suiteReportSkipped.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
 		    	suiteReportSkipped.append("</table>");
@@ -385,7 +385,7 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportSkipped.append("</table>");
 		    	
 		    	suiteReportSkipped.append("</div></div>");
-		    	suiteReportSkipped.append("<div class='span9'>");
+		    	suiteReportSkipped.append("<div class='col-md-9'>");
 		    	suiteReportSkipped.append(skippedTextContextReport);
 		    	suiteReportSkipped.append("</div>");
 		    	suiteReportSkipped.append(errorModelWindow);

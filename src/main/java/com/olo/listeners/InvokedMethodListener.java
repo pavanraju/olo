@@ -6,6 +6,7 @@ import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.ITestResult;
 
+import com.olo.reporter.Utility;
 import com.olo.util.Commons;
 import com.olo.util.VerificationErrors;
 
@@ -30,6 +31,7 @@ public class InvokedMethodListener implements IInvokedMethodListener{
 					testResult.setStatus(ITestResult.FAILURE);
 				}
 			}
+			logger.info("Test status : "+testResult.getName()+" : "+Utility.getStatusString(testResult.getStatus()));
 		}
 	}
 
