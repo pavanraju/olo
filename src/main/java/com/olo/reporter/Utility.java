@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -23,7 +22,8 @@ import org.testng.ITestResult;
 import org.testng.internal.Utils;
 
 import com.olo.util.Commons;
-import com.olo.util.VerificationErrors;
+import com.olo.util.VerificationError;
+import com.olo.util.VerificationErrorsInTest;
 
 public class Utility {
 	
@@ -189,11 +189,7 @@ public class Utility {
 	    summaryTable.append("</div>");
 	    return summaryTable;
 	}
-	/*
-	public static StringBuffer spaceDiv(){
-		return new StringBuffer().append("<div class='span1'></div>");
-	}
-	*/
+	
 	public static StringBuffer chartDiv(){
 		return new StringBuffer().append("<div class='col-md-4'><div id='visualization' ></div></div>");
 	}
@@ -319,23 +315,23 @@ public class Utility {
 	    	if(eachTestResult.getStatus() != ITestResult.SUCCESS){
 	    		if(eachTestResult.getThrowable()!= null) {
 	    			if(eachTestResult.getThrowable().getMessage().equals(Commons.verificationFailuresMessage)){
-	    				List<HashMap<String, Object>> verificationErrors = VerificationErrors.getTestErrors(eachTestResult);
-	    				Iterator<HashMap<String, Object>> iter = verificationErrors.iterator();
+	    				List<VerificationError> verificationErrors = VerificationErrorsInTest.getTestErrors(eachTestResult);
+	    				Iterator<VerificationError> iter = verificationErrors.iterator();
 	    				while(iter.hasNext()){
 	    					errorMessage+="Verification Failure <br>";
-							HashMap<String, Object> errorDetails = iter.next();
-							errorMessage+="<div>"+errorDetails.get("stackTrace")+"</div><br>";
-							errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.get("screenshot")+"\">Screenshot</a><br><hr>";
+	    					VerificationError errorDetails = iter.next();
+	    					errorMessage+="<div>"+Commons.getStackTraceAsString(errorDetails.getAssertionError())+"</div><br>";
+							errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.getScreenshotPath()+"\">Screenshot</a><br><hr>";
 	    				}
 	    			}else{
-	    				if(VerificationErrors.hasVerificationErrors(eachTestResult)){
-	    					List<HashMap<String, Object>> verificationErrors = VerificationErrors.getTestErrors(eachTestResult);
-		    				Iterator<HashMap<String, Object>> iter = verificationErrors.iterator();
+	    				if(VerificationErrorsInTest.hasVerificationErrors(eachTestResult)){
+	    					List<VerificationError> verificationErrors = VerificationErrorsInTest.getTestErrors(eachTestResult);
+	    					Iterator<VerificationError> iter = verificationErrors.iterator();
 		    				while(iter.hasNext()){
 		    					errorMessage+="Verification Failure <br>";
-								HashMap<String, Object> errorDetails = iter.next();
-								errorMessage+="<div>"+errorDetails.get("stackTrace")+"</div><br>";
-								errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.get("screenshot")+"\">Screenshot</a><br><hr>";
+		    					VerificationError errorDetails = iter.next();
+								errorMessage+="<div>"+Commons.getStackTraceAsString(errorDetails.getAssertionError())+"</div><br>";
+								errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.getScreenshotPath()+"\">Screenshot</a><br><hr>";
 		    				}
 	    				}
 	    				if(eachTestResult.getThrowable()!=null){

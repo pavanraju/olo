@@ -4,7 +4,6 @@ package com.olo.bot;
 import static com.olo.util.PropertyReader.configProp;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -37,7 +36,8 @@ import org.testng.Reporter;
 
 import com.olo.util.Commons;
 import com.olo.util.OloExpectedConditions;
-import com.olo.util.VerificationErrors;
+import com.olo.util.VerificationError;
+import com.olo.util.VerificationErrorsInTest;
 
 
 public class BrowserBot{
@@ -947,18 +947,15 @@ public class BrowserBot{
 		String screenShotFileName = System.currentTimeMillis()+".png";
 		String screenShotPath = testResult.getTestContext().getOutputDirectory()+File.separator+"screenshots"+File.separator+screenShotFileName;
 		captureScreenshot(screenShotPath);
-		HashMap<String, Object> errorDetails = new HashMap<String, Object>();
-		errorDetails.put("message", e.getMessage());
-		String stackTrace = null;
+		VerificationError ve = new VerificationError();
 		if(e.getStackTrace() != null) {
-			stackTrace = Commons.getStackTraceAsString(e);
-			logger.error("Verification Error : "+stackTrace);
+			logger.error("Verification Error : "+Commons.getStackTraceAsString(e));
 		}else{
 			logger.error("Verification Error : Null");
 		}
-		errorDetails.put("stackTrace", stackTrace);
-		errorDetails.put("screenshot", screenShotFileName);
-		VerificationErrors.addError(testResult, errorDetails);
+		ve.setScreenshotPath(screenShotFileName);
+		ve.setAssertionError(e);
+		VerificationErrorsInTest.addError(testResult, ve);
 	}
 	
 }

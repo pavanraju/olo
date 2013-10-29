@@ -5,22 +5,22 @@ import java.util.HashMap;
 
 import org.testng.ITestResult;
 
-public class VerificationErrors {
+public class VerificationErrorsInTest {
 	
-	private static HashMap<ITestResult, ArrayList<HashMap<String, Object>>> testErrorDetails = new HashMap<ITestResult, ArrayList<HashMap<String,Object>>>();
+	private static HashMap<ITestResult, ArrayList<VerificationError>> testErrorDetails = new HashMap<ITestResult, ArrayList<VerificationError>>();
 	
-	public static void addError(ITestResult result,HashMap<String, Object> errorDetails){
-		ArrayList<HashMap<String, Object>> testerrorDetails = new  ArrayList<HashMap<String,Object>>();
+	public static void addError(ITestResult result,VerificationError errorDetails){
+		ArrayList<VerificationError> testerrorDetails = new  ArrayList<VerificationError>();
 		testerrorDetails.addAll(getTestErrors(result));
 		testerrorDetails.add(errorDetails);
 		testErrorDetails.put(result, testerrorDetails);
 	}
 	
-	public static ArrayList<HashMap<String, Object>> getTestErrors(ITestResult result){
+	public static ArrayList<VerificationError> getTestErrors(ITestResult result){
 		if(testErrorDetails.containsKey(result)){
 			return testErrorDetails.get(result);
 		}else{
-			return new ArrayList<HashMap<String,Object>>();
+			return new ArrayList<VerificationError>();
 		}
 	}
 	

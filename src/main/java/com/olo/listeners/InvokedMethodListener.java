@@ -8,7 +8,7 @@ import org.testng.ITestResult;
 
 import com.olo.reporter.Utility;
 import com.olo.util.Commons;
-import com.olo.util.VerificationErrors;
+import com.olo.util.VerificationErrorsInTest;
 
 public class InvokedMethodListener implements IInvokedMethodListener{
 	
@@ -26,7 +26,7 @@ public class InvokedMethodListener implements IInvokedMethodListener{
 		if(method.isTestMethod()){
 			logger.info("Test execution completed : "+testResult.getName());
 			if(testResult.getStatus() == ITestResult.SUCCESS){
-				if(VerificationErrors.hasVerificationErrors(testResult)){
+				if(VerificationErrorsInTest.hasVerificationErrors(testResult)){
 					testResult.setThrowable(new Throwable(Commons.verificationFailuresMessage));
 					testResult.setStatus(ITestResult.FAILURE);
 				}
