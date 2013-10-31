@@ -59,16 +59,7 @@ public class SuiteListener implements ISuiteListener{
 			StringBuffer failedTextContextReport = new StringBuffer();
 			StringBuffer skippedTextContextReport = new StringBuffer();
 			
-			StringBuffer errorModelWindow = new StringBuffer();
-			//errorModelWindow.append("<div id='myModal' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>  <div class='modal-header'>   <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>   <h4 id='myModalLabel'>Error Details</h4>  </div>  <div class='modal-body'>   <p id='modelbodyerror'></p>  </div>	</div>");
-			errorModelWindow.append("<div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>");
-			errorModelWindow.append("<div class='modal-dialog'>");
-			errorModelWindow.append("<div class='modal-content'>");
-			errorModelWindow.append("<div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title'>Error Details</h4></div>");
-			errorModelWindow.append("<div class='modal-body'><p id='modelbodyerror'></p></div>");
-			errorModelWindow.append("</div>");
-			errorModelWindow.append("</div>");
-			errorModelWindow.append("</div>\n");
+			StringBuffer errorModelWindow = Utility.getErrorModelWindow();
 			
 			for (ISuiteResult suiteResult : results.values()) {
 				ITestContext suiteTestContext = suiteResult.getTestContext();
@@ -149,7 +140,7 @@ public class SuiteListener implements ISuiteListener{
 		     */
 			
 			StringBuffer suiteReport = new StringBuffer();
-			suiteReport.append("<!DOCTYPE html><html><head><title>"+suiteName+" Suite Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var myBookId = $(this).data('showthismessage');   $('.modal-body #modelbodyerror').html( myBookId ); });  });</script></head>\n<body>");
+			suiteReport.append("<!DOCTYPE html><html><head><title>"+suiteName+" Suite Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var errorDetails = $(this).data('showthismessage');   $('.modal-body').html( errorDetails ); });  });</script></head>\n<body>");
 			
 			suiteReport.append("<div class='navbar navbar-fixed-top' role='navigation'>");
 			suiteReport.append("<ol class='breadcrumb'>");
@@ -254,7 +245,7 @@ public class SuiteListener implements ISuiteListener{
 		     */
 		    if(suitePassedTests>0){
 		    	StringBuffer suiteReportPassed = new StringBuffer();
-		    	suiteReportPassed.append("<!DOCTYPE html><html><head><title>"+suiteName+" Passed Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var myBookId = $(this).data('showthismessage');   $('.modal-body #modelbodyerror').html( myBookId ); });  });</script></head><body>");
+		    	suiteReportPassed.append("<!DOCTYPE html><html><head><title>"+suiteName+" Passed Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+"</head><body>");
 		    	
 		    	suiteReportPassed.append("<div class='navbar navbar-fixed-top' role='navigation'>");
 		    	suiteReportPassed.append("<ol class='breadcrumb'>");
@@ -292,7 +283,6 @@ public class SuiteListener implements ISuiteListener{
 				suiteReportPassed.append("<div class='col-md-9'>");
 				suiteReportPassed.append(passedTextContextReport);
 				suiteReportPassed.append("</div>");
-				suiteReportPassed.append(errorModelWindow);
 				suiteReportPassed.append("</div></div>"+Utility.getDescriptionTooltipJs()+"</body></html>");
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-passed.html", suiteReportPassed.toString());
 		    }
@@ -302,7 +292,7 @@ public class SuiteListener implements ISuiteListener{
 		     */
 		    if(suiteFailedTests>0){
 		    	StringBuffer suiteReportFailed = new StringBuffer();
-		    	suiteReportFailed.append("<!DOCTYPE html><html><head><title>"+suiteName+" Failed Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var myBookId = $(this).data('showthismessage');   $('.modal-body #modelbodyerror').html( myBookId ); });  });</script></head><body>");
+		    	suiteReportFailed.append("<!DOCTYPE html><html><head><title>"+suiteName+" Failed Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var errorDetails = $(this).data('showthismessage');   $('.modal-body').html( errorDetails ); });  });</script></head><body>");
 		    	
 		    	suiteReportFailed.append("<div class='navbar navbar-fixed-top' role='navigation'>");
 		    	suiteReportFailed.append("<ol class='breadcrumb'>");
@@ -350,7 +340,7 @@ public class SuiteListener implements ISuiteListener{
 		     */
 		    if(suiteSkippedTests>0){
 		    	StringBuffer suiteReportSkipped = new StringBuffer();
-		    	suiteReportSkipped.append("<!DOCTYPE html><html><head><title>"+suiteName+" Skipped Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var myBookId = $(this).data('showthismessage');   $('.modal-body #modelbodyerror').html( myBookId ); });  });</script></head><body>");
+		    	suiteReportSkipped.append("<!DOCTYPE html><html><head><title>"+suiteName+" Skipped Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {    $(document).on('click', '.openDialog', function () {  var errorDetails = $(this).data('showthismessage');   $('.modal-body').html( errorDetails ); });  });</script></head><body>");
 		    	
 		    	suiteReportSkipped.append("<div class='navbar navbar-fixed-top' role='navigation'>");
 		    	suiteReportSkipped.append("<ol class='breadcrumb'>");
@@ -395,7 +385,6 @@ public class SuiteListener implements ISuiteListener{
 		    
 		    
 		} catch (Exception e) {
-			logger.error(e.getMessage());
 			logger.error(e.getStackTrace());
 		}
 	}

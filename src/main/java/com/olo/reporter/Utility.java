@@ -27,7 +27,7 @@ import com.olo.util.VerificationErrorsInTest;
 
 public class Utility {
 	
-	public static final SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd-MMM-yyyy HH:mm:ss, z");
+	public static final SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd-MMM-yyyy HH:mm:ss");
 	public static final SimpleDateFormat sdfTests = new SimpleDateFormat("HH:mm:ss");
 	public static final SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 	public static final NumberFormat formatter = new DecimalFormat("#,##0.0");
@@ -105,21 +105,19 @@ public class Utility {
 	}
 	
 	public static String getBootstrapCss(){
-		//return "<link href='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css' rel='stylesheet'>";
-		return "<link rel=\"stylesheet\" href=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css\">";
+		return "<link rel=\"stylesheet\" href=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css\">";
 	}
 	
 	public static String getBootstrapJs(){
-		//return "<script src='http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js'></script>";
-		return "<script src=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js\"></script>";
+		return "<script src=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js\"></script>";
 	}
 	
 	public static String getJqueryJs(){
-		return "<script src='http://code.jquery.com/jquery-1.10.1.min.js'></script>";
+		return "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>";
 	}
 	
 	public static String getInlineCss(){
-		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;}</style>";
+		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;}@media screen and (min-width: 768px) {.modal-dialog {width: 850px;}}</style>";
 	}
 	
 	public static String getMailCss(){
@@ -221,9 +219,8 @@ public class Utility {
 	
 	public static StringBuffer suiteListTableDetailsRow(boolean isMail,String suiteName, long suiteStartTime, long suiteEndTime, int suitePassedTests, int suiteFailedTests, int suiteSkippedTests){
 		int suiteTotalTests = suitePassedTests+suiteFailedTests+suiteSkippedTests;
-		String cls = suiteFailedTests > 0 ? "danger" : ( (suitePassedTests > 0 && suiteSkippedTests==0 )  ? "success" :  "danger"  );
 		StringBuffer suiteDetailRow = new StringBuffer();
-		suiteDetailRow.append("<tr class='"+cls+"'>");
+		suiteDetailRow.append("<tr>");
 		
 		suiteDetailRow.append("<td>"+suiteName+"</td>");
 		suiteDetailRow.append("<td>"+sdf.format(suiteStartTime)+"</td>");
@@ -234,14 +231,14 @@ public class Utility {
 		String skipPercentage = Commons.percentageCalculator(suiteTotalTests,suiteSkippedTests);
 		if(!isMail){
 			suiteDetailRow.append("<td><a href='"+suiteName+File.separator+"suite-"+suiteName+"-index.html'>"+suiteTotalTests+"</a></td>");
-			suiteDetailRow.append("<td>"+(suitePassedTests > 0 ? "<a href='"+suiteName+File.separator+"suite-"+suiteName+"-passed.html'>"+suitePassedTests+"</a> ("+passPercentage+"%)" : suitePassedTests)+"</td>");
-			suiteDetailRow.append("<td>"+(suiteFailedTests > 0 ? "<a href='"+suiteName+File.separator+"suite-"+suiteName+"-failed.html'>"+suiteFailedTests+"</a> ("+failPercentage+"%)" : suiteFailedTests)+"</td>");
-			suiteDetailRow.append("<td>"+(suiteSkippedTests > 0 ? "<a href='"+suiteName+File.separator+"suite-"+suiteName+"-skipped.html'>"+suiteSkippedTests+"</a> ("+skipPercentage+"%)" : suiteSkippedTests)+"</td>");
+			suiteDetailRow.append("<td class='success'>"+(suitePassedTests > 0 ? "<a href='"+suiteName+File.separator+"suite-"+suiteName+"-passed.html'>"+suitePassedTests+"</a> ("+passPercentage+"%)" : suitePassedTests)+"</td>");
+			suiteDetailRow.append("<td class='danger'>"+(suiteFailedTests > 0 ? "<a href='"+suiteName+File.separator+"suite-"+suiteName+"-failed.html'>"+suiteFailedTests+"</a> ("+failPercentage+"%)" : suiteFailedTests)+"</td>");
+			suiteDetailRow.append("<td class='warning'>"+(suiteSkippedTests > 0 ? "<a href='"+suiteName+File.separator+"suite-"+suiteName+"-skipped.html'>"+suiteSkippedTests+"</a> ("+skipPercentage+"%)" : suiteSkippedTests)+"</td>");
 		}else{
 			suiteDetailRow.append("<td>"+suiteTotalTests+"</td>");
-			suiteDetailRow.append("<td>"+suitePassedTests+" ("+passPercentage+"%)</td>");
-			suiteDetailRow.append("<td>"+suiteFailedTests+" ("+failPercentage+"%)</td>");
-			suiteDetailRow.append("<td>"+suiteSkippedTests+" ("+skipPercentage+"%)</td>");
+			suiteDetailRow.append("<td class='success'>"+suitePassedTests+" ("+passPercentage+"%)</td>");
+			suiteDetailRow.append("<td class='danger'>"+suiteFailedTests+" ("+failPercentage+"%)</td>");
+			suiteDetailRow.append("<td class='warning'>"+suiteSkippedTests+" ("+skipPercentage+"%)</td>");
 		}
 		
 		suiteDetailRow.append("</tr>");
@@ -257,9 +254,9 @@ public class Utility {
 		suiteListHeader.append("<th>"+sdf.format(endTimeOfSuites)+"</th>");
 		suiteListHeader.append("<th>"+timeTaken(endTimeOfSuites-startTimeOfSuites)+"</th>");
 		suiteListHeader.append("<th>"+totalTests+"</th>");
-		suiteListHeader.append("<th>"+totalPassedTests+(totalPassedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalPassedTests)+"%)" : "")+"</th>");
-		suiteListHeader.append("<th>"+totalFailedTests+(totalFailedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalFailedTests)+"%)" : "")+"</th>");
-		suiteListHeader.append("<th>"+totalSkippedTests+(totalSkippedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalSkippedTests)+"%)" : "")+"</th>");
+		suiteListHeader.append("<th class='success'>"+totalPassedTests+(totalPassedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalPassedTests)+"%)" : "")+"</th>");
+		suiteListHeader.append("<th class='danger'>"+totalFailedTests+(totalFailedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalFailedTests)+"%)" : "")+"</th>");
+		suiteListHeader.append("<th class='warning'>"+totalSkippedTests+(totalSkippedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalSkippedTests)+"%)" : "")+"</th>");
 		suiteListHeader.append("</tr>");
 		return suiteListHeader;
 	}
@@ -298,14 +295,14 @@ public class Utility {
 	    	if(eachTestResult.getAttribute("reporterFilePath")!=null){
 	    		testCasePath=eachTestResult.getAttribute("reporterFilePath").toString();
 	    	}
-	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "danger" : "warning") )+"'>\n");
+	    	resultsStringBuffer.append("<tr class=\""+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "danger" : "warning") )+"\">\n");
 	    	
 	    	resultsStringBuffer.append("<td>"+i+"</td>\n");
 	    	String testDescription = eachTestResult.getMethod().getDescription();
 	    	if(testCasePath==null){
-	    		resultsStringBuffer.append("<td><div "+(testDescription != null ? "class='testNameToolTip' data-toggle='tooltip' data-placement='top' title='"+testDescription+"'" : "")+" >"+testName+"</div></td>\n");
+	    		resultsStringBuffer.append("<td><div "+(testDescription != null ? "class=\"testNameToolTip\" data-toggle=\"tooltip\" data-placement=\"top\" title=\""+testDescription+"\"" : "")+" >"+testName+"</div></td>\n");
 	    	}else{
-	    		resultsStringBuffer.append("<td><a href='"+testCasePath+"' "+(testDescription != null ? "class='testNameToolTip' data-toggle='tooltip' data-placement='top' title='"+testDescription+"'" : "")+" >"+testName+"</a></td>\n");
+	    		resultsStringBuffer.append("<td><a href=\""+testCasePath+"\" "+(testDescription != null ? "class=\"testNameToolTip\" data-toggle=\"tooltip\" data-placement=\"top\" title=\""+testDescription+"\"" : "")+" >"+testName+"</a></td>\n");
 	    	}
 	    	resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>\n");
 	    	resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>\n");
@@ -313,39 +310,53 @@ public class Utility {
 	    	String testStatus = statusForResult(eachTestResult);
 	    	String errorMessage = "";
 	    	if(eachTestResult.getStatus() != ITestResult.SUCCESS){
-	    		if(eachTestResult.getThrowable()!= null) {
-	    			if(eachTestResult.getThrowable().getMessage().equals(Commons.verificationFailuresMessage)){
-	    				List<VerificationError> verificationErrors = VerificationErrorsInTest.getTestErrors(eachTestResult);
-	    				Iterator<VerificationError> iter = verificationErrors.iterator();
-	    				while(iter.hasNext()){
-	    					errorMessage+="Verification Failure <br>";
-	    					VerificationError errorDetails = iter.next();
-	    					errorMessage+="<div>"+Commons.getStackTraceAsString(errorDetails.getAssertionError())+"</div><br>";
-							errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.getScreenshotPath()+"\">Screenshot</a><br><hr>";
-	    				}
-	    			}else{
-	    				if(VerificationErrorsInTest.hasVerificationErrors(eachTestResult)){
-	    					List<VerificationError> verificationErrors = VerificationErrorsInTest.getTestErrors(eachTestResult);
-	    					Iterator<VerificationError> iter = verificationErrors.iterator();
-		    				while(iter.hasNext()){
-		    					errorMessage+="Verification Failure <br>";
-		    					VerificationError errorDetails = iter.next();
-								errorMessage+="<div>"+Commons.getStackTraceAsString(errorDetails.getAssertionError())+"</div><br>";
-								errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.getScreenshotPath()+"\">Screenshot</a><br><hr>";
-		    				}
-	    				}
-	    				if(eachTestResult.getThrowable()!=null){
-    						String[] stackTraces = Utils.stackTrace(eachTestResult.getThrowable(), true);
-    						errorMessage+="<div>"+stackTraces[1]+"</div><br>";
-    						if(eachTestResult.getAttribute("screenshot")!=null){
-    							errorMessage+="<a href=\"screenshots"+File.separator+eachTestResult.getAttribute("screenshot")+"\">Screenshot</a>";
-    						}
-    					}
-	    			}
-	    			
+	    		errorMessage+="<div class=\"panel-group\" id=\"accordion\">";
+	    		int errorId = 1;
+	    		if(VerificationErrorsInTest.hasVerificationErrors(eachTestResult)){
+					List<VerificationError> verificationErrors = VerificationErrorsInTest.getTestErrors(eachTestResult);
+					Iterator<VerificationError> iter = verificationErrors.iterator();
+    				while(iter.hasNext()){
+    					VerificationError errorDetails = iter.next();
+    					errorMessage+="<div class=\"panel panel-info\">";
+    						errorMessage+="<div class=\"panel-heading\">";
+    							errorMessage+="<h4 class=\"panel-title\">";
+    								errorMessage+="<a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse"+errorId+"\">"+errorDetails.getAssertionError().getMessage()+"</a>";
+    							errorMessage+="</h4>";
+    						errorMessage+="</div>";
+    						errorMessage+="<div id=\"collapse"+errorId+"\" class=\"panel-collapse collapse\">";
+    							errorMessage+="<div class=\"panel-body\">";
+    								errorMessage+="Verification Failure <br>";
+    								errorMessage+=Commons.getStackTraceAsString(errorDetails.getAssertionError())+"<br>";
+    								errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.getScreenshotPath()+"\">Screenshot</a>";
+    							errorMessage+="</div>";
+    						errorMessage+="</div>";
+						errorMessage+="</div>";
+						errorId++;
+    				}
 				}
+	    		
+				if(eachTestResult.getThrowable()!=null && !eachTestResult.getThrowable().getMessage().equals(Commons.verificationFailuresMessage)){
+					String[] stackTraces = Utils.stackTrace(eachTestResult.getThrowable(), true);
+					errorMessage+="<div class=\"panel panel-danger\">";
+						errorMessage+="<div class=\"panel-heading\">";
+							errorMessage+="<h4 class=\"panel-title\">";
+								errorMessage+="<a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse"+errorId+"\">"+eachTestResult.getThrowable().getMessage()+"</a>";
+							errorMessage+="</h4>";
+						errorMessage+="</div>";
+						errorMessage+="<div id=\"collapse"+errorId+"\" class=\"panel-collapse collapse\">";
+							errorMessage+="<div class=\"panel-body\">";
+								errorMessage+=stackTraces[1]+"<br>";
+								if(eachTestResult.getAttribute("screenshot")!=null){
+									errorMessage+="<a href=\"screenshots"+File.separator+eachTestResult.getAttribute("screenshot")+"\">Screenshot</a>";
+								}
+							errorMessage+="</div>";
+						errorMessage+="</div>";
+					errorMessage+="</div>";
+				}
+				
+				errorMessage+="</div>";
 	    	}
-	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a data-toggle='modal' href='#myModal' class='openDialog btn btn-sm btn-default' data-showthismessage='"+(errorMessage!="" ? errorMessage : "")+"'>"+testStatus+"</a>") +"</td>\n");
+	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a data-toggle=\"modal\" href=\"#myModal\" class=\"openDialog btn btn-sm btn-default\" data-showthismessage=\""+(errorMessage!="" ? Utils.escapeHtml(errorMessage) : "")+"\">"+testStatus+"</a>") +"</td>\n");
 	    	resultsStringBuffer.append("</tr>\n");
     		i++;
     	}
@@ -440,6 +451,19 @@ public class Utility {
 		testResults.addAll(ctx.getFailedTests().getAllResults());
 		testResults.addAll(ctx.getSkippedTests().getAllResults());
 		return getContextDetailedReport(ctx.getName(), testResults, isMail);
+	}
+	
+	public static StringBuffer getErrorModelWindow(){
+		StringBuffer errorModelWindow = new StringBuffer();
+		errorModelWindow.append("<div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>");
+		errorModelWindow.append("<div class='modal-dialog'>");
+		errorModelWindow.append("<div class='modal-content'>");
+		errorModelWindow.append("<div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title'>Error Details</h4></div>");
+		errorModelWindow.append("<div class='modal-body'></div>");
+		errorModelWindow.append("</div>");
+		errorModelWindow.append("</div>");
+		errorModelWindow.append("</div>\n");
+		return errorModelWindow;
 	}
 	
 }
