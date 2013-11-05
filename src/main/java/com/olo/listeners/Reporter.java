@@ -124,14 +124,15 @@ public class Reporter implements IReporter{
 	    suitesSummaryHtml.append(Utility.headerTitle(title));
 	    suitesSummaryHtml.append(Utility.startRow());
 	    suitesSummaryHtml.append(Utility.configTableDiv());
-	    //suitesSummaryHtml.append(Utility.spaceDiv());
 	    suitesSummaryHtml.append(Utility.chartDiv());
 	    suitesSummaryHtml.append(Utility.endRow());
-	    suitesSummaryHtml.append(Utility.startTable());
+	    suitesSummaryHtml.append(Utility.startResponsiveTableDiv());
+	    suitesSummaryHtml.append(Utility.startTableWithHover());
 	    suitesSummaryHtml.append(Utility.suiteListTableHeaderRow());
 	    suitesSummaryHtml.append(suiteListDetails);
 	    suitesSummaryHtml.append(Utility.suitesSummaryRow(startTimeOfSuites, endTimeOfSuites, totalPassedTests, totalFailedTests, totalSkippedTests));
 	    suitesSummaryHtml.append(Utility.endTable());
+	    suitesSummaryHtml.append(Utility.endResponsiveTableDiv());
 	    suitesSummaryHtml.append(Utility.endContainerToHtml());
 	    
 	    StringBuffer suitesSummaryMailHtml = new StringBuffer();
@@ -143,7 +144,7 @@ public class Reporter implements IReporter{
 	    suitesSummaryMailHtml.append(Utility.startRow());
 	    suitesSummaryMailHtml.append(Utility.configTableDiv());
 	    suitesSummaryMailHtml.append(Utility.endRow());
-	    suitesSummaryMailHtml.append(Utility.startTable());
+	    suitesSummaryMailHtml.append(Utility.startTableWithHover());
 	    suitesSummaryMailHtml.append(Utility.suiteListTableHeaderRow());
 	    suitesSummaryMailHtml.append(suiteListDetailsMail);
 	    suitesSummaryMailHtml.append(Utility.suitesSummaryRow(startTimeOfSuites, endTimeOfSuites, totalPassedTests, totalFailedTests, totalSkippedTests));
