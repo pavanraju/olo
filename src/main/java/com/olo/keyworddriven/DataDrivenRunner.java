@@ -36,15 +36,15 @@ public class DataDrivenRunner extends Configuration implements ITest{
 		ArrayList<HashMap<String, String>> testData = new KeywordUtility().getDataProiderData(testFilePath);
 		Object[][] result = new Object[testData.size()][2];
 		for(int i=0;i<testData.size();i++){
-			result[i][0] = i;
-			result[i][1] = testData.get(i);
+			//result[i][0] = i;
+			result[i][0] = testData.get(i);
 		}
 		return result;
 	}
 	
 	@Reporter(com.olo.annotations.KeywordDriven.class)
 	@Test(dataProvider="getTestData")
-	public void keywordTest(ITestContext ctx,int testCount,HashMap<String, String> testData) throws Exception{
+	public void keywordTest(ITestContext ctx,HashMap<String, String> testData) throws Exception{
 		WebDriver driver = getDriverByOpeningUrlAndSetTimeOuts(ctx);
 		try {
 			BrowserBot browser = new BrowserBot(driver);
@@ -52,7 +52,7 @@ public class DataDrivenRunner extends Configuration implements ITest{
 			new KeywordUtility().replaceTestData(excelSteps, testData);
 			new KeywordUtility().validateSteps(excelSteps);
 			logger.info("Executing Test File "+testFilePath);
-			new Execution(browser, new Keywords(browser)).run(ctx, testCount, excelSteps, testFilePath, testName);
+			new Execution(browser, new Keywords(browser)).run(ctx, excelSteps, testFilePath);
 		} catch (Error err) {
 			takeScreenShotForTest(driver);
 			throw err;

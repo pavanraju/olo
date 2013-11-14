@@ -15,6 +15,7 @@ import org.testng.internal.Utils;
 
 import com.olo.annotations.KeywordDriven;
 import com.olo.annotations.Reporter;
+import com.olo.keyworddriven.KeywordReporterData;
 import com.olo.propobject.KeywordPropObject;
 
 public class TestReporter {
@@ -28,17 +29,17 @@ public class TestReporter {
 			try {
 				String suiteName = result.getTestContext().getSuite().getName();
 				StringBuffer sb = new StringBuffer();
-				sb.append("<!DOCTYPE html><html><head><title>"+result.getName()+"</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {   $('#checkboxform button').click(function(){ var checkboxId=this.id;  $('#tabledata thead tr th[id='+checkboxId+']').toggle();  var columnIndex=$('#tabledata thead tr th[id='+checkboxId+']').index();  $('#tabledata tbody tr td:nth-child('+(columnIndex+1)+')').toggle();      });     });</script></head><body>");
+				sb.append(Utility.getHtmlToHead());
+				sb.append("<title>"+result.getName()+"</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+"<script type='text/javascript'>$( document ).ready(function() {   $('#checkboxform button').click(function(){ var checkboxId=this.id;  $('#tabledata thead tr th[id='+checkboxId+']').toggle();  var columnIndex=$('#tabledata thead tr th[id='+checkboxId+']').index();  $('#tabledata tbody tr td:nth-child('+(columnIndex+1)+')').toggle();      });     });</script>");
+				sb.append(Utility.endHeadAndStartBody());
+				sb.append(Utility.startNavigationBar());
+				sb.append("<li><a href='../../../suites-summary-index.html'>Suite Summary</a></li>");
+				sb.append("<li><a href='../../suite-"+suiteName+"-index.html'>"+suiteName+"</a></li>");
+				sb.append("<li class='active'>"+result.getName()+"</li>");
+				sb.append(Utility.endNavigationBar());
 				
-				sb.append("<div class='navbar navbar-inverse navbar-fixed-top'>");
-				sb.append("<ul class='breadcrumb'>");
-				sb.append("<li><a href='../../../suites-summary-index.html'>Suite Summary</a> <span class='divider'>/</span></li>");
-				sb.append("<li><a href='../../suite-"+suiteName+"-index.html'>"+suiteName+"</a> <span class='divider'>/</span></li>");
-				sb.append("<li class='active'>"+result.getName()+"<span class='divider'></span></li>");
-				sb.append("</ul>");
-				sb.append("</div>");
-				
-				sb.append("<div class='container-fluid'><div class='row-fluid' style='margin-top:50px;'>");
+				sb.append(Utility.startContainerWithMargin());
+				sb.append(Utility.startRow());
 				String reporterFileName = null;
 				
 				try {
@@ -50,8 +51,9 @@ public class TestReporter {
 				
 				String reporterFileDirectory = result.getTestContext().getCurrentXmlTest().getName()+File.separator+Utility.getStatusString(result.getStatus());
 				result.setAttribute("reporterFilePath", reporterFileDirectory+File.separator+reporterFileName);
-				HashMap<String,Object> keywordDrivenTestInfo = (HashMap<String, Object>) result.getTestContext().getAttribute(result.getName()+"-"+testCount);
-				sb.append("<div class='span5'>");
+				//HashMap<String,Object> keywordDrivenTestInfo = (HashMap<String, Object>) result.getTestContext().getAttribute(result.getName()+"-"+testCount);
+				HashMap<String,Object> keywordDrivenTestInfo = KeywordReporterData.getTestExecutionDetails(result);
+				sb.append("<div class='table-responsive'>");
 				sb.append("<table class='table table-bordered'>");
 				sb.append("<tr><th>Test Case</th><td>"+result.getName()+"</td></tr>");
 				sb.append("<tr><th>Test Path</th><td>"+keywordDrivenTestInfo.get("testPath")+"</td></tr>");
@@ -62,7 +64,7 @@ public class TestReporter {
 				sb.append("<tr><th>Total Verifications</th><td>"+keywordDrivenTestInfo.get("totalVerifications")+"</td></tr>");
 				sb.append("<tr><th nowrap='nowrap'>Verifications Failed</th><td>"+keywordDrivenTestInfo.get("totalVerificationFailures")+"</td></tr>");
 				sb.append("</table>");
-				sb.append("</div><div class='clearfix'></div>");
+				sb.append("</div>");
 				
 				LinkedHashMap<String, String> reportColumns = new LinkedHashMap<String, String>(Utility.testCaseReportColumns);
 				ArrayList<KeywordPropObject> keywordExecutionSteps = (ArrayList<KeywordPropObject>)keywordDrivenTestInfo.get("keywordExecutionSteps");
@@ -79,6 +81,7 @@ public class TestReporter {
 				sb.append("</div>");
 				sb.append("</form>");
 				
+				sb.append("<div class='table-responsive'>");
 				sb.append("<table class='table table-bordered' id='tabledata'><thead><tr>");
 				sb.append("<th>S.No</th>");
 				
@@ -96,7 +99,7 @@ public class TestReporter {
 					KeywordPropObject localStep = keywordExecutionSteps.get(i);
 					String timeTaken = Utility.timeTaken(localStep.getEndTime()-localStep.getStartTime());
 					
-					sb.append("<tr "+ (!localStep.isConditionSkip() ? (localStep.getHasError() ? (localStep.getIsVerification() ? (localStep.getIsAssertionError() ? "class='warning'" : "class='error'") : "class='error'") : "class='success'" ) : "class='ifskipped'")+">");
+					sb.append("<tr "+ (!localStep.isConditionSkip() ? (localStep.getHasError() ? (localStep.getIsVerification() ? (localStep.getIsAssertionError() ? "class='warning'" : "class='danger'") : "class='danger'") : "class='success'" ) : "class='ifskipped'")+">");
 					
 					sb.append("<td>"+(i+1)+"</td>");
 					
@@ -131,6 +134,7 @@ public class TestReporter {
 					sb.append("</tr>");
 				}
 				sb.append("</table>");
+				sb.append("</div>");
 				sb.append("</div></div></body></html>");
 				Utils.writeFile(result.getTestContext().getOutputDirectory()+File.separator+reporterFileDirectory, reporterFileName, sb.toString());
 			} catch (Exception e) {

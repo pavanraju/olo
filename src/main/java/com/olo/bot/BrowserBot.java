@@ -307,6 +307,30 @@ public class BrowserBot{
 		}
 	}
 	
+	public void assertEquals(Object actual, Object expected){
+		Assert.assertEquals(actual, expected);
+	}
+	
+	public void verifyEquals(Object actual, Object expected) throws Exception{
+		try {
+			assertEquals(actual, expected);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
+	public void assertNotEquals(Object actual, Object expected){
+		Assert.assertNotEquals(actual, expected);
+	}
+	
+	public void verifyNotEquals(Object actual, Object expected) throws Exception{
+		try {
+			assertNotEquals(actual, expected);
+		} catch (AssertionError e) {
+			addVerificationError(e);
+		}
+	}
+	
 	public void assertTitle(String expectedTitle) throws Exception{
 		Assert.assertEquals(getTitle(),expectedTitle);
 	}

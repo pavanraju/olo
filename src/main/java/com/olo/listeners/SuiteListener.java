@@ -28,6 +28,7 @@ import org.testng.xml.XmlTest;
 
 import com.olo.mailer.MailClient;
 import com.olo.reporter.Utility;
+import com.olo.util.Commons;
 
 public class SuiteListener implements ISuiteListener{
 	
@@ -326,7 +327,8 @@ public class SuiteListener implements ISuiteListener{
 		    
 		    
 		} catch (Exception e) {
-			logger.error(e.getStackTrace());
+			//logger.error(e.getMessage());
+			logger.error(Commons.getStackTraceAsString(e));
 		}
 	}
 	

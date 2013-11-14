@@ -105,11 +105,11 @@ public class Utility {
 	}
 	
 	public static String getBootstrapCss(){
-		return "<link rel=\"stylesheet\" href=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css\">";
+		return "<link rel=\"stylesheet\" href=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css\">";
 	}
 	
 	public static String getBootstrapJs(){
-		return "<script src=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js\"></script>";
+		return "<script src=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js\"></script>";
 	}
 	
 	public static String getJqueryJs(){
@@ -117,7 +117,7 @@ public class Utility {
 	}
 	
 	public static String getInlineCss(){
-		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;}@media screen and (min-width: 768px) {.modal-dialog {width: 950px;}}@media(max-width:767px){.side-affix {position: static; width: auto; top: 0;}}</style>";
+		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;}@media screen and (min-width: 768px) {.modal-dialog {width: 950px;}}@media(max-width:1080px){.side-affix {position: static; width: auto; top: 0;}}</style>";
 	}
 	
 	public static String getMailCss(){

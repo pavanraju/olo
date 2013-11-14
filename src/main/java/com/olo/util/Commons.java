@@ -436,5 +436,14 @@ public class Commons {
 	    String fullStackTrace = sw.getBuffer().toString();
 	    return Utils.escapeHtml(fullStackTrace);
 	}
+	
+	public static String getStackTraceAsString(Exception e){
+		StringWriter sw = new StringWriter();
+	    PrintWriter pw = new PrintWriter(sw);
+	    e.printStackTrace(pw);
+	    pw.flush();
+	    String fullStackTrace = sw.getBuffer().toString();
+	    return Utils.escapeHtml(fullStackTrace);
+	}
 
 }
