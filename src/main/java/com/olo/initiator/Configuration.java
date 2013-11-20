@@ -26,6 +26,7 @@ import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.SkipException;
 
+import com.olo.util.TestProp;
 import com.opera.core.systems.OperaDriver;
 
 public class Configuration {
@@ -151,7 +152,7 @@ public class Configuration {
 			}
 		}
 	}
-	
+	/*
 	public WebDriver getDriverByOpeningUrlAndSetTimeOuts() throws Exception{
 		return getDriverByOpeningUrlAndSetTimeOuts(Reporter.getCurrentTestResult().getTestContext());
 	}
@@ -180,6 +181,63 @@ public class Configuration {
 		}
 	}
 	
+	*/
+	
+	
+	
+	
+	
+	
+	
+	public WebDriver getDriverBySetTimeOuts(){
+		return getDriverBySetTimeOuts(Reporter.getCurrentTestResult().getTestContext());
+	}
+	
+	public WebDriver getDriverBySetTimeOuts(ITestContext ctx){
+		try {
+			WebDriver driver = getWebDriver(ctx);
+			setWaitForPageToLoadInSec(driver);
+			setImplicitWaitInSec(driver);
+			windowMaximizeAndWindowFocus(driver);
+			logger.info("setting up browser preferences completed");
+			return driver;
+		} catch (Exception e) {
+			throw new SkipException(e.getMessage());
+		} catch (Throwable e) {
+			throw new SkipException(e.getCause().getMessage());
+		}
+	}
+	
+	public WebDriver getDriverBySetTimeOutsAndOpenUrl(String url){
+		WebDriver driver = getDriverBySetTimeOuts();
+		try {
+			openUrl(driver, url);
+			return driver;
+		} catch (Exception e) {
+			throw new SkipException(e.getMessage());
+		} catch (Throwable e) {
+			throw new SkipException(e.getCause().getMessage());
+		}
+	}
+	
+	public WebDriver getDriverBySetTimeOutsAndOpenUrl(ITestContext ctx){
+		return getDriverBySetTimeOutsAndOpenUrl(ctx, configProp.getProperty("url"));
+	}
+	
+	public WebDriver getDriverBySetTimeOutsAndOpenUrl(ITestContext ctx, String url){
+		WebDriver driver = getDriverBySetTimeOuts(ctx);
+		try {
+			openUrl(driver, url);
+			return driver;
+		} catch (Exception e) {
+			throw new SkipException(e.getMessage());
+		} catch (Throwable e) {
+			throw new SkipException(e.getCause().getMessage());
+		}
+	}
+	
+	
+	
 	public void takeScreenShotForTest(WebDriver driver) {
 		ITestResult result = org.testng.Reporter.getCurrentTestResult();
 		takeScreenShotForTest(driver, result);
@@ -193,10 +251,10 @@ public class Configuration {
 		if(takeScreenshot){
 			try {
 				String screenShotFileName=System.currentTimeMillis()+".png";
-				String screenShotPath=result.getTestContext().getOutputDirectory()+"/"+"screenshots"+"/"+screenShotFileName;
+				String screenShotPath=result.getTestContext().getOutputDirectory()+File.separator+"screenshots"+File.separator+screenShotFileName;
 				File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 				FileUtils.copyFile(srcFile, new File(screenShotPath));
-				result.setAttribute("screenshot", screenShotFileName);
+				result.setAttribute(TestProp.SCREENSHOT, screenShotFileName);
 			} catch (Exception e) {
 				if(e != null){
 					logger.warn("Could not take screenshot "+e.getMessage());
@@ -262,6 +320,14 @@ public class Configuration {
 			takeScreenShotForTest(driver, result);
 		}
 		closeDriver(driver);
+	}
+	
+	public void setPropertyForTest(ITestResult result, String propertyName, String propertyValue){
+		result.setAttribute(propertyName, propertyValue);
+	}
+	
+	public void setPropertyForTest(String propertyName, String propertyValue){
+		Reporter.getCurrentTestResult().setAttribute(propertyName, propertyValue);
 	}
 	
 }

@@ -270,8 +270,7 @@ public class Keywords{
 	
 	@Keyword("VerifyTitle")
 	public void verifyTitle(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		asertTitle(step);
+		browser.verifyTitle(step.getActualValue());
 	}
 	
 	@Keyword("AssertNotTitle")
@@ -281,8 +280,7 @@ public class Keywords{
 	
 	@Keyword("VerifyNotTitle")
 	public void verifyNotTitle(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		asertNotTitle(step);
+		browser.verifyNotTitle(step.getActualValue());
 	}
 	
 	@Keyword("AssertSelectedText")

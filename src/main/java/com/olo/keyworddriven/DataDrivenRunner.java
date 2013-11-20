@@ -45,14 +45,14 @@ public class DataDrivenRunner extends Configuration implements ITest{
 	@Reporter(com.olo.annotations.KeywordDriven.class)
 	@Test(dataProvider="getTestData")
 	public void keywordTest(ITestContext ctx,HashMap<String, String> testData) throws Exception{
-		WebDriver driver = getDriverByOpeningUrlAndSetTimeOuts(ctx);
+		WebDriver driver = getDriverBySetTimeOutsAndOpenUrl(ctx);
 		try {
 			BrowserBot browser = new BrowserBot(driver);
 			ArrayList<KeywordPropObject> excelSteps = new KeywordUtility().getExcelSteps(testFilePath);
 			new KeywordUtility().replaceTestData(excelSteps, testData);
 			new KeywordUtility().validateSteps(excelSteps);
 			logger.info("Executing Test File "+testFilePath);
-			new Execution(browser, new Keywords(browser)).run(ctx, excelSteps, testFilePath);
+			new Execution(browser, new Keywords(browser)).run(ctx, excelSteps);
 		} catch (Error err) {
 			takeScreenShotForTest(driver);
 			throw err;

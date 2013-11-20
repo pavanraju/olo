@@ -32,4 +32,8 @@ public class VerificationErrorsInTest {
 		}
 	}
 	
+	public static int verificationFailuresCount(ITestResult result){
+		return testErrorDetails.get(result).size();
+	}
+	
 }

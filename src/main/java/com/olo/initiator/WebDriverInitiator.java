@@ -8,12 +8,11 @@ import org.testng.annotations.BeforeMethod;
 
 public class WebDriverInitiator extends Configuration{
 	
-	protected ThreadLocal<WebDriver> threadDriver = null;
+	protected ThreadLocal<WebDriver> threadDriver = new InheritableThreadLocal<WebDriver>();
 	
 	@BeforeMethod
 	public void beforeTestMethod(ITestContext ctx) throws Exception{
-		threadDriver = new ThreadLocal<WebDriver>();
-		threadDriver.set(getDriverByOpeningUrlAndSetTimeOuts(ctx));
+		threadDriver.set(getDriverBySetTimeOutsAndOpenUrl(ctx));
 	}
 	
 	public WebDriver getDriver() {

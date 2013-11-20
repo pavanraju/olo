@@ -48,6 +48,7 @@ public class SuiteListener implements ISuiteListener{
 			long suiteStartTime = 0;
 			long suiteEndTime = 0;
 			long temp = 0;
+			int contextCount = 0;
 			StringBuffer textContextSummaryAndDetailedReport = new StringBuffer();
 			StringBuffer mailTextContextReport = new StringBuffer();
 			StringBuffer suiteContextSummaryReport = new StringBuffer();
@@ -63,6 +64,7 @@ public class SuiteListener implements ISuiteListener{
 			StringBuffer errorModelWindow = Utility.getErrorModelWindow();
 			
 			for (ISuiteResult suiteResult : results.values()) {
+				contextCount++;
 				ITestContext suiteTestContext = suiteResult.getTestContext();
 				if(ctr == 0){
 					suiteStartTime = suiteTestContext.getStartDate().getTime();
@@ -86,12 +88,12 @@ public class SuiteListener implements ISuiteListener{
 				suiteSkippedTests+=contextSkippedTests;
 				int contextTotalTests=contextPassedTests+contextFailedTests+contextSkippedTests;
 			    
-				suiteContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td><td class='danger'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
+				suiteContextSummaryReport.append("<tr><td><a href=#testContext"+contextCount+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td><td class='danger'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
 				mailSuiteContextSummaryReport.append("<tr><td>"+suiteTestContext.getName()+"</td><td class='success'>"+contextPassedTests+"</td><td class='danger'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
 			    /**
 			     * All Context
 			     */
-			    StringBuffer textContextSummary = Utility.contextSummaryReport(suiteTestContext);
+			    StringBuffer textContextSummary = Utility.contextSummaryReport(suiteTestContext, contextCount);
 			    textContextSummaryAndDetailedReport.append(textContextSummary);
 			    StringBuffer currentTextContextDetailedReport = Utility.contextDetailedReport(suiteTestContext, false);
 			    textContextSummaryAndDetailedReport.append(currentTextContextDetailedReport);
@@ -132,6 +134,9 @@ public class SuiteListener implements ISuiteListener{
 			StringBuffer suiteReportDetailed = new StringBuffer();
 			suiteReportDetailed.append(Utility.getHtmlToHead());
 			suiteReportDetailed.append("<title>"+suiteName+" Suite Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+Utility.getModelJs());
+			suiteReportDetailed.append(Utility.getGoogleChartsJs());
+			suiteReportDetailed.append(Utility.getGooglePieChart());
+			suiteReportDetailed.append(Utility.googleChartDraw(suitePassedTests, suiteFailedTests, suiteSkippedTests));
 			suiteReportDetailed.append(Utility.endHeadAndStartBody());
 			suiteReportDetailed.append(Utility.startNavigationBar());
 			suiteReportDetailed.append(Utility.backToSuitesSummaryLink());
@@ -143,13 +148,19 @@ public class SuiteListener implements ISuiteListener{
 			suiteReportDetailed.append(Utility.startContainerWithMargin());
 			suiteReportDetailed.append(Utility.startRow());
 			suiteReportDetailed.append(Utility.startColumn(4));
-			suiteReportDetailed.append(Utility.startAffix());
+			//suiteReportDetailed.append(Utility.startAffix());
 			
 			suiteReportDetailed.append(Utility.suiteSummaryAllInfo(suiteName, suiteStartTime, suiteEndTime));
 			
+			suiteReportDetailed.append(Utility.startRow());
+			suiteReportDetailed.append(Utility.startColumn(12));
+			suiteReportDetailed.append(Utility.chartDivID());
+			suiteReportDetailed.append(Utility.endColumn());
+			suiteReportDetailed.append(Utility.endRow());
+			
 			suiteReportDetailed.append(Utility.suiteContextSummaryAllInfo(suiteContextSummaryReport, suiteTotalTests, suitePassedTests, suiteFailedTests, suiteSkippedTests));
 			
-			suiteReportDetailed.append(Utility.endAffix());
+			//suiteReportDetailed.append(Utility.endAffix());
 			suiteReportDetailed.append(Utility.endColumn());
 			
 			suiteReportDetailed.append(Utility.startColumn(8));

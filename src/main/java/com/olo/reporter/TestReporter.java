@@ -4,7 +4,6 @@ package com.olo.reporter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -17,6 +16,8 @@ import com.olo.annotations.KeywordDriven;
 import com.olo.annotations.Reporter;
 import com.olo.keyworddriven.KeywordReporterData;
 import com.olo.propobject.KeywordPropObject;
+import com.olo.util.TestProp;
+import com.olo.util.VerificationErrorsInTest;
 
 public class TestReporter {
 	
@@ -52,22 +53,22 @@ public class TestReporter {
 				String reporterFileDirectory = result.getTestContext().getCurrentXmlTest().getName()+File.separator+Utility.getStatusString(result.getStatus());
 				result.setAttribute("reporterFilePath", reporterFileDirectory+File.separator+reporterFileName);
 				//HashMap<String,Object> keywordDrivenTestInfo = (HashMap<String, Object>) result.getTestContext().getAttribute(result.getName()+"-"+testCount);
-				HashMap<String,Object> keywordDrivenTestInfo = KeywordReporterData.getTestExecutionDetails(result);
+				//HashMap<String,Object> keywordDrivenTestInfo = KeywordReporterData.getTestExecutionDetails(result);
 				sb.append("<div class='table-responsive'>");
 				sb.append("<table class='table table-bordered'>");
 				sb.append("<tr><th>Test Case</th><td>"+result.getName()+"</td></tr>");
-				sb.append("<tr><th>Test Path</th><td>"+keywordDrivenTestInfo.get("testPath")+"</td></tr>");
+				sb.append("<tr><th>Test Path</th><td>"+result.getAttribute(TestProp.PATH)+"</td></tr>");
 				sb.append("<tr><th>Started</th><td>"+Utility.sdf.format(new Date(result.getStartMillis()))+"</td></tr>");
 				sb.append("<tr><th>Completed</th><td>"+Utility.sdf.format(new Date(result.getEndMillis()))+"</td></tr>");
 				sb.append("<tr><th>Time Taken</th><td>"+Utility.timeTaken(result.getEndMillis()-result.getStartMillis())+"</td></tr>");
-				sb.append("<tr "+(result.getStatus()==1 ? "class='passed'" : "class='failed'")+"><th>Status</th><td>"+Utility.getStatusString(result.getStatus())+"</td></tr>");
-				sb.append("<tr><th>Total Verifications</th><td>"+keywordDrivenTestInfo.get("totalVerifications")+"</td></tr>");
-				sb.append("<tr><th nowrap='nowrap'>Verifications Failed</th><td>"+keywordDrivenTestInfo.get("totalVerificationFailures")+"</td></tr>");
+				sb.append("<tr "+(result.getStatus()==1 ? "class='passed'" : "class='danger'")+"><th>Status</th><td>"+Utility.getStatusString(result.getStatus())+"</td></tr>");
+				//sb.append("<tr><th>Total Verifications</th><td>"+keywordDrivenTestInfo.get("totalVerifications")+"</td></tr>");
+				sb.append("<tr><th nowrap='nowrap'>Verifications Failed</th><td>"+VerificationErrorsInTest.getTestErrors(result).size()+"</td></tr>");
 				sb.append("</table>");
 				sb.append("</div>");
 				
 				LinkedHashMap<String, String> reportColumns = new LinkedHashMap<String, String>(Utility.testCaseReportColumns);
-				ArrayList<KeywordPropObject> keywordExecutionSteps = (ArrayList<KeywordPropObject>)keywordDrivenTestInfo.get("keywordExecutionSteps");
+				ArrayList<KeywordPropObject> keywordExecutionSteps = KeywordReporterData.getTestExecutionDetails(result);
 				sb.append("<form id='checkboxform'>");
 				sb.append("<div class='btn-group' data-toggle='buttons-checkbox'>");
 				

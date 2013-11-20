@@ -22,6 +22,7 @@ import org.testng.ITestResult;
 import org.testng.internal.Utils;
 
 import com.olo.util.Commons;
+import com.olo.util.TestProp;
 import com.olo.util.VerificationError;
 import com.olo.util.VerificationErrorsInTest;
 
@@ -225,7 +226,11 @@ public class Utility {
 	}
 	
 	public static StringBuffer chartDiv(){
-		return new StringBuffer().append("<div class='col-md-4'><div id='visualization' ></div></div>");
+		return new StringBuffer().append("<div class='col-md-4'>"+chartDivID()+"</div>");
+	}
+	
+	public static StringBuffer chartDivID(){
+		return new StringBuffer().append("<div id='visualization'></div>");
 	}
 	
 	public static StringBuffer startResponsiveTableDiv(){
@@ -339,10 +344,10 @@ public class Utility {
 		suiteListHeader.append("<th>Start Time</th>");
 		suiteListHeader.append("<th>End Time</th>");
 		suiteListHeader.append("<th>Time Taken</th>");
-		suiteListHeader.append("<th>Total Tests</th>");
 		suiteListHeader.append("<th>Passed</th>");
 		suiteListHeader.append("<th>Failed</th>");
 		suiteListHeader.append("<th>Skipped</th>");
+		suiteListHeader.append("<th>Total Tests</th>");
 		suiteListHeader.append("</tr>");
 		suiteListHeader.append("</thead>");
 		return suiteListHeader;
@@ -361,15 +366,15 @@ public class Utility {
 		String failPercentage = Commons.percentageCalculator(suiteTotalTests,suiteFailedTests);
 		String skipPercentage = Commons.percentageCalculator(suiteTotalTests,suiteSkippedTests);
 		if(!isMail){
-			suiteDetailRow.append("<td><a href='"+suiteName+File.separator+"suite-"+suiteName+"-index.html'>"+suiteTotalTests+"</a></td>");
 			suiteDetailRow.append("<td class='success'>"+(suitePassedTests > 0 ? "<a href='"+suiteName+File.separator+"suite-"+suiteName+"-passed.html'>"+suitePassedTests+"</a> ("+passPercentage+"%)" : suitePassedTests)+"</td>");
 			suiteDetailRow.append("<td class='danger'>"+(suiteFailedTests > 0 ? "<a href='"+suiteName+File.separator+"suite-"+suiteName+"-failed.html'>"+suiteFailedTests+"</a> ("+failPercentage+"%)" : suiteFailedTests)+"</td>");
 			suiteDetailRow.append("<td class='warning'>"+(suiteSkippedTests > 0 ? "<a href='"+suiteName+File.separator+"suite-"+suiteName+"-skipped.html'>"+suiteSkippedTests+"</a> ("+skipPercentage+"%)" : suiteSkippedTests)+"</td>");
+			suiteDetailRow.append("<td><a href='"+suiteName+File.separator+"suite-"+suiteName+"-index.html'>"+suiteTotalTests+"</a></td>");
 		}else{
-			suiteDetailRow.append("<td>"+suiteTotalTests+"</td>");
 			suiteDetailRow.append("<td class='success'>"+suitePassedTests+" ("+passPercentage+"%)</td>");
 			suiteDetailRow.append("<td class='danger'>"+suiteFailedTests+" ("+failPercentage+"%)</td>");
 			suiteDetailRow.append("<td class='warning'>"+suiteSkippedTests+" ("+skipPercentage+"%)</td>");
+			suiteDetailRow.append("<td>"+suiteTotalTests+"</td>");
 		}
 		
 		suiteDetailRow.append("</tr>");
@@ -384,10 +389,10 @@ public class Utility {
 		suiteListHeader.append("<th>"+sdf.format(startTimeOfSuites)+"</th>");
 		suiteListHeader.append("<th>"+sdf.format(endTimeOfSuites)+"</th>");
 		suiteListHeader.append("<th>"+timeTaken(endTimeOfSuites-startTimeOfSuites)+"</th>");
-		suiteListHeader.append("<th>"+totalTests+"</th>");
 		suiteListHeader.append("<th class='success'>"+totalPassedTests+(totalPassedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalPassedTests)+"%)" : "")+"</th>");
 		suiteListHeader.append("<th class='danger'>"+totalFailedTests+(totalFailedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalFailedTests)+"%)" : "")+"</th>");
 		suiteListHeader.append("<th class='warning'>"+totalSkippedTests+(totalSkippedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalSkippedTests)+"%)" : "")+"</th>");
+		suiteListHeader.append("<th>"+totalTests+"</th>");
 		suiteListHeader.append("</tr>");
 		return suiteListHeader;
 	}
@@ -616,7 +621,7 @@ public class Utility {
 							errorMessage+="<div class=\"panel-body\">";
 								errorMessage+=stackTraces[1]+"<br>";
 								if(eachTestResult.getAttribute("screenshot")!=null){
-									errorMessage+="<a href=\"screenshots"+File.separator+eachTestResult.getAttribute("screenshot")+"\">Screenshot</a>";
+									errorMessage+="<a href=\"screenshots"+File.separator+eachTestResult.getAttribute(TestProp.SCREENSHOT)+"\">Screenshot</a>";
 								}
 							errorMessage+="</div>";
 						errorMessage+="</div>";
@@ -689,7 +694,7 @@ public class Utility {
 	
 	private static StringBuffer getContextDetailedReport(String contextName,Set<ITestResult> results, boolean isMail){
 		StringBuffer contextReport = new StringBuffer();
-		contextReport.append("<div class='row'><div class='table-responsive'><table class='table table-bordered' id='"+contextName+"' >");
+		contextReport.append("<div class='row'><div class='col-md-12'><div class='table-responsive'><table class='table table-bordered' id='"+contextName+"' >");
 		contextReport.append("<caption>Detailed report of "+contextName+" Tests</caption>");
 		contextReport.append(headerContextDetailedReport());
 		if(isMail){
@@ -698,7 +703,7 @@ public class Utility {
 			contextReport.append(testDetailReport(sortResults(results)));
 		}
 	    
-	    contextReport.append("</table></div></div><hr/>\n");
+	    contextReport.append("</table></div></div></div><hr/>\n");
 	    return contextReport;
 	}
 	
@@ -714,12 +719,12 @@ public class Utility {
 		return getContextDetailedReport(ctx.getName(),ctx.getPassedTests().getAllResults(), false);
 	}
 	
-	public static StringBuffer contextSummaryReport(ITestContext ctx){
+	public static StringBuffer contextSummaryReport(ITestContext ctx, int contextCount){
 		String contextStartTime = Utility.sdf.format(ctx.getStartDate().getTime());
 		String contextEndTime = Utility.sdf.format(ctx.getEndDate().getTime());
 		String contextTimeTaken = Utility.timeTaken(ctx.getEndDate().getTime()-ctx.getStartDate().getTime());
 		StringBuffer textContextSummary = new StringBuffer();
-	    textContextSummary.append("<div class='row'><div class='col-md-6'><div class='table-responsive'><table class='table table-bordered' id='"+ctx.getName()+"'><tr><th>Test</th><td>"+ctx.getName()+"</td></tr>");
+	    textContextSummary.append("<div class='row'><div class='col-md-6'><div class='table-responsive'><table class='table table-bordered' id='testContext"+contextCount+"'><tr><th>Test</th><td>"+ctx.getName()+"</td></tr>");
 	    textContextSummary.append("<tr><th>Start Time</th><td>"+contextStartTime+"</td></tr>");
 	    textContextSummary.append("<tr><th>End Time</th><td>"+contextEndTime+"</td></tr>");
 	    textContextSummary.append("<tr><th>Time Taken</th><td>"+contextTimeTaken+"</td></tr>");
