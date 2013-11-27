@@ -100,7 +100,7 @@ public class TestReporter {
 					KeywordPropObject localStep = keywordExecutionSteps.get(i);
 					String timeTaken = Utility.timeTaken(localStep.getEndTime()-localStep.getStartTime());
 					
-					sb.append("<tr "+ (!localStep.isConditionSkip() ? (localStep.getHasError() ? (localStep.getIsVerification() ? (localStep.getIsAssertionError() ? "class='warning'" : "class='danger'") : "class='danger'") : "class='success'" ) : "class='ifskipped'")+">");
+					sb.append("<tr "+ (!localStep.isConditionSkip() ? (localStep.getHasError() ? (localStep.getIsVerification() ? (localStep.getHasVerificationError() ? "class='warning'" : "class='danger'") : "class='danger'") : "class='success'" ) : "class='ifskipped'")+">");
 					
 					sb.append("<td>"+(i+1)+"</td>");
 					

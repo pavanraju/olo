@@ -1,5 +1,7 @@
 package com.olo.listeners;
 
+import static com.olo.util.PropertyReader.mailProp;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.testng.IReporter;
@@ -9,20 +11,24 @@ import org.testng.ITestContext;
 import org.testng.internal.Utils;
 import org.testng.xml.XmlSuite;
 
+import com.olo.mailer.MailClient;
 import com.olo.reporter.Utility;
+import com.olo.util.Commons;
+
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class Reporter implements IReporter{
+public class MailReporter implements IReporter{
 	
-	private static final Logger logger = LogManager.getLogger(Reporter.class.getName());
+	private static final Logger logger = LogManager.getLogger(MailReporter.class.getName());
 	
 	public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
 		try {
 			generateNewIndex(suites,outputDirectory);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			e.printStackTrace();
 		}
 		
 	}
@@ -102,7 +108,7 @@ public class Reporter implements IReporter{
 			if(suiteCounter == totalSuitesSize){
 				endTimeOfSuites = suiteEndTime;
 			}
-			suiteListDetails.append(Utility.suiteListTableDetailsRow(false,suite.getName(),suiteStartTime,suiteEndTime,suitePassedTests,suiteFailedTests,suiteSkippedTests));
+			suiteListDetails.append(Utility.suiteListTableDetailsRow(true,suite.getName(),suiteStartTime,suiteEndTime,suitePassedTests,suiteFailedTests,suiteSkippedTests));
 			ctr=0;
 			totalFailedTests+=suiteFailedTests;
 			totalPassedTests+=suitePassedTests;
@@ -129,9 +135,26 @@ public class Reporter implements IReporter{
 	    suitesSummaryHtml.append(Utility.endResponsiveTableDiv());
 	    suitesSummaryHtml.append(Utility.endContainerToHtml());
 	    
-	    String fileName = "suites-summary-index.html";
+	    String fileName = "mail-suites-summary-index.html";
 	    Utils.writeFile(outputDirectory, fileName, suitesSummaryHtml.toString());
 	    
+	    try{
+    		String cc=mailProp.getProperty("mail.cc");
+	    	String to = mailProp.getProperty("mail.to");
+	    	String subject = "Suites Summary Report - Total : "+(totalPassedTests+totalFailedTests+totalSkippedTests)+"; Passed : "+totalPassedTests+"; Failed : "+totalFailedTests+"; Skipped : "+totalSkippedTests;
+	    	StringBuffer body = new StringBuffer();
+	    	body.append("Execution Summary Report is in below mentioned location.<br/><br/>Ip Address : "+Commons.getSystemIpAddress()+"<br/>Folder Path : "+outputDirectory);
+	    	MailClient mail = new MailClient();
+	    	if(cc==null || cc.equals("")){
+	    		mail.sendMail(to.split(","), subject, body,outputDirectory+File.separator+fileName);
+	    	}else{
+	    		mail.sendMail(to.split(","), subject, body, cc.split(","), outputDirectory+File.separator+fileName);
+	    	}
+	    	logger.info("Suites Summary mail sent");
+	    }catch(Exception e){
+	    	logger.error("Mail sending failed!!");
+	    	e.printStackTrace();
+	    }
 	}
 	
 }

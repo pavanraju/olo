@@ -856,8 +856,16 @@ public class BrowserBot{
 		new Actions(driver).keyDown(element, Keys.valueOf(value)).perform();
 	}
 	
+	public void keyDown(WebElement element, Keys key){
+		new Actions(driver).keyDown(element, key).perform();
+	}
+	
 	public void keyUp(WebElement element, String value){
 		new Actions(driver).keyUp(element, Keys.valueOf(value)).perform();
+	}
+	
+	public void keyUp(WebElement element, Keys key){
+		new Actions(driver).keyUp(element, key).perform();
 	}
 	
 	public void controlKeyUp(){

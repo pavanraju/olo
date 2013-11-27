@@ -8,7 +8,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -444,6 +446,10 @@ public class Commons {
 	    pw.flush();
 	    String fullStackTrace = sw.getBuffer().toString();
 	    return Utils.escapeHtml(fullStackTrace);
+	}
+	
+	public static String getSystemIpAddress() throws UnknownHostException{
+		return InetAddress.getLocalHost().getHostAddress();
 	}
 
 }

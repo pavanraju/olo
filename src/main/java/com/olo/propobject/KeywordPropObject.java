@@ -17,11 +17,13 @@ public class KeywordPropObject implements Cloneable {
 	private Boolean hasError = false;
 	private String errorMessage = "";
 	private Boolean isVerification = false;
+	private Boolean hasVerificationError = false;
+	private Error verificationError = null;
 	private String screenShotName = "";
 	private String screenShotPath = "";
 	private long startTime = 0;
 	private long endTime = 0;
-	private Boolean isAssertionError = false;
+	//private Boolean isAssertionError = false;
 	private boolean ifSkipped = false;
 	private boolean conditionSkip=false;
 	private String options = "" ;
@@ -89,7 +91,7 @@ public class KeywordPropObject implements Cloneable {
 	public void setIfSkipped(boolean ifSkipped) {
 		this.ifSkipped = ifSkipped;
 	}
-	
+	/*
 	public Boolean getIsAssertionError() {
 		return isAssertionError;
 	}
@@ -97,7 +99,7 @@ public class KeywordPropObject implements Cloneable {
 	public void setIsAssertionError(Boolean isAssertionError) {
 		this.isAssertionError = isAssertionError;
 	}
-
+	*/
 	public long getStartTime() {
 		return startTime;
 	}
@@ -128,6 +130,22 @@ public class KeywordPropObject implements Cloneable {
 
 	public void setIsVerification(Boolean isVerification) {
 		this.isVerification = isVerification;
+	}
+
+	public Boolean getHasVerificationError() {
+		return hasVerificationError;
+	}
+
+	public void setHasVerificationError(Boolean hasVerificationError) {
+		this.hasVerificationError = hasVerificationError;
+	}
+	
+	public Error getVerificationError() {
+		return verificationError;
+	}
+
+	public void setVerificationError(Error verificationError) {
+		this.verificationError = verificationError;
 	}
 
 	public String getScreenShotName() {

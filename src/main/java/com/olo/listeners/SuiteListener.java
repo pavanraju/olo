@@ -1,7 +1,5 @@
 package com.olo.listeners;
 
-import static com.olo.util.PropertyReader.mailProp;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -26,9 +24,7 @@ import org.testng.xml.XmlInclude;
 import org.testng.xml.XmlSuite;
 import org.testng.xml.XmlTest;
 
-import com.olo.mailer.MailClient;
 import com.olo.reporter.Utility;
-import com.olo.util.Commons;
 
 public class SuiteListener implements ISuiteListener{
 	
@@ -50,9 +46,7 @@ public class SuiteListener implements ISuiteListener{
 			long temp = 0;
 			int contextCount = 0;
 			StringBuffer textContextSummaryAndDetailedReport = new StringBuffer();
-			StringBuffer mailTextContextReport = new StringBuffer();
 			StringBuffer suiteContextSummaryReport = new StringBuffer();
-			StringBuffer mailSuiteContextSummaryReport = new StringBuffer();
 			StringBuffer passedtextContextSummaryReport = new StringBuffer();
 			StringBuffer failedtextContextSummaryReport = new StringBuffer();
 			StringBuffer skippedtextContextSummaryReport = new StringBuffer();
@@ -89,7 +83,6 @@ public class SuiteListener implements ISuiteListener{
 				int contextTotalTests=contextPassedTests+contextFailedTests+contextSkippedTests;
 			    
 				suiteContextSummaryReport.append("<tr><td><a href=#testContext"+contextCount+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td><td class='danger'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
-				mailSuiteContextSummaryReport.append("<tr><td>"+suiteTestContext.getName()+"</td><td class='success'>"+contextPassedTests+"</td><td class='danger'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
 			    /**
 			     * All Context
 			     */
@@ -97,8 +90,6 @@ public class SuiteListener implements ISuiteListener{
 			    textContextSummaryAndDetailedReport.append(textContextSummary);
 			    StringBuffer currentTextContextDetailedReport = Utility.contextDetailedReport(suiteTestContext, false);
 			    textContextSummaryAndDetailedReport.append(currentTextContextDetailedReport);
-			    mailTextContextReport.append(textContextSummary);
-			    mailTextContextReport.append(Utility.contextDetailedReport(suiteTestContext, true));
 			    
 			    /**
 			     * Passed Context
@@ -139,8 +130,8 @@ public class SuiteListener implements ISuiteListener{
 			suiteReportDetailed.append(Utility.googleChartDraw(suitePassedTests, suiteFailedTests, suiteSkippedTests));
 			suiteReportDetailed.append(Utility.endHeadAndStartBody());
 			suiteReportDetailed.append(Utility.startNavigationBar());
-			suiteReportDetailed.append(Utility.backToSuitesSummaryLink());
-			suiteReportDetailed.append(Utility.suiteIndexLink(suiteName));
+			suiteReportDetailed.append(Utility.backToSuitesSummaryLink(false));
+			suiteReportDetailed.append(Utility.suiteIndexLink(suiteName, false));
 			suiteReportDetailed.append(Utility.suiteActiveAll());
 			suiteReportDetailed.append(Utility.suiteAllDropDownMenu(suiteName, suitePassedTests, suiteFailedTests, suiteSkippedTests));
 			suiteReportDetailed.append(Utility.endNavigationBar());
@@ -148,7 +139,6 @@ public class SuiteListener implements ISuiteListener{
 			suiteReportDetailed.append(Utility.startContainerWithMargin());
 			suiteReportDetailed.append(Utility.startRow());
 			suiteReportDetailed.append(Utility.startColumn(4));
-			//suiteReportDetailed.append(Utility.startAffix());
 			
 			suiteReportDetailed.append(Utility.suiteSummaryAllInfo(suiteName, suiteStartTime, suiteEndTime));
 			
@@ -160,7 +150,6 @@ public class SuiteListener implements ISuiteListener{
 			
 			suiteReportDetailed.append(Utility.suiteContextSummaryAllInfo(suiteContextSummaryReport, suiteTotalTests, suitePassedTests, suiteFailedTests, suiteSkippedTests));
 			
-			//suiteReportDetailed.append(Utility.endAffix());
 			suiteReportDetailed.append(Utility.endColumn());
 			
 			suiteReportDetailed.append(Utility.startColumn(8));
@@ -171,60 +160,8 @@ public class SuiteListener implements ISuiteListener{
 			suiteReportDetailed.append(Utility.endContainer());
 			suiteReportDetailed.append(Utility.getDescriptionTooltipJs());
 			suiteReportDetailed.append(Utility.endBodyAndHtml());
-		    Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-index.html", suiteReportDetailed.toString());
-		    
-		    
-		    try{
-			    if(mailProp.containsKey("mail.SendMail") && mailProp.getProperty("mail.SendMail").equalsIgnoreCase("true")){
-		    		
-		    		String ToMail=mailProp.getProperty("mail.to");
-	    			String CCMail=mailProp.getProperty("mail.cc");
-		    		if(mailProp.containsKey("mail."+suiteName+".to")){
-		    			ToMail=mailProp.getProperty("mail."+suiteName+".to");
-		    		}
-		    		if(mailProp.containsKey("mail."+suiteName+".cc")){
-		    			CCMail=mailProp.getProperty("mail."+suiteName+".cc");
-		    		}
-	    			
-		    		StringBuffer subject = new StringBuffer();
-		    		subject.append("Suite '"+suiteName+"' Execution Completed - Total : "+suiteTotalTests+"; Passed : "+suitePassedTests+"; Failed : "+suiteFailedTests+"; Skipped : "+suiteSkippedTests);
-		    		StringBuffer body = new StringBuffer();
-		    		body.append(Utility.getHtmlToHead());
-		    		body.append(Utility.mailSuiteSummaryHead());
-		    		body.append(Utility.endHeadAndStartBody());
-		    		body.append(Utility.startContainer());
-		    		body.append(Utility.startRow());
-		    		body.append("<div>");
-		    		body.append(Utility.startTableWithHover());
-		    		body.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
-		    		body.append("<tr><th>Start Time</th><td>"+Utility.sdf.format(suiteStartTime)+"</td></tr>");
-		    		body.append("<tr><th>End Time</th><td>"+Utility.sdf.format(suiteEndTime)+"</td></tr>");
-		    		body.append("<tr><th>Time Taken</th><td>"+Utility.timeTaken(suiteEndTime-suiteStartTime)+"</td></tr>");
-		    		body.append(Utility.endTable());
-		    		body.append(Utility.startTableWithHover());
-		    		body.append(Utility.suiteContextSummaryHeader());
-		    		body.append(mailSuiteContextSummaryReport);
-		    		body.append(Utility.suiteContextSummaryFooter(suiteTotalTests, suitePassedTests, suiteFailedTests, suiteSkippedTests));
-		    		body.append(Utility.endTable());
-		    		body.append("</div>");
-		    		
-		    		body.append("<div>");
-		    		body.append(mailTextContextReport);
-		    		body.append("</div>");
-		    		
-		    		body.append(Utility.endRow());
-		    		body.append(Utility.endContainerToHtml());
-		    		body.append("Execution Report for '"+suiteName+"' suite is in below mentioned location.<br/><br/>"+suite.getOutputDirectory());
-			    	MailClient mail = new MailClient();
-			    	if(CCMail==null || CCMail.equals("")){
-			    		mail.sendMail(ToMail.split(","), subject.toString(), body);
-			    	}else{
-			    		mail.sendMail(ToMail.split(","), subject.toString(), body, CCMail.split(","));
-			    	}
-			    }
-		    }catch(Exception e){
-		    	logger.error("Mail sending failed!! "+e.getMessage());
-		    }
+			String fileName = "suite-"+suiteName+"-index.html";
+		    Utils.writeFile(suite.getOutputDirectory(), fileName, suiteReportDetailed.toString());
 		    
 		    /**
 		     * Writing suite passed results
@@ -235,8 +172,8 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportPassed.append("<title>"+suiteName+" Passed Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getJqueryJs()+Utility.getBootstrapJs());
 		    	suiteReportPassed.append(Utility.endHeadAndStartBody());
 		    	suiteReportPassed.append(Utility.startNavigationBar());
-		    	suiteReportPassed.append(Utility.backToSuitesSummaryLink());
-		    	suiteReportPassed.append(Utility.suiteIndexLink(suiteName));
+		    	suiteReportPassed.append(Utility.backToSuitesSummaryLink(false));
+		    	suiteReportPassed.append(Utility.suiteIndexLink(suiteName, false));
 		    	suiteReportPassed.append(Utility.suiteActivePassed());
 		    	suiteReportPassed.append(Utility.suitePassedDropDownMenu(suiteName, suiteFailedTests, suiteSkippedTests));
 	            suiteReportPassed.append(Utility.endNavigationBar());
@@ -244,12 +181,9 @@ public class SuiteListener implements ISuiteListener{
 	            suiteReportPassed.append(Utility.startContainerWithMargin());
 	            suiteReportPassed.append(Utility.startRow());
 	            suiteReportPassed.append(Utility.startColumn(3));
-	            suiteReportPassed.append(Utility.startAffix());
 	            suiteReportPassed.append(Utility.suiteSummaryStatusInfo(suiteName));
 		    	
 		    	suiteReportPassed.append(Utility.suitePassedContextSummaryInfo(passedtextContextSummaryReport, suitePassedTests));
-				
-				suiteReportPassed.append(Utility.endAffix());
 				suiteReportPassed.append(Utility.endColumn());
 				
 				suiteReportPassed.append(Utility.startColumn(9));
@@ -271,8 +205,8 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportFailed.append("<title>"+suiteName+" Failed Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+Utility.getModelJs());
 		    	suiteReportFailed.append(Utility.endHeadAndStartBody());
 		    	suiteReportFailed.append(Utility.startNavigationBar());
-		    	suiteReportFailed.append(Utility.backToSuitesSummaryLink());
-		    	suiteReportFailed.append(Utility.suiteIndexLink(suiteName));
+		    	suiteReportFailed.append(Utility.backToSuitesSummaryLink(false));
+		    	suiteReportFailed.append(Utility.suiteIndexLink(suiteName, false));
 		    	suiteReportFailed.append(Utility.suiteActiveFailed());
 		    	suiteReportFailed.append(Utility.suiteFailedDropDownMenu(suiteName, suitePassedTests, suiteSkippedTests));
 	            suiteReportFailed.append(Utility.endNavigationBar());
@@ -280,12 +214,10 @@ public class SuiteListener implements ISuiteListener{
 	            suiteReportFailed.append(Utility.startContainerWithMargin());
 	            suiteReportFailed.append(Utility.startRow());
 	            suiteReportFailed.append(Utility.startColumn(3));
-	            suiteReportFailed.append(Utility.startAffix());
 	            suiteReportFailed.append(Utility.suiteSummaryStatusInfo(suiteName));
 		    	
 		    	suiteReportFailed.append(Utility.suiteFailedContextSummaryInfo(failedtextContextSummaryReport, suiteFailedTests));
 		    	
-		    	suiteReportFailed.append(Utility.endAffix());
 		    	suiteReportFailed.append(Utility.endColumn());
 		    	
 				suiteReportFailed.append(Utility.startColumn(9));
@@ -308,8 +240,8 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportSkipped.append("<title>"+suiteName+" Skipped Results</title>"+Utility.getMetaInfo()+Utility.getBootstrapCss()+Utility.getInlineCss()+Utility.getJqueryJs()+Utility.getBootstrapJs()+Utility.getModelJs());
 		    	suiteReportSkipped.append(Utility.endHeadAndStartBody());
 		    	suiteReportSkipped.append(Utility.startNavigationBar());
-		    	suiteReportSkipped.append(Utility.backToSuitesSummaryLink());
-		    	suiteReportSkipped.append(Utility.suiteIndexLink(suiteName));
+		    	suiteReportSkipped.append(Utility.backToSuitesSummaryLink(false));
+		    	suiteReportSkipped.append(Utility.suiteIndexLink(suiteName, false));
 		    	suiteReportSkipped.append(Utility.suiteActiveSkipped());
 		    	suiteReportSkipped.append(Utility.suiteSkippedDropDownMenu(suiteName, suitePassedTests, suiteFailedTests));
 		    	
@@ -318,12 +250,10 @@ public class SuiteListener implements ISuiteListener{
 	            suiteReportSkipped.append(Utility.startContainerWithMargin());
 	            suiteReportSkipped.append(Utility.startRow());
 	            suiteReportSkipped.append(Utility.startColumn(3));
-	            suiteReportSkipped.append(Utility.startAffix());
 	            suiteReportSkipped.append(Utility.suiteSummaryStatusInfo(suiteName));
 		    	
 		    	suiteReportSkipped.append(Utility.suiteSkippedContextSummaryInfo(skippedtextContextSummaryReport, suiteSkippedTests));
 		    	
-		    	suiteReportSkipped.append(Utility.endAffix());
 		    	suiteReportSkipped.append(Utility.endColumn());
 				suiteReportSkipped.append(Utility.startColumn(9));
 		    	suiteReportSkipped.append(skippedTextContextReport);
@@ -336,41 +266,13 @@ public class SuiteListener implements ISuiteListener{
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-skipped.html", suiteReportSkipped.toString());
 		    }
 		    
-		    
 		} catch (Exception e) {
-			//logger.error(e.getMessage());
-			logger.error(Commons.getStackTraceAsString(e));
+			logger.error(e.getMessage());
 		}
 	}
 	
 	public void onStart(ISuite suite) {
-		try{
-		    if(mailProp.containsKey("mail.SendMail") && mailProp.getProperty("mail.SendMail").equalsIgnoreCase("true")){
-	    		String suiteName=suite.getName();
-	    		
-	    		String ToMail=mailProp.getProperty("mail.to");
-    			String CCMail=mailProp.getProperty("mail.cc");
-	    		if(mailProp.containsKey("mail."+suiteName+".to")){
-	    			ToMail=mailProp.getProperty("mail."+suiteName+".to");
-	    		}
-	    		if(mailProp.containsKey("mail."+suiteName+".cc")){
-	    			CCMail=mailProp.getProperty("mail."+suiteName+".cc");
-	    		}
-    			
-	    		StringBuffer subject = new StringBuffer();
-	    		subject.append("Suite '"+suiteName+"' Execution Started");
-	    		StringBuffer body = new StringBuffer();
-	    		body.append("Execution Report for '"+suiteName+"' suite will be in below mentioned location.<br/><br/>"+suite.getOutputDirectory());
-		    	MailClient mail = new MailClient();
-		    	if(CCMail==null || CCMail.equals("")){
-		    		mail.sendMail(ToMail.split(","), subject.toString(), body);
-		    	}else{
-		    		mail.sendMail(ToMail.split(","), subject.toString(), body, CCMail.split(","));
-		    	}
-		    }
-	    }catch(Exception e){
-	    	logger.error("Mail sending failed!! "+e.getMessage());
-	    }
+		
 	}
 	
 	protected void generateFailureSuite(XmlSuite xmlSuite, ISuite suite, String outputDir) {

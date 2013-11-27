@@ -118,7 +118,7 @@ public class Utility {
 	}
 	
 	public static String getInlineCss(){
-		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;}@media screen and (min-width: 768px) {.modal-dialog {width: 950px;}}@media(max-width:1080px){.side-affix {position: static; width: auto; top: 0;}}</style>";
+		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;}@media screen and (min-width: 1080px) {.modal-dialog {width: 950px;}}</style>";
 	}
 	
 	public static String getMailCss(){
@@ -265,32 +265,26 @@ public class Utility {
 		return endDiv();
 	}
 	
-	public static StringBuffer startAffix(){
-		return new StringBuffer().append("<div class='affix side-affix'>\n");
-	}
-	
-	public static StringBuffer endAffix(){
-		return endDiv();
-	}
-	
 	public static StringBuffer suiteSummaryAllInfo(String suiteName, long suiteStartTime, long suiteEndTime){
 		StringBuffer suiteSummaryInfo = new StringBuffer();
-		suiteSummaryInfo.append("<div class='row'><div class='table-responsive'>");
+		suiteSummaryInfo.append("<div class='row'><div class='col-md-12'><div class='table-responsive'>");
 		suiteSummaryInfo.append(startCondensedTable());
 		suiteSummaryInfo.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
 		suiteSummaryInfo.append("<tr><th>Start Time</th><td>"+Utility.sdf.format(suiteStartTime)+"</td></tr>");
 		suiteSummaryInfo.append("<tr><th>End Time</th><td>"+Utility.sdf.format(suiteEndTime)+"</td></tr>");
 		suiteSummaryInfo.append("<tr><th>Time Taken</th><td>"+Utility.timeTaken(suiteEndTime-suiteStartTime)+"</td></tr>");
 		suiteSummaryInfo.append(endTable());
-		suiteSummaryInfo.append("</div></div>");
+		suiteSummaryInfo.append("</div></div></div>");
 		return suiteSummaryInfo;
 	}
 	
 	public static StringBuffer suiteSummaryStatusInfo(String suiteName){
 		StringBuffer suiteSummaryInfo = new StringBuffer();
+		suiteSummaryInfo.append("<div class='row'><div class='col-md-12'><div class='table-responsive'>");
 		suiteSummaryInfo.append(startCondensedTable());
 		suiteSummaryInfo.append("<tr><th>Suite</th><td>"+suiteName+"</td></tr>");
 		suiteSummaryInfo.append(endTable());
+		suiteSummaryInfo.append("</div></div></div>");
 		return suiteSummaryInfo;
 	}
 	
@@ -308,31 +302,37 @@ public class Utility {
 	
 	public static StringBuffer suitePassedContextSummaryInfo(StringBuffer passedtextContextSummaryReport, int suitePassedTests){
 		StringBuffer suitePassedContextSummaryInfo = new StringBuffer();
+		suitePassedContextSummaryInfo.append("<div class='row'><div class='table-responsive'>");
 		suitePassedContextSummaryInfo.append(startCondensedTable());
 		suitePassedContextSummaryInfo.append("<tr><th>Test</th><th>Passed</th></tr>");
 		suitePassedContextSummaryInfo.append(passedtextContextSummaryReport);
 		suitePassedContextSummaryInfo.append("<tr><th>Total</th><th class='success'>"+suitePassedTests+"</th></tr>");
 		suitePassedContextSummaryInfo.append(endTable());
+		suitePassedContextSummaryInfo.append("</div></div>");
 		return suitePassedContextSummaryInfo;
 	}
 	
 	public static StringBuffer suiteFailedContextSummaryInfo(StringBuffer failedtextContextSummaryReport, int suiteFailedTests){
 		StringBuffer suiteFailedContextSummaryInfo = new StringBuffer();
+		suiteFailedContextSummaryInfo.append("<div class='row'><div class='table-responsive'>");
 		suiteFailedContextSummaryInfo.append(startCondensedTable());
 		suiteFailedContextSummaryInfo.append("<tr><th>Test</th><th>Failed</th></tr>");
 		suiteFailedContextSummaryInfo.append(failedtextContextSummaryReport);
 		suiteFailedContextSummaryInfo.append("<tr><th>Total</th><th class='danger'>"+suiteFailedTests+"</th></tr>");
 		suiteFailedContextSummaryInfo.append(endTable());
+		suiteFailedContextSummaryInfo.append("</div></div>");
 		return suiteFailedContextSummaryInfo;
 	}
 	
 	public static StringBuffer suiteSkippedContextSummaryInfo(StringBuffer skippedtextContextSummaryReport, int suiteSkippedTests){
 		StringBuffer suiteSkippedContextSummaryInfo = new StringBuffer();
+		suiteSkippedContextSummaryInfo.append("<div class='row'><div class='table-responsive'>");
 		suiteSkippedContextSummaryInfo.append(startCondensedTable());
 		suiteSkippedContextSummaryInfo.append("<tr><th>Test</th><th>Skipped</th></tr>");
 		suiteSkippedContextSummaryInfo.append(skippedtextContextSummaryReport);
 		suiteSkippedContextSummaryInfo.append("<tr><th>Total</th><th class='warning'>"+suiteSkippedTests+"</th></tr>");
 		suiteSkippedContextSummaryInfo.append(endTable());
+		suiteSkippedContextSummaryInfo.append("</div></div>");
 		return suiteSkippedContextSummaryInfo;
 	}
 	
@@ -384,7 +384,7 @@ public class Utility {
 	public static StringBuffer suitesSummaryRow(long startTimeOfSuites, long endTimeOfSuites, int totalPassedTests,int totalFailedTests, int totalSkippedTests){
 		int totalTests = totalPassedTests+totalFailedTests+totalSkippedTests;
 		StringBuffer suiteListHeader = new StringBuffer();
-		suiteListHeader.append("<tr>");
+		suiteListHeader.append("<tfoot><tr>");
 		suiteListHeader.append("<th>Total</th>");
 		suiteListHeader.append("<th>"+sdf.format(startTimeOfSuites)+"</th>");
 		suiteListHeader.append("<th>"+sdf.format(endTimeOfSuites)+"</th>");
@@ -393,7 +393,7 @@ public class Utility {
 		suiteListHeader.append("<th class='danger'>"+totalFailedTests+(totalFailedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalFailedTests)+"%)" : "")+"</th>");
 		suiteListHeader.append("<th class='warning'>"+totalSkippedTests+(totalSkippedTests > 0 ? " ("+Commons.percentageCalculator(totalTests,totalSkippedTests)+"%)" : "")+"</th>");
 		suiteListHeader.append("<th>"+totalTests+"</th>");
-		suiteListHeader.append("</tr>");
+		suiteListHeader.append("</tr></tfoot>");
 		return suiteListHeader;
 	}
 	
@@ -409,12 +409,22 @@ public class Utility {
 		return new StringBuffer().append("</body></html>");
 	}
 	
-	public static StringBuffer backToSuitesSummaryLink(){
-		return new StringBuffer().append("<li><a href='../suites-summary-index.html'>Suite Summary</a></li>");
+	public static StringBuffer backToSuitesSummaryLink(boolean isMail){
+		if(!isMail){
+			return new StringBuffer().append("<li><a href='../suites-summary-index.html'>Suite Summary</a></li>");
+		}else{
+			return new StringBuffer().append("<li>Suite Summary</li>");
+		}
+		
 	}
 	
-	public static StringBuffer suiteIndexLink(String suiteName){
-		return new StringBuffer().append("<li><a href='suite-"+suiteName+"-index.html'>"+suiteName+"</a></li>");
+	public static StringBuffer suiteIndexLink(String suiteName, boolean isMail){
+		if(!isMail){
+			return new StringBuffer().append("<li><a href='suite-"+suiteName+"-index.html'>"+suiteName+"</a></li>");
+		}else{
+			return new StringBuffer().append("<li>"+suiteName+"</li>");
+		}
+		
 	}
 	
 	public static StringBuffer suiteActiveAll(){
@@ -553,11 +563,11 @@ public class Utility {
 	} 
 	
 	public static StringBuffer suiteContextSummaryHeader(){
-		return new StringBuffer().append("<tr><th>Test</th><th>Passed</th><th>Failed</th><th>Skipped</th><th>Total</th></tr>");
+		return new StringBuffer().append("<thead><tr><th>Test</th><th>Passed</th><th>Failed</th><th>Skipped</th><th>Total</th></tr></thead>");
 	}
 	
 	public static StringBuffer suiteContextSummaryFooter(int suiteTotalTests, int suitePassedTests, int suiteFailedTests, int suiteSkippedTests){
-		return new StringBuffer().append("<tr><th>Total</th><th class='success'>"+suitePassedTests+(suitePassedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suitePassedTests)+"%)" : "")+"</th><th class='danger'>"+suiteFailedTests+(suiteFailedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suiteFailedTests)+"%)" : "")+"</th><th class='warning'>"+suiteSkippedTests+(suiteSkippedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suiteSkippedTests)+"%)" : "")+"</th><th>"+suiteTotalTests+"</th></tr>");
+		return new StringBuffer().append("<tfoot><tr><th>Total</th><th class='success'>"+suitePassedTests+(suitePassedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suitePassedTests)+"%)" : "")+"</th><th class='danger'>"+suiteFailedTests+(suiteFailedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suiteFailedTests)+"%)" : "")+"</th><th class='warning'>"+suiteSkippedTests+(suiteSkippedTests > 0 ? " ("+Commons.percentageCalculator(suiteTotalTests,suiteSkippedTests)+"%)" : "")+"</th><th>"+suiteTotalTests+"</th></tr></tfoot>");
 	}
 	
 	public static StringBuffer testDetailReport(List<ITestResult> testResults){
@@ -649,7 +659,51 @@ public class Utility {
 	    	resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>");
 	    	resultsStringBuffer.append("<td>"+tikeTakenForResult(eachTestResult)+"</td>");
 	    	String testStatus=statusForResult(eachTestResult);
-	    	resultsStringBuffer.append("<td>"+testStatus+"</td>");
+	    	String errorMessage = "";
+	    	if(eachTestResult.getStatus() != ITestResult.SUCCESS){
+	    		errorMessage+="<div class=\"panel-group\" id=\"accordion\">";
+	    		int errorId = 1;
+	    		if(VerificationErrorsInTest.hasVerificationErrors(eachTestResult)){
+					List<VerificationError> verificationErrors = VerificationErrorsInTest.getTestErrors(eachTestResult);
+					Iterator<VerificationError> iter = verificationErrors.iterator();
+    				while(iter.hasNext()){
+    					VerificationError errorDetails = iter.next();
+    					errorMessage+="<div class=\"panel panel-info\">";
+    						errorMessage+="<div class=\"panel-heading\">";
+    							errorMessage+="<h4 class=\"panel-title\">";
+    								errorMessage+="<a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse"+errorId+"\">"+errorDetails.getAssertionError().getMessage()+"</a>";
+    							errorMessage+="</h4>";
+    						errorMessage+="</div>";
+    						errorMessage+="<div id=\"collapse"+errorId+"\" class=\"panel-collapse collapse\">";
+    							errorMessage+="<div class=\"panel-body\">";
+    								errorMessage+="Verification Failure <br>";
+    								errorMessage+=Commons.getStackTraceAsString(errorDetails.getAssertionError())+"<br>";
+    							errorMessage+="</div>";
+    						errorMessage+="</div>";
+						errorMessage+="</div>";
+						errorId++;
+    				}
+				}
+	    		
+				if(eachTestResult.getThrowable()!=null && !eachTestResult.getThrowable().getMessage().equals(Commons.verificationFailuresMessage)){
+					String[] stackTraces = Utils.stackTrace(eachTestResult.getThrowable(), true);
+					errorMessage+="<div class=\"panel panel-danger\">";
+						errorMessage+="<div class=\"panel-heading\">";
+							errorMessage+="<h4 class=\"panel-title\">";
+								errorMessage+="<a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse"+errorId+"\">"+eachTestResult.getThrowable().getMessage()+"</a>";
+							errorMessage+="</h4>";
+						errorMessage+="</div>";
+						errorMessage+="<div id=\"collapse"+errorId+"\" class=\"panel-collapse collapse\">";
+							errorMessage+="<div class=\"panel-body\">";
+								errorMessage+=stackTraces[1]+"<br>";
+							errorMessage+="</div>";
+						errorMessage+="</div>";
+					errorMessage+="</div>";
+				}
+				
+				errorMessage+="</div>";
+	    	}
+	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a data-toggle=\"modal\" href=\"#myModal\" class=\"openDialog btn btn-sm btn-default\" data-showthismessage=\""+(errorMessage!="" ? Utils.escapeHtml(errorMessage) : "")+"\">"+testStatus+"</a>") +"</td>\n");
 	    	resultsStringBuffer.append("</tr>");
     		i++;
     	}
@@ -674,14 +728,14 @@ public class Utility {
 	
 	public static StringBuffer headerContextDetailedReport(){
 		StringBuffer testResultsHeader = new StringBuffer();
-		testResultsHeader.append("<tr>");
+		testResultsHeader.append("<thead><tr>");
 		testResultsHeader.append("<th>S.No</th>");
 		testResultsHeader.append("<th>Test Case</th>");
 		testResultsHeader.append("<th>Start Time</th>");
 		testResultsHeader.append("<th>End Time</th>");
 		testResultsHeader.append("<th>Time Taken</th>");
 		testResultsHeader.append("<th>Status</th>");
-		testResultsHeader.append("</tr>");
+		testResultsHeader.append("</tr></thead>");
 		return testResultsHeader;
 	}
 	
