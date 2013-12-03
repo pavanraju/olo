@@ -1,7 +1,6 @@
 package com.olo.util;
 
 import static com.olo.util.PropertyReader.webElements;
-import static com.olo.util.PropertyReader.app;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -212,6 +211,7 @@ public class Commons {
 							throw new KeywordConfigurationException("Missing Property Name at Line Number : "+(row.getRowNum()+1));
 						}
 					}
+					/*
 					try {
 						prop.setActualValue(Commons.replaceMessageMatchers(prop.getValue()));
 					} catch (KeywordConfigurationException e) {
@@ -219,7 +219,7 @@ public class Commons {
 					} catch (Exception e) {
 						throw e;
 					}
-					
+					*/
 					excelRowsAsProbObject.add(prop);
 				}
 			}
@@ -409,7 +409,7 @@ public class Commons {
 		}
 		return sb.toString();
 	}
-	
+	/*
 	public static String replaceMessageMatchers(String expectedValue) throws Exception{
 		StringBuffer sb = new StringBuffer(expectedValue);
 		Matcher matcher = messagesPattern.matcher(sb);
@@ -429,7 +429,7 @@ public class Commons {
 		}
 		return sb.toString();
 	}
-	
+	*/
 	public static String getStackTraceAsString(Error e){
 		StringWriter sw = new StringWriter();
 	    PrintWriter pw = new PrintWriter(sw);

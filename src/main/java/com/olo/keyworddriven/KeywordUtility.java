@@ -72,7 +72,7 @@ public class KeywordUtility {
 	public void replaceTestData(ArrayList<KeywordPropObject> excelSteps, HashMap<String,String> testData) throws Exception{
 		for(int i=0;i<excelSteps.size();i++){
 			String replacedTestData = Commons.replaceTestData(excelSteps.get(i).getValue(),testData);
-			excelSteps.get(i).setActualValue(Commons.replaceMessageMatchers(replacedTestData));
+			excelSteps.get(i).setActualValue(replacedTestData);
 		}
 	}
 	

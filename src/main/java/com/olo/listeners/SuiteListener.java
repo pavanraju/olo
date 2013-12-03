@@ -44,7 +44,6 @@ public class SuiteListener implements ISuiteListener{
 			long suiteStartTime = 0;
 			long suiteEndTime = 0;
 			long temp = 0;
-			int contextCount = 0;
 			StringBuffer textContextSummaryAndDetailedReport = new StringBuffer();
 			StringBuffer suiteContextSummaryReport = new StringBuffer();
 			StringBuffer passedtextContextSummaryReport = new StringBuffer();
@@ -58,7 +57,6 @@ public class SuiteListener implements ISuiteListener{
 			StringBuffer errorModelWindow = Utility.getErrorModelWindow();
 			
 			for (ISuiteResult suiteResult : results.values()) {
-				contextCount++;
 				ITestContext suiteTestContext = suiteResult.getTestContext();
 				if(ctr == 0){
 					suiteStartTime = suiteTestContext.getStartDate().getTime();
@@ -81,12 +79,12 @@ public class SuiteListener implements ISuiteListener{
 				int contextSkippedTests=suiteTestContext.getSkippedTests().size();
 				suiteSkippedTests+=contextSkippedTests;
 				int contextTotalTests=contextPassedTests+contextFailedTests+contextSkippedTests;
-			    
-				suiteContextSummaryReport.append("<tr><td><a href=#testContext"+contextCount+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td><td class='danger'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
+				String testContextAsId = suiteTestContext.getName().replaceAll(" ", "-");
+				suiteContextSummaryReport.append("<tr><td><a href=#"+testContextAsId+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td><td class='danger'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
 			    /**
 			     * All Context
 			     */
-			    StringBuffer textContextSummary = Utility.contextSummaryReport(suiteTestContext, contextCount);
+			    StringBuffer textContextSummary = Utility.contextSummaryReport(suiteTestContext);
 			    textContextSummaryAndDetailedReport.append(textContextSummary);
 			    StringBuffer currentTextContextDetailedReport = Utility.contextDetailedReport(suiteTestContext, false);
 			    textContextSummaryAndDetailedReport.append(currentTextContextDetailedReport);
@@ -96,7 +94,7 @@ public class SuiteListener implements ISuiteListener{
 			     */
 			    
 			    if(contextPassedTests>0){
-			    	passedtextContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td></tr>");
+			    	passedtextContextSummaryReport.append("<tr><td><a href=#"+testContextAsId+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td></tr>");
 			    	passedTextContextReport.append(Utility.passedContextDetailedReport(suiteTestContext));
 			    }
 			    
@@ -105,7 +103,7 @@ public class SuiteListener implements ISuiteListener{
 			     */
 			    
 			    if(contextFailedTests>0){
-			    	failedtextContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='danger'>"+contextFailedTests+"</td></tr>");
+			    	failedtextContextSummaryReport.append("<tr><td><a href=#"+testContextAsId+">"+suiteTestContext.getName()+"</a></td><td class='danger'>"+contextFailedTests+"</td></tr>");
 			    	failedTextContextReport.append(Utility.failedContextDetailedReport(suiteTestContext));
 			    }
 			    
@@ -114,7 +112,7 @@ public class SuiteListener implements ISuiteListener{
 			     */
 			    
 			    if(contextSkippedTests>0){
-			    	skippedtextContextSummaryReport.append("<tr><td><a href=#"+suiteTestContext.getName()+">"+suiteTestContext.getName()+"</a></td><td class='warning'>"+contextSkippedTests+"</td></tr>");
+			    	skippedtextContextSummaryReport.append("<tr><td><a href=#"+testContextAsId+">"+suiteTestContext.getName()+"</a></td><td class='warning'>"+contextSkippedTests+"</td></tr>");
 			    	skippedTextContextReport.append(Utility.skippedContextDetailedReport(suiteTestContext));
 			    }
 			    

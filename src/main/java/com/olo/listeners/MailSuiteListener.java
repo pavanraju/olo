@@ -33,14 +33,12 @@ public class MailSuiteListener implements ISuiteListener{
 			long suiteStartTime = 0;
 			long suiteEndTime = 0;
 			long temp = 0;
-			int contextCount = 0;
 			StringBuffer textContextSummaryAndDetailedReport = new StringBuffer();
 			StringBuffer suiteContextSummaryReport = new StringBuffer();
 			
 			StringBuffer errorModelWindow = Utility.getErrorModelWindow();
 			
 			for (ISuiteResult suiteResult : results.values()) {
-				contextCount++;
 				ITestContext suiteTestContext = suiteResult.getTestContext();
 				if(ctr == 0){
 					suiteStartTime = suiteTestContext.getStartDate().getTime();
@@ -63,12 +61,12 @@ public class MailSuiteListener implements ISuiteListener{
 				int contextSkippedTests=suiteTestContext.getSkippedTests().size();
 				suiteSkippedTests+=contextSkippedTests;
 				int contextTotalTests=contextPassedTests+contextFailedTests+contextSkippedTests;
-			    
-				suiteContextSummaryReport.append("<tr><td><a href=#testContext"+contextCount+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td><td class='danger'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
+				String testContextAsId = suiteTestContext.getName().replaceAll(" ", "-");
+				suiteContextSummaryReport.append("<tr><td><a href=#"+testContextAsId+">"+suiteTestContext.getName()+"</a></td><td class='success'>"+contextPassedTests+"</td><td class='danger'>"+contextFailedTests+"</td><td class='warning'>"+contextSkippedTests+"</td><th>"+contextTotalTests+"</th></tr>");
 			    /**
 			     * All Context
 			     */
-			    StringBuffer textContextSummary = Utility.contextSummaryReport(suiteTestContext, contextCount);
+			    StringBuffer textContextSummary = Utility.contextSummaryReport(suiteTestContext);
 			    textContextSummaryAndDetailedReport.append(textContextSummary);
 			    StringBuffer currentTextContextDetailedReport = Utility.contextDetailedReport(suiteTestContext, true);
 			    textContextSummaryAndDetailedReport.append(currentTextContextDetailedReport);

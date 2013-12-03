@@ -302,37 +302,37 @@ public class Utility {
 	
 	public static StringBuffer suitePassedContextSummaryInfo(StringBuffer passedtextContextSummaryReport, int suitePassedTests){
 		StringBuffer suitePassedContextSummaryInfo = new StringBuffer();
-		suitePassedContextSummaryInfo.append("<div class='row'><div class='table-responsive'>");
+		suitePassedContextSummaryInfo.append("<div class='row'><div class='col-md-12'><div class='table-responsive'>");
 		suitePassedContextSummaryInfo.append(startCondensedTable());
 		suitePassedContextSummaryInfo.append("<tr><th>Test</th><th>Passed</th></tr>");
 		suitePassedContextSummaryInfo.append(passedtextContextSummaryReport);
 		suitePassedContextSummaryInfo.append("<tr><th>Total</th><th class='success'>"+suitePassedTests+"</th></tr>");
 		suitePassedContextSummaryInfo.append(endTable());
-		suitePassedContextSummaryInfo.append("</div></div>");
+		suitePassedContextSummaryInfo.append("</div></div></div>");
 		return suitePassedContextSummaryInfo;
 	}
 	
 	public static StringBuffer suiteFailedContextSummaryInfo(StringBuffer failedtextContextSummaryReport, int suiteFailedTests){
 		StringBuffer suiteFailedContextSummaryInfo = new StringBuffer();
-		suiteFailedContextSummaryInfo.append("<div class='row'><div class='table-responsive'>");
+		suiteFailedContextSummaryInfo.append("<div class='row'><div class='col-md-12'><div class='table-responsive'>");
 		suiteFailedContextSummaryInfo.append(startCondensedTable());
 		suiteFailedContextSummaryInfo.append("<tr><th>Test</th><th>Failed</th></tr>");
 		suiteFailedContextSummaryInfo.append(failedtextContextSummaryReport);
 		suiteFailedContextSummaryInfo.append("<tr><th>Total</th><th class='danger'>"+suiteFailedTests+"</th></tr>");
 		suiteFailedContextSummaryInfo.append(endTable());
-		suiteFailedContextSummaryInfo.append("</div></div>");
+		suiteFailedContextSummaryInfo.append("</div></div></div>");
 		return suiteFailedContextSummaryInfo;
 	}
 	
 	public static StringBuffer suiteSkippedContextSummaryInfo(StringBuffer skippedtextContextSummaryReport, int suiteSkippedTests){
 		StringBuffer suiteSkippedContextSummaryInfo = new StringBuffer();
-		suiteSkippedContextSummaryInfo.append("<div class='row'><div class='table-responsive'>");
+		suiteSkippedContextSummaryInfo.append("<div class='row'><div class='col-md-12'><div class='table-responsive'>");
 		suiteSkippedContextSummaryInfo.append(startCondensedTable());
 		suiteSkippedContextSummaryInfo.append("<tr><th>Test</th><th>Skipped</th></tr>");
 		suiteSkippedContextSummaryInfo.append(skippedtextContextSummaryReport);
 		suiteSkippedContextSummaryInfo.append("<tr><th>Total</th><th class='warning'>"+suiteSkippedTests+"</th></tr>");
 		suiteSkippedContextSummaryInfo.append(endTable());
-		suiteSkippedContextSummaryInfo.append("</div></div>");
+		suiteSkippedContextSummaryInfo.append("</div></div></div>");
 		return suiteSkippedContextSummaryInfo;
 	}
 	
@@ -652,9 +652,10 @@ public class Utility {
 		int i=1;
 		for (ITestResult eachTestResult : testResults) {
 			String testName = eachTestResult.getName();
+			String testDescription = eachTestResult.getMethod().getDescription();
 	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "danger" : "warning") )+"'>");
 	    	resultsStringBuffer.append("<td>"+i+"</td>");
-	    	resultsStringBuffer.append("<td>"+testName+"</td>");
+	    	resultsStringBuffer.append("<td><div "+(testDescription != null ? "class=\"testNameToolTip\" data-toggle=\"tooltip\" data-placement=\"top\" title=\""+testDescription+"\"" : "")+" >"+testName+"</div></td>");
 	    	resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>");
 	    	resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>");
 	    	resultsStringBuffer.append("<td>"+tikeTakenForResult(eachTestResult)+"</td>");
@@ -748,7 +749,7 @@ public class Utility {
 	
 	private static StringBuffer getContextDetailedReport(String contextName,Set<ITestResult> results, boolean isMail){
 		StringBuffer contextReport = new StringBuffer();
-		contextReport.append("<div class='row'><div class='col-md-12'><div class='table-responsive'><table class='table table-bordered' id='"+contextName+"' >");
+		contextReport.append("<div class='row'><div class='col-md-12'><div class='table-responsive'><table class='table table-bordered' id='"+contextName.replaceAll(" ", "-")+"' >");
 		contextReport.append("<caption>Detailed report of "+contextName+" Tests</caption>");
 		contextReport.append(headerContextDetailedReport());
 		if(isMail){
@@ -773,12 +774,12 @@ public class Utility {
 		return getContextDetailedReport(ctx.getName(),ctx.getPassedTests().getAllResults(), false);
 	}
 	
-	public static StringBuffer contextSummaryReport(ITestContext ctx, int contextCount){
+	public static StringBuffer contextSummaryReport(ITestContext ctx){
 		String contextStartTime = Utility.sdf.format(ctx.getStartDate().getTime());
 		String contextEndTime = Utility.sdf.format(ctx.getEndDate().getTime());
 		String contextTimeTaken = Utility.timeTaken(ctx.getEndDate().getTime()-ctx.getStartDate().getTime());
 		StringBuffer textContextSummary = new StringBuffer();
-	    textContextSummary.append("<div class='row'><div class='col-md-6'><div class='table-responsive'><table class='table table-bordered' id='testContext"+contextCount+"'><tr><th>Test</th><td>"+ctx.getName()+"</td></tr>");
+	    textContextSummary.append("<div class='row'><div class='col-md-6'><div class='table-responsive'><table class='table table-bordered' id='"+ctx.getName().replaceAll(" ", "-")+"'><tr><th>Test</th><td>"+ctx.getName()+"</td></tr>");
 	    textContextSummary.append("<tr><th>Start Time</th><td>"+contextStartTime+"</td></tr>");
 	    textContextSummary.append("<tr><th>End Time</th><td>"+contextEndTime+"</td></tr>");
 	    textContextSummary.append("<tr><th>Time Taken</th><td>"+contextTimeTaken+"</td></tr>");
