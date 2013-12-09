@@ -13,10 +13,10 @@ import org.testng.annotations.Test;
 
 import com.olo.annotations.Reporter;
 import com.olo.bot.BrowserBot;
-import com.olo.initiator.Configuration;
+import com.olo.initiator.ApplicationInitiator;
 import com.olo.propobject.KeywordPropObject;
 
-public class DataDrivenRunner extends Configuration implements ITest{
+public class DataDrivenRunner extends ApplicationInitiator implements ITest{
 
 	private static final Logger logger = LogManager.getLogger(DataDrivenRunner.class.getName());
 	private String testFilePath;
@@ -45,26 +45,13 @@ public class DataDrivenRunner extends Configuration implements ITest{
 	@Reporter(com.olo.annotations.KeywordDriven.class)
 	@Test(dataProvider="getTestData")
 	public void keywordTest(ITestContext ctx,HashMap<String, String> testData) throws Exception{
-		WebDriver driver = getDriverBySetTimeOutsAndOpenUrl(ctx);
-		try {
-			BrowserBot browser = new BrowserBot(driver);
-			ArrayList<KeywordPropObject> excelSteps = new KeywordUtility().getExcelSteps(testFilePath);
-			new KeywordUtility().replaceTestData(excelSteps, testData);
-			new KeywordUtility().validateSteps(excelSteps);
-			logger.info("Executing Test File "+testFilePath);
-			new Execution(browser, new Keywords(browser)).run(ctx, excelSteps);
-		} catch (Error err) {
-			takeScreenShotForTest(driver);
-			throw err;
-		} catch (Exception ex) {
-			takeScreenShotForTest(driver);
-			throw ex;
-		} catch (Throwable thr) {
-			takeScreenShotForTest(driver);
-			throw new Exception(thr.getCause().getMessage());
-		}finally{
-			closeDriver(driver);
-		}
+		WebDriver driver = getDriver();
+		BrowserBot browser = new BrowserBot(driver);
+		ArrayList<KeywordPropObject> excelSteps = new KeywordUtility().getExcelSteps(testFilePath);
+		new KeywordUtility().replaceTestData(excelSteps, testData);
+		new KeywordUtility().validateSteps(excelSteps);
+		logger.info("Executing Test File "+testFilePath);
+		new Execution(browser, new Keywords(browser)).run(ctx, excelSteps);
 	}
 
 }

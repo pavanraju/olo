@@ -169,7 +169,7 @@ public class Commons {
 			Row row = rows.next();
 			KeywordPropObject prop = getKeywordPropObject(row);
 			if(prop!=null){
-				if(prop.getAction().equals("Else") || prop.getAction().equals("EndIf")){
+				if(prop.getCommand().equals("Else") || prop.getCommand().equals("EndIf")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
 					/*
@@ -188,7 +188,7 @@ public class Commons {
 					lprop.setSkip(true);
 					excelRowsAsProbObject.add(lprop);
 					*/
-				}else if(prop.getAction().equals("IncludeFile")){
+				}else if(prop.getCommand().equals("IncludeFile")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
 					excelRowsAsProbObject.addAll(getExcelSteps(Commons.class.getResource(prop.getValue())));
@@ -197,13 +197,13 @@ public class Commons {
 					break;
 					*/
 				}else{
-					if(!prop.getPropertyName().isEmpty()){
-						String property = prop.getPropertyName();
+					if(!prop.getTarget().isEmpty()){
+						String property = prop.getTarget();
 						String propFile = property.substring(0, property.indexOf("."));
 						String propName = property.substring(property.indexOf(".")+1);
 						if(webElements.containsKey(propFile)){
 							if(webElements.get(propFile).containsKey(propName)){
-								prop.setPropertyValue(webElements.get(propFile).getProperty(propName));
+								prop.setTargetValue(webElements.get(propFile).getProperty(propName));
 							}else{
 								throw new KeywordConfigurationException("Missing Property Name at Line Number : "+(row.getRowNum()+1));
 							}
@@ -247,15 +247,15 @@ public class Commons {
 	
 	public KeywordPropObject getKeywordPropObject(Row row){
 		KeywordPropObject prop = new KeywordPropObject();
-		String action = row.getCell(0) == null ? "" : row.getCell(0).toString().trim();
-		String locatorName = row.getCell(1) == null ? "" : row.getCell(1).toString().trim();
+		String command = row.getCell(0) == null ? "" : row.getCell(0).toString().trim();
+		String target = row.getCell(1) == null ? "" : row.getCell(1).toString().trim();
 		String value = getCellValue(row,2);
 		String options = row.getCell(3) == null ? "" : row.getCell(3).toString().trim();
-		if (!(locatorName + value + action).trim().equals("")) {
-			prop.setPropertyName(locatorName);
+		if (!(target + value + command).trim().equals("")) {
+			prop.setTarget(target);
 			prop.setValue(value);
 			prop.setActualValue(value);
-			prop.setAction(action);
+			prop.setCommand(command);
 			prop.setOptions(options);
 			return prop;
 		}else{

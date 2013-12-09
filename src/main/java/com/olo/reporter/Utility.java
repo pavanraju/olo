@@ -37,9 +37,9 @@ public class Utility {
 		private static final long serialVersionUID = 1L;
 
 			{
-				put("action", "Action");
-		        put("propertyName", "Web Element");
-		        put("propertyValue", "Element Locator");
+				put("command", "Command");
+		        put("target", "Target");
+		        put("targetValue", "Target Value");
 		        put("value", "Value");
 		        put("actualValue", "Actual Value");
 		        put("options", "Options");
@@ -106,11 +106,11 @@ public class Utility {
 	}
 	
 	public static String getBootstrapCss(){
-		return "<link rel=\"stylesheet\" href=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css\">";
+		return "<link rel=\"stylesheet\" href=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css\">";
 	}
 	
 	public static String getBootstrapJs(){
-		return "<script src=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js\"></script>";
+		return "<script src=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js\"></script>";
 	}
 	
 	public static String getJqueryJs(){
@@ -119,10 +119,6 @@ public class Utility {
 	
 	public static String getInlineCss(){
 		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;}@media screen and (min-width: 1080px) {.modal-dialog {width: 950px;}}</style>";
-	}
-	
-	public static String getMailCss(){
-		return "<style type='text/css'>table{border:1px solid #808080;border-collapse:collapse;} table td{border:1px solid #808080} table th{border:1px solid #808080;background-color:#C0C0C0;} tr.success{background-color: #dff0d8;} tr.error{background-color: #f2dede;} tr.warning{background-color: #fcf8e3;}</style>";
 	}
 	
 	public static String getGoogleChartsJs(){
@@ -138,7 +134,7 @@ public class Utility {
 	}
 	
 	public static String getDescriptionTooltipJs(){
-		return "<script type='text/javascript'>$(document).ready(function() { $('.testNameToolTip').tooltip({html: true}); });</script>";
+		return "<script type='text/javascript'>$(document).ready(function() { $('.testNameToolTip').tooltip({html: true});  $('.testDetails').click(function(event){ event.preventDefault();$(this).children('.glyphicon').toggleClass('glyphicon-chevron-down');  $(this).closest('tr').next().toggle();});});</script>";
 	}
 	
 	public static String getModelJs(){
@@ -172,10 +168,6 @@ public class Utility {
 	
 	public static StringBuffer googleChartDraw(int totalPassedTests,int totalFailedTests, int totalSkippedTests){
 		return new StringBuffer().append("<script type='text/javascript'>function drawVisualization() { var data = new google.visualization.DataTable(); data.addColumn('string', 'Topping'); data.addColumn('number', 'Slices'); data.addRows([['Passed', "+totalPassedTests+"],['Failed', "+totalFailedTests+"],['Skipped', "+totalSkippedTests+"]]); new google.visualization.PieChart(document.getElementById('visualization')).draw(data,{'width':300,'height':200,slices: [{color: '#109618'}, {color:'#dc3912'}, {color: '#ff9900'}]});} google.setOnLoadCallback(drawVisualization); </script> ");
-	}
-	
-	public static StringBuffer mailSuiteSummaryHead(){
-		return new StringBuffer().append(getMailCss());
 	}
 	
 	public static StringBuffer endHeadAndStartBody(){
@@ -290,13 +282,13 @@ public class Utility {
 	
 	public static StringBuffer suiteContextSummaryAllInfo(StringBuffer suiteContextSummaryReport, int suiteTotalTests, int suitePassedTests, int suiteFailedTests, int suiteSkippedTests){
 		StringBuffer suiteContextSummaryInfo = new StringBuffer();
-		suiteContextSummaryInfo.append("<div class='row'><div class='table-responsive'>");
+		suiteContextSummaryInfo.append("<div class='row'><div class='col-md-12'><div class='table-responsive'>");
 		suiteContextSummaryInfo.append(startCondensedTable());
 		suiteContextSummaryInfo.append(suiteContextSummaryHeader());
 		suiteContextSummaryInfo.append(suiteContextSummaryReport);
 		suiteContextSummaryInfo.append(suiteContextSummaryFooter(suiteTotalTests, suitePassedTests, suiteFailedTests, suiteSkippedTests));
 		suiteContextSummaryInfo.append(endTable());
-		suiteContextSummaryInfo.append("</div></div>");
+		suiteContextSummaryInfo.append("</div></div></div>");
 		return suiteContextSummaryInfo;
 	}
 	
@@ -581,15 +573,15 @@ public class Utility {
 	    	}
 	    	resultsStringBuffer.append("<tr class=\""+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "danger" : "warning") )+"\">\n");
 	    	
-	    	resultsStringBuffer.append("<td>"+i+"</td>\n");
+	    	resultsStringBuffer.append("<td><a class=\"testDetails\" href=\"#\"><span class=\"glyphicon glyphicon-chevron-right\"></span>"+i+"</a></td>\n");
 	    	String testDescription = eachTestResult.getMethod().getDescription();
 	    	if(testCasePath==null){
 	    		resultsStringBuffer.append("<td><div "+(testDescription != null ? "class=\"testNameToolTip\" data-toggle=\"tooltip\" data-placement=\"top\" title=\""+testDescription+"\"" : "")+" >"+testName+"</div></td>\n");
 	    	}else{
 	    		resultsStringBuffer.append("<td><a href=\""+testCasePath+"\" "+(testDescription != null ? "class=\"testNameToolTip\" data-toggle=\"tooltip\" data-placement=\"top\" title=\""+testDescription+"\"" : "")+" >"+testName+"</a></td>\n");
 	    	}
-	    	resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>\n");
-	    	resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>\n");
+	    	//resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>\n");
+	    	//resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>\n");
 	    	resultsStringBuffer.append("<td>"+tikeTakenForResult(eachTestResult)+"</td>\n");
 	    	String testStatus = statusForResult(eachTestResult);
 	    	String errorMessage = "";
@@ -642,6 +634,15 @@ public class Utility {
 	    	}
 	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a data-toggle=\"modal\" href=\"#myModal\" class=\"openDialog btn btn-sm btn-default\" data-showthismessage=\""+(errorMessage!="" ? Utils.escapeHtml(errorMessage) : "")+"\">"+testStatus+"</a>") +"</td>\n");
 	    	resultsStringBuffer.append("</tr>\n");
+	    	Object[] parameters = eachTestResult.getParameters();
+	        boolean hasParameters = parameters != null && parameters.length > 0;
+	        String paramets = "";
+	        if (hasParameters) {
+	        	for (int x = 0; x < parameters.length; x++) {
+	        		paramets+="<dt>Parameter "+(x+1)+"</dt><dd>"+Utils.escapeHtml(Utils.toString(parameters[x]))+"</dd>";
+	        	}
+	        }
+	    	resultsStringBuffer.append("<tr style=\"display:none\"><td colspan=\"4\"><div><dl class=\"dl-horizontal\"><dt>Class Name</dt><dd>"+eachTestResult.getInstanceName()+"</dd><dt>Start Time</dt><dd>"+startTimeForResult(eachTestResult)+"</dd><dt>End Time</dt><dd>"+endTimeForResult(eachTestResult)+"</dd>"+(paramets != "" ? paramets : "")+"</dl></div></td></tr>\n");
     		i++;
     	}
 		return resultsStringBuffer;
@@ -654,10 +655,10 @@ public class Utility {
 			String testName = eachTestResult.getName();
 			String testDescription = eachTestResult.getMethod().getDescription();
 	    	resultsStringBuffer.append("<tr class='"+((eachTestResult.getStatus()==ITestResult.SUCCESS) ? "success" : (eachTestResult.getStatus()==ITestResult.FAILURE ? "danger" : "warning") )+"'>");
-	    	resultsStringBuffer.append("<td>"+i+"</td>");
+	    	resultsStringBuffer.append("<td><a class=\"testDetails\" href=\"#\"><span class=\"glyphicon glyphicon-chevron-right\"></span>"+i+"</a></td>\n");
 	    	resultsStringBuffer.append("<td><div "+(testDescription != null ? "class=\"testNameToolTip\" data-toggle=\"tooltip\" data-placement=\"top\" title=\""+testDescription+"\"" : "")+" >"+testName+"</div></td>");
-	    	resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>");
-	    	resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>");
+	    	//resultsStringBuffer.append("<td>"+startTimeForResult(eachTestResult)+"</td>");
+	    	//resultsStringBuffer.append("<td>"+endTimeForResult(eachTestResult)+"</td>");
 	    	resultsStringBuffer.append("<td>"+tikeTakenForResult(eachTestResult)+"</td>");
 	    	String testStatus=statusForResult(eachTestResult);
 	    	String errorMessage = "";
@@ -705,7 +706,16 @@ public class Utility {
 				errorMessage+="</div>";
 	    	}
 	    	resultsStringBuffer.append("<td>"+(eachTestResult.getStatus()== ITestResult.SUCCESS ? testStatus : "<a data-toggle=\"modal\" href=\"#myModal\" class=\"openDialog btn btn-sm btn-default\" data-showthismessage=\""+(errorMessage!="" ? Utils.escapeHtml(errorMessage) : "")+"\">"+testStatus+"</a>") +"</td>\n");
-	    	resultsStringBuffer.append("</tr>");
+	    	resultsStringBuffer.append("</tr>\n");
+	    	Object[] parameters = eachTestResult.getParameters();
+	        boolean hasParameters = parameters != null && parameters.length > 0;
+	        String paramets = "";
+	        if (hasParameters) {
+	        	for (int x = 0; x < parameters.length; x++) {
+	        		paramets+="<dt>Parameter "+(x+1)+"</dt><dd>"+Utils.escapeHtml(Utils.toString(parameters[x]))+"</dd>";
+	        	}
+	        }
+	        resultsStringBuffer.append("<tr style=\"display:none\"><td colspan=\"4\"><div><dl class=\"dl-horizontal\"><dt>Class Name</dt><dd>"+eachTestResult.getInstanceName()+"</dd><dt>Start Time</dt><dd>"+startTimeForResult(eachTestResult)+"</dd><dt>End Time</dt><dd>"+endTimeForResult(eachTestResult)+"</dd>"+(paramets != "" ? paramets : "")+"</dl></div></td></tr>\n");
     		i++;
     	}
 		return resultsStringBuffer;
@@ -732,8 +742,8 @@ public class Utility {
 		testResultsHeader.append("<thead><tr>");
 		testResultsHeader.append("<th>S.No</th>");
 		testResultsHeader.append("<th>Test Case</th>");
-		testResultsHeader.append("<th>Start Time</th>");
-		testResultsHeader.append("<th>End Time</th>");
+		//testResultsHeader.append("<th>Start Time</th>");
+		//testResultsHeader.append("<th>End Time</th>");
 		testResultsHeader.append("<th>Time Taken</th>");
 		testResultsHeader.append("<th>Status</th>");
 		testResultsHeader.append("</tr></thead>");

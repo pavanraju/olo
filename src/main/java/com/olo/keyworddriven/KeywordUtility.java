@@ -42,16 +42,16 @@ public class KeywordUtility {
 		int startDataTableCount = 0;
 		int endDataTableCount = 0;
 		for(int i=0;i<excelSteps.size();i++){
-			if(excelSteps.get(i).getAction().startsWith("If")){
+			if(excelSteps.get(i).getCommand().startsWith("If")){
 				ifConditionCount++;
 			}
-			if(excelSteps.get(i).getAction().equals("EndIf")){
+			if(excelSteps.get(i).getCommand().equals("EndIf")){
 				endIfcount++;
 			}
-			if(excelSteps.get(i).getAction().equals("StartDataTable")){
+			if(excelSteps.get(i).getCommand().equals("StartDataTable")){
 				startDataTableCount++;
 			}
-			if(excelSteps.get(i).getAction().equals("EndDataTable")){
+			if(excelSteps.get(i).getCommand().equals("EndDataTable")){
 				endDataTableCount++;
 			}
 		}

@@ -1,5 +1,7 @@
 package com.olo.initiator;
 
+import static com.olo.util.PropertyReader.configProp;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
@@ -12,7 +14,8 @@ public class ApplicationInitiator extends Configuration{
 	
 	@BeforeMethod
 	public void beforeTestMethod(ITestContext ctx) throws Exception{
-		threadDriver.set(getDriverBySetTimeOutsAndOpenUrl(ctx));
+		threadDriver.set(getDriverBySetTimeOuts(ctx));
+		openUrl(getDriver(), configProp.getProperty("url"));
 	}
 	
 	public WebDriver getDriver() {

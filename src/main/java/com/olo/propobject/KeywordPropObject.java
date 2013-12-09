@@ -8,9 +8,9 @@ public class KeywordPropObject implements Cloneable {
 	
 	private static final Logger logger = LogManager.getLogger(KeywordPropObject.class.getName());
 	
-	private String propertyName = "";
-	private String propertyValue = "";
-	private String action = "";
+	private String target = "";
+	private String targetValue = "";
+	private String command = "";
 	private String value = "";
 	private String actualValue="";
 	private Boolean skip = false;
@@ -27,29 +27,29 @@ public class KeywordPropObject implements Cloneable {
 	private boolean ifSkipped = false;
 	private boolean conditionSkip=false;
 	private String options = "" ;
-
-	public String getPropertyName() {
-		return propertyName;
-	}
-
-	public void setPropertyName(String propertyName) {
-		this.propertyName = propertyName;
-	}
-
-	public String getPropertyValue() {
-		return propertyValue;
-	}
-
-	public void setPropertyValue(String propertyValue) {
-		this.propertyValue = propertyValue;
-	}
 	
-	public String getAction() {
-		return action;
+	public String getTarget() {
+		return target;
 	}
 
-	public void setAction(String action) {
-		this.action = action;
+	public void setTarget(String target) {
+		this.target = target;
+	}
+
+	public String getTargetValue() {
+		return targetValue;
+	}
+
+	public void setTargetValue(String targetValue) {
+		this.targetValue = targetValue;
+	}
+
+	public String getCommand() {
+		return command;
+	}
+
+	public void setCommand(String command) {
+		this.command = command;
 	}
 
 	public String getValue() {
@@ -182,7 +182,7 @@ public class KeywordPropObject implements Cloneable {
 
 	@Override
 	public String toString() {
-		return "PropObject [propertyName=" + propertyName + ", action=" + action+ ", actualValue=" + actualValue + "]";
+		return "PropObject [command=" + command+ ", target=" + target + ", actualValue=" + actualValue + "]";
 	}
 
 	public KeywordPropObject clone() {

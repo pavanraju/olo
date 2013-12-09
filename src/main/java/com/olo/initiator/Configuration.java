@@ -152,42 +152,6 @@ public class Configuration {
 			}
 		}
 	}
-	/*
-	public WebDriver getDriverByOpeningUrlAndSetTimeOuts() throws Exception{
-		return getDriverByOpeningUrlAndSetTimeOuts(Reporter.getCurrentTestResult().getTestContext());
-	}
-	
-	public WebDriver getDriverByOpeningUrlAndSetTimeOuts(String url) throws Exception{
-		return getDriverByOpeningUrlAndSetTimeOuts(Reporter.getCurrentTestResult().getTestContext(), url);
-	}
-	
-	public WebDriver getDriverByOpeningUrlAndSetTimeOuts(ITestContext ctx) throws Exception{
-		return getDriverByOpeningUrlAndSetTimeOuts(ctx,configProp.getProperty("url"));
-	}
-	
-	public WebDriver getDriverByOpeningUrlAndSetTimeOuts(ITestContext ctx,String url) throws Exception{
-		try {
-			WebDriver driver = getWebDriver(ctx);
-			setWaitForPageToLoadInSec(driver);
-			setImplicitWaitInSec(driver);
-			openUrl(driver, url);
-			windowMaximizeAndWindowFocus(driver);
-			logger.info("setting up browser preferences completed");
-			return driver;
-		} catch (Exception e) {
-			throw new SkipException(e.getMessage());
-		} catch (Throwable e) {
-			throw new SkipException(e.getCause().getMessage());
-		}
-	}
-	
-	*/
-	
-	
-	
-	
-	
-	
 	
 	public WebDriver getDriverBySetTimeOuts(){
 		return getDriverBySetTimeOuts(Reporter.getCurrentTestResult().getTestContext());
@@ -207,36 +171,6 @@ public class Configuration {
 			throw new SkipException(e.getCause().getMessage());
 		}
 	}
-	
-	public WebDriver getDriverBySetTimeOutsAndOpenUrl(String url){
-		WebDriver driver = getDriverBySetTimeOuts();
-		try {
-			openUrl(driver, url);
-			return driver;
-		} catch (Exception e) {
-			throw new SkipException(e.getMessage());
-		} catch (Throwable e) {
-			throw new SkipException(e.getCause().getMessage());
-		}
-	}
-	
-	public WebDriver getDriverBySetTimeOutsAndOpenUrl(ITestContext ctx){
-		return getDriverBySetTimeOutsAndOpenUrl(ctx, configProp.getProperty("url"));
-	}
-	
-	public WebDriver getDriverBySetTimeOutsAndOpenUrl(ITestContext ctx, String url){
-		WebDriver driver = getDriverBySetTimeOuts(ctx);
-		try {
-			openUrl(driver, url);
-			return driver;
-		} catch (Exception e) {
-			throw new SkipException(e.getMessage());
-		} catch (Throwable e) {
-			throw new SkipException(e.getCause().getMessage());
-		}
-	}
-	
-	
 	
 	public void takeScreenShotForTest(WebDriver driver) {
 		ITestResult result = org.testng.Reporter.getCurrentTestResult();

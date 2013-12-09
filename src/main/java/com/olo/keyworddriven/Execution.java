@@ -40,16 +40,16 @@ public class Execution {
 			localStep= excelSteps.get(i);
 			keywordExecutionSteps.add(localStep);
 			
-			if(skipIf!=0 && !localStep.getAction().equals("EndIf") && !localStep.getAction().equals("Else")){
+			if(skipIf!=0 && !localStep.getCommand().equals("EndIf") && !localStep.getCommand().equals("Else")){
 				localStep.setConditionSkip(true);
 				continue;
 			}
 			
-			if(localStep.getAction().equals("Else")){
+			if(localStep.getCommand().equals("Else")){
 				skipIf--;
 			}
 			
-			if(localStep.getAction().equals("Endif")){
+			if(localStep.getCommand().equals("Endif")){
 				if(skipIf>0){
 					skipIf--;
 				}else if(skipIf<0){
@@ -65,27 +65,27 @@ public class Execution {
 					for (final Method method : keywords.getClass().getDeclaredMethods()) {
 						Keyword annotation = method.getAnnotation(com.olo.annotations.Keyword.class);
 						if(annotation!=null){
-							if(annotation.value().equals(localStep.getAction())){
+							if(annotation.value().equals(localStep.getCommand())){
 								foundKeyword=true;
 								localStep.setActualValue(Commons.replaceDynamicValueMatchers(localStep.getActualValue(), storeData));
 								logger.info(localStep);
-								if(localStep.getAction().startsWith("Verify")){
+								if(localStep.getCommand().startsWith("Verify")){
 									localStep.setIsVerification(true);
 								}
-								if(localStep.getAction().equals("CaptureScreenshot")){
+								if(localStep.getCommand().equals("CaptureScreenshot")){
 									String screenShotFileName=System.currentTimeMillis()+".png";
 									String screenShotPath=ctx.getOutputDirectory()+"/"+"screenshots"+"/"+screenShotFileName;
 									localStep.setScreenShotName(screenShotFileName);
 									localStep.setScreenShotPath(screenShotPath);
 									method.invoke(keywords,localStep);
-								}else if(localStep.getAction().startsWith("Put")){
+								}else if(localStep.getCommand().startsWith("Put")){
 									HashMap<String, String> storedData =  (HashMap<String, String>)method.invoke(keywords,localStep);
 									storeData.putAll(storedData);
 								}else{
 									method.invoke(keywords,localStep);
 								}
 								
-								if(localStep.getAction().startsWith("If") && localStep.getIfSkipped()){
+								if(localStep.getCommand().startsWith("If") && localStep.getIfSkipped()){
 									skipIf++;
 								}
 							}

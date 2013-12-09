@@ -105,12 +105,12 @@ public class TestReporter {
 					sb.append("<td>"+(i+1)+"</td>");
 					
 					for (Map.Entry<String, String> column : reportColumns.entrySet()) {
-						if(column.getKey().equals("action")){
-							sb.append("<td>"+localStep.getAction()+"</td>");
-						}else if(column.getKey().equals("propertyName")){
-							sb.append("<td>"+localStep.getPropertyName()+"</td>");
-						}else if(column.getKey().equals("propertyValue")){
-							sb.append("<td style='display:none'>"+localStep.getPropertyValue()+"</td>");
+						if(column.getKey().equals("command")){
+							sb.append("<td>"+localStep.getCommand()+"</td>");
+						}else if(column.getKey().equals("target")){
+							sb.append("<td>"+localStep.getTarget()+"</td>");
+						}else if(column.getKey().equals("targetValue")){
+							sb.append("<td style='display:none'>"+localStep.getTargetValue()+"</td>");
 						}else if(column.getKey().equals("value")){
 							sb.append("<td style='display:none'>"+(localStep.getValue()!=null ? localStep.getValue().replace("\n", "<br/>").replace("<", "&lt;").replace(">", "&gt;") : "null")+"</td>");
 						}else if(column.getKey().equals("actualValue")){

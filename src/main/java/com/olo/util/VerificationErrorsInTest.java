@@ -33,7 +33,12 @@ public class VerificationErrorsInTest {
 	}
 	
 	public static int verificationFailuresCount(ITestResult result){
-		return testErrorDetails.get(result).size();
+		if(testErrorDetails.containsKey(result)){
+			return testErrorDetails.get(result).size();
+		}else{
+			return 0;
+		}
+		
 	}
 	
 }
