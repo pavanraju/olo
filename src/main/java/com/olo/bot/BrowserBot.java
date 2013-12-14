@@ -13,7 +13,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.HasInputDevices;
-import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.interactions.Keyboard;
 import org.openqa.selenium.Keys;
@@ -357,7 +356,7 @@ public class BrowserBot{
 	
 	public void assertValue(WebElement element, String expectedValue){
 		String actualValue = getAttribute(element,"value");
-		logger.info("Comparing elementValue : '"+actualValue +"' equals to expectedValue : '"+expectedValue+"'");
+		logger.info("Comparing elementValue : '"+actualValue +"' equals to expectedValue : '"+expectedValue+"' in element "+element);
 		Assert.assertEquals( actualValue, expectedValue);
 	}
 	
@@ -371,7 +370,7 @@ public class BrowserBot{
 	
 	public void assertNotValue(WebElement element,String unexpectedValue) throws Exception {
 		String actualValue = getAttribute(element,"value");
-		logger.info("Comparing elementValue : '"+actualValue +"' not equals to unexpectedValue : '"+unexpectedValue+"'");
+		logger.info("Comparing elementValue : '"+actualValue +"' not equals to unexpectedValue : '"+unexpectedValue+"' in element "+element);
 		Assert.assertNotEquals(actualValue, unexpectedValue);
 	}
 	
@@ -385,7 +384,7 @@ public class BrowserBot{
 	
 	public void assertText(WebElement element, String expectedText){
 		String actualText = getText(element).toString();
-		logger.info("Comparing elementText : '"+actualText +"' equals to expectedText : '"+expectedText+"'");
+		logger.info("Comparing elementText : '"+actualText +"' equals to expectedText : '"+expectedText+"' in element "+element);
 		Assert.assertEquals(actualText, expectedText);
 	}
 	
@@ -399,7 +398,7 @@ public class BrowserBot{
 	
 	public void assertNotText(WebElement element,String unexpectedText) throws Exception{
 		String actualText = getText(element);
-		logger.info("Comparing elementText : '"+actualText +"' not equals to unexpectedText : '"+unexpectedText+"'");
+		logger.info("Comparing elementText : '"+actualText +"' not equals to unexpectedText : '"+unexpectedText+"' in element "+element);
 		Assert.assertNotEquals(actualText, unexpectedText);
 	}
 	
@@ -745,13 +744,26 @@ public class BrowserBot{
 		element.sendKeys(value+RandomStringUtils.randomAlphabetic(8));
 	}
 	
-	public void typeRandomRandomAlphabets(WebElement element){
+	public void typeRandomAlphabets(WebElement element, String value, int numberOfRandomAlphabets){
+		element.sendKeys(value+RandomStringUtils.randomAlphabetic(numberOfRandomAlphabets));
+	}
+	
+	public void typeRandomAlphabets(WebElement element){
 		element.sendKeys(RandomStringUtils.randomAlphabetic(8));
 	}
 	
-	public void clearAndTypeRandomAlphabets(WebElement element,String value){
+	public void typeRandomAlphabets(WebElement element, int numberOfRandomAlphabets){
+		element.sendKeys(RandomStringUtils.randomAlphabetic(numberOfRandomAlphabets));
+	}
+	
+	public void clearAndTypeRandomAlphabets(WebElement element, String value){
 		element.clear();
 		element.sendKeys(value+RandomStringUtils.randomAlphabetic(8));
+	}
+	
+	public void clearAndTypeRandomAlphabets(WebElement element, String value, int numberOfRandomAlphabets){
+		element.clear();
+		element.sendKeys(value+RandomStringUtils.randomAlphabetic(numberOfRandomAlphabets));
 	}
 	
 	public void clearAndTypeRandomAlphabets(WebElement element){
@@ -759,12 +771,25 @@ public class BrowserBot{
 		element.sendKeys(RandomStringUtils.randomAlphabetic(8));
 	}
 	
-	public void typeRandomNumbers(WebElement element,String value){
+	public void clearAndTypeRandomAlphabets(WebElement element, int numberOfRandomAlphabets){
+		element.clear();
+		element.sendKeys(RandomStringUtils.randomAlphabetic(numberOfRandomAlphabets));
+	}
+	
+	public void typeRandomNumbers(WebElement element, String value){
 		element.sendKeys(value+RandomStringUtils.randomNumeric(8));
+	}
+	
+	public void typeRandomNumbers(WebElement element, String value, int numberOfRandomNumbers){
+		element.sendKeys(value+RandomStringUtils.randomNumeric(numberOfRandomNumbers));
 	}
 	
 	public void typeRandomNumbers(WebElement element){
 		element.sendKeys(RandomStringUtils.randomNumeric(8));
+	}
+	
+	public void typeRandomNumbers(WebElement element, int numberOfRandomNumbers){
+		element.sendKeys(RandomStringUtils.randomNumeric(numberOfRandomNumbers));
 	}
 	
 	public void clearAndTypeRandomNumbers(WebElement element,String value){
@@ -772,17 +797,35 @@ public class BrowserBot{
 		element.sendKeys(value+RandomStringUtils.randomNumeric(8));
 	}
 	
+	public void clearAndTypeRandomNumbers(WebElement element,String value, int numberOfRandomNumbers){
+		element.clear();
+		element.sendKeys(value+RandomStringUtils.randomNumeric(numberOfRandomNumbers));
+	}
+	
 	public void clearAndTypeRandomNumbers(WebElement element){
 		element.clear();
 		element.sendKeys(RandomStringUtils.randomNumeric(8));
 	}
 	
-	public void typeRandomAlphaNumeric(WebElement element,String value){
+	public void clearAndTypeRandomNumbers(WebElement element, int numberOfRandomNumbers){
+		element.clear();
+		element.sendKeys(RandomStringUtils.randomNumeric(numberOfRandomNumbers));
+	}
+	
+	public void typeRandomAlphaNumeric(WebElement element, String value){
 		element.sendKeys(value+RandomStringUtils.randomAlphanumeric(8));
+	}
+	
+	public void typeRandomAlphaNumeric(WebElement element, String value, int numberOfRandomAlphanumeric){
+		element.sendKeys(value+RandomStringUtils.randomAlphanumeric(numberOfRandomAlphanumeric));
 	}
 	
 	public void typeRandomAlphaNumeric(WebElement element){
 		element.sendKeys(RandomStringUtils.randomAlphanumeric(8));
+	}
+	
+	public void typeRandomAlphaNumeric(WebElement element, int numberOfRandomAlphanumeric){
+		element.sendKeys(RandomStringUtils.randomAlphanumeric(numberOfRandomAlphanumeric));
 	}
 	
 	public void clearAndTypeRandomAlphaNumeric(WebElement element,String value){
@@ -790,9 +833,19 @@ public class BrowserBot{
 		element.sendKeys(value+RandomStringUtils.randomAlphanumeric(8));
 	}
 	
+	public void clearAndTypeRandomAlphaNumeric(WebElement element,String value, int numberOfRandomAlphanumeric){
+		element.clear();
+		element.sendKeys(value+RandomStringUtils.randomAlphanumeric(numberOfRandomAlphanumeric));
+	}
+	
 	public void clearAndTypeRandomAlphaNumeric(WebElement element){
 		element.clear();
 		element.sendKeys(RandomStringUtils.randomAlphanumeric(8));
+	}
+	
+	public void clearAndTypeRandomAlphaNumeric(WebElement element, int numberOfRandomAlphanumeric){
+		element.clear();
+		element.sendKeys(RandomStringUtils.randomAlphanumeric(numberOfRandomAlphanumeric));
 	}
 	
 	public void click(WebElement element) throws Exception{
@@ -814,7 +867,7 @@ public class BrowserBot{
 	
 	public void dragAndDrop(WebElement element,String value) throws Exception {
 		String[] v = value.split(",");
-		new Actions(driver).dragAndDropBy(element, Integer.parseInt(v[0]), Integer.parseInt(v[1]));
+		new Actions(driver).dragAndDropBy(element, Integer.parseInt(v[0]), Integer.parseInt(v[1])).perform();
 	}
 	
 	public void contextMenu(WebElement element){
@@ -869,11 +922,11 @@ public class BrowserBot{
 	}
 	
 	public void controlKeyUp(){
-		new Actions(driver).keyUp(Keys.CONTROL);
+		new Actions(driver).keyUp(Keys.CONTROL).perform();
 	}
 	
 	public void controlKeyDown(){
-		new Actions(driver).keyDown(Keys.CONTROL);
+		new Actions(driver).keyDown(Keys.CONTROL).perform();
 	}
 	
 	public void chooseOk(){
@@ -885,18 +938,12 @@ public class BrowserBot{
 	}
 	
 	public void check(WebElement checkBoxElement){
-		if (!checkBoxElement.getAttribute("type").toLowerCase().equals("checkbox")) {
-			throw new InvalidElementStateException("This elementLocator is not a checkbox!");
-        }
 		if(!checkBoxElement.isSelected()){
 			checkBoxElement.click();
 		}
 	}
 	
 	public void uncheck(WebElement checkBoxElement){
-		if (!checkBoxElement.getAttribute("type").toLowerCase().equals("checkbox")) {
-			throw new InvalidElementStateException("This elementLocator is not a checkbox!");
-        }
 		if(checkBoxElement.isSelected()){
 			checkBoxElement.click();
 		}
@@ -985,7 +1032,7 @@ public class BrowserBot{
 		}else{
 			logger.error("Verification Error : Null");
 		}
-		ve.setScreenshotPath(screenShotFileName);
+		ve.setScreenShotFileName(screenShotFileName);
 		ve.setAssertionError(e);
 		VerificationErrorsInTest.addError(testResult, ve);
 	}

@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import org.testng.ITestResult;
 
-import com.olo.propobject.KeywordPropObject;
+import com.olo.keyworddriven.KeywordPropObject;
 
 public class KeywordReporterData {
 	

@@ -4,16 +4,14 @@ import java.util.ArrayList;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.WebDriver;
 import org.testng.ITest;
 import org.testng.ITestContext;
 import org.testng.annotations.Test;
 
 import com.olo.annotations.Reporter;
-import com.olo.bot.BrowserBot;
 import com.olo.initiator.ApplicationInitiator;
 import com.olo.keyworddriven.Keywords;
-import com.olo.propobject.KeywordPropObject;
+import com.olo.keyworddriven.KeywordPropObject;
 
 
 public class Runner extends ApplicationInitiator implements ITest{
@@ -34,12 +32,10 @@ public class Runner extends ApplicationInitiator implements ITest{
 	@Reporter(com.olo.annotations.KeywordDriven.class)
 	@Test
 	public void keywordTest(ITestContext ctx) throws Exception{
-		WebDriver driver = getDriver();
-		BrowserBot browser = new BrowserBot(driver);
 		ArrayList<KeywordPropObject> excelSteps = new KeywordUtility().getExcelSteps(testFilePath);
 		new KeywordUtility().validateSteps(excelSteps);
 		logger.info("Executing Test File "+testFilePath);
-		new Execution(browser, new Keywords(browser)).run(ctx, excelSteps);
+		new Execution(new Keywords(getDriver())).run(ctx, excelSteps);
 	}
 
 }

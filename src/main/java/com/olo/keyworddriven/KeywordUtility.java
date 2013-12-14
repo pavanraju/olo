@@ -8,7 +8,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.testng.SkipException;
 
-import com.olo.propobject.KeywordPropObject;
+import com.olo.keyworddriven.KeywordPropObject;
 import com.olo.util.Commons;
 
 public class KeywordUtility {

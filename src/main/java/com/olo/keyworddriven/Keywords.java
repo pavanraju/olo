@@ -8,17 +8,18 @@ import java.util.HashMap;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONObject;
+import org.openqa.selenium.WebDriver;
 
 import com.olo.annotations.Keyword;
 import com.olo.bot.BrowserBot;
-import com.olo.propobject.KeywordPropObject;
+import com.olo.keyworddriven.KeywordPropObject;
 
 public class Keywords{
 	
 	private BrowserBot browser;
 	
-	public Keywords(BrowserBot browser){
-		this.browser=browser;
+	public Keywords(WebDriver driver){
+		browser = new BrowserBot(driver);
 	}
 	
 	@Keyword("Wait")
@@ -258,11 +259,6 @@ public class Keywords{
 		browser.chooseCancel();
 	}
 	
-	@Keyword("CaptureScreenshot")
-	public void captureScreenShot(KeywordPropObject step) throws Exception{
-		browser.captureScreenshot(step.getScreenShotPath());
-	}
-	
 	@Keyword("AssertTitle")
 	public void asertTitle(KeywordPropObject step) throws Exception{
 		browser.assertTitle(step.getActualValue());
@@ -290,8 +286,7 @@ public class Keywords{
 	
 	@Keyword("VerifySelectedText")
 	public void verifySelectedLabel(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertSelectedText(step);
+		browser.verifySelectedText(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
 	@Keyword("AssertNotSelectedText")
@@ -301,8 +296,7 @@ public class Keywords{
 	
 	@Keyword("VerifyNotSelectedText")
 	public void verifyNotSelectedLabel(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertNotSelectedText(step);
+		browser.verifyNotSelectedText(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
 	@Keyword("AssertElementPresent")
@@ -312,8 +306,7 @@ public class Keywords{
 	
 	@Keyword("VerifyElementPresent")
 	public void verifyElementPresent(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertElementPresent(step);
+		browser.verifyElementPresent(browser.findElement(step.getTargetValue()));
 	}
 	
 	@Keyword("AssertElementNotPresent")
@@ -323,8 +316,7 @@ public class Keywords{
 	
 	@Keyword("VerifyElementNotPresent")
 	public void verifyElementNotPresent(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertElementNotPresent(step);
+		browser.verifyElementNotPresent(browser.findElement(step.getTargetValue()));
 	}
 	
 	@Keyword("AssertChecked")
@@ -334,8 +326,7 @@ public class Keywords{
 	
 	@Keyword("VerifyChecked")
 	public void verifyChecked(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertChecked(step);
+		browser.verifyChecked(browser.findElement(step.getTargetValue()));
 	}
 	
 	@Keyword("AssertNotChecked")
@@ -345,8 +336,7 @@ public class Keywords{
 	
 	@Keyword("VerifyNotChecked")
 	public void verifyNotChecked(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertNotChecked(step);
+		browser.verifyNotChecked(browser.findElement(step.getTargetValue()));
 	}
 	
 	@Keyword("AssertSelectOptions")
@@ -356,8 +346,7 @@ public class Keywords{
 	
 	@Keyword("VerifySelectOptions")
 	public void verifySelectOptions(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertSelectOptions(step);
+		browser.verifySelectOptions(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
 	@Keyword("AssertNotSelectOptions")
@@ -367,8 +356,7 @@ public class Keywords{
 	
 	@Keyword("VerifyNotSelectOptions")
 	public void verifyNotSelectOptions(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertNotSelectOptions(step);
+		browser.verifyNotSelectOptions(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
 	@Keyword("AssertSelectOptionsSize")
@@ -378,8 +366,7 @@ public class Keywords{
 	
 	@Keyword("VerifySelectOptionsSize")
 	public void verifySelectOptionsSize(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertSelectOptionsSize(step);
+		browser.verifySelectOptionsSize(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
 	@Keyword("AssertNotSelectOptionsSize")
@@ -389,8 +376,7 @@ public class Keywords{
 	
 	@Keyword("VerifyNotSelectOptionsSize")
 	public void verifyNotSelectOptionsSize(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertNotSelectOptionsSize(step);
+		browser.verifyNotSelectOptionsSize(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
 	@Keyword("AssertEditable")
@@ -400,8 +386,7 @@ public class Keywords{
 	
 	@Keyword("VerifyEditable")
 	public void verifyEditable(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertEditable(step);
+		browser.verifyEditable(browser.findElement(step.getTargetValue()));
 	}
 	
 	@Keyword("AssertNotEditable")
@@ -411,8 +396,7 @@ public class Keywords{
 	
 	@Keyword("VerifyNotEditable")
 	public void verifyNotEditable(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertNotEditable(step);
+		browser.verifyNotEditable(browser.findElement(step.getTargetValue()));
 	}
 	
 	@Keyword("AssertAlert")
@@ -422,8 +406,7 @@ public class Keywords{
 	
 	@Keyword("VerifyAlert")
 	public void verifyAlert(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertAlert(step);
+		browser.verifyAlert(step.getActualValue());
 	}
 	
 	@Keyword("AssertNotAlert")
@@ -433,8 +416,7 @@ public class Keywords{
 	
 	@Keyword("VerifyNotAlert")
 	public void verifyNotAlert(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertNotAlert(step);
+		browser.verifyNotAlert(step.getActualValue());
 	}
 	
 	@Keyword("AssertVisible")
@@ -444,8 +426,7 @@ public class Keywords{
 	
 	@Keyword("VerifyVisible")
 	public void verifyVisible(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertVisible(step);
+		browser.verifyVisible(browser.findElement(step.getTargetValue()));
 	}
 	
 	@Keyword("AssertNotVisible")
@@ -455,8 +436,7 @@ public class Keywords{
 	
 	@Keyword("VerifyNotVisible")
 	public void verifyNotVisible(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertNotVisible(step);
+		browser.verifyNotVisible(browser.findElement(step.getTargetValue()));
 	}
 	
 	private HashMap<String, String> getAttributeNameFromLocator(String actualLocator){
@@ -477,8 +457,8 @@ public class Keywords{
 	
 	@Keyword("VerifyAttribute")
 	public void verifyAttribute(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertAttribute(step);
+		HashMap<String, String> locatorAndAttr = getAttributeNameFromLocator(step.getTargetValue());
+		browser.verifyAttribute(browser.findElement(locatorAndAttr.get("locator")), locatorAndAttr.get("attribute") ,step.getActualValue());
 	}
 	
 	@Keyword("AssertNotAttribute")
@@ -489,8 +469,8 @@ public class Keywords{
 	
 	@Keyword("VerifyNotAttribute")
 	public void verifyNotAttribute(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertNotAttribute(step);
+		HashMap<String, String> locatorAndAttr = getAttributeNameFromLocator(step.getTargetValue());
+		browser.verifyNotAttribute(browser.findElement(locatorAndAttr.get("locator")), locatorAndAttr.get("attribute") ,step.getActualValue());
 	}
 	
 	@Keyword("AssertValue")
@@ -500,8 +480,7 @@ public class Keywords{
 	
 	@Keyword("VerifyValue")
 	public void verifyValue(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertValue(step);
+		browser.verifyValue(browser.findElement(step.getTargetValue()), step.getActualValue());
 	}
 	
 	@Keyword("AssertNotValue")
@@ -511,8 +490,7 @@ public class Keywords{
 	
 	@Keyword("VerifyNotValue")
 	public void verifyNotValue(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertNotValue(step);
+		browser.verifyNotValue(browser.findElement(step.getTargetValue()), step.getActualValue());
 	}
 	
 	@Keyword("AssertText")
@@ -522,8 +500,7 @@ public class Keywords{
 	
 	@Keyword("VerifyText")
 	public void verifyText(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertText(step);
+		browser.verifyText(browser.findElement(step.getTargetValue()), step.getActualValue());
 	}
 	
 	@Keyword("AssertNotText")
@@ -533,8 +510,7 @@ public class Keywords{
 	
 	@Keyword("VerifyNotText")
 	public void verifyNotText(KeywordPropObject step) throws Exception{
-		step.setIsVerification(true);
-		assertNotText(step);
+		browser.verifyNotText(browser.findElement(step.getTargetValue()), step.getActualValue());
 	}
 	
 	@Keyword("IfElementPresent")

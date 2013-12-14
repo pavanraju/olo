@@ -15,7 +15,7 @@ import org.testng.internal.Utils;
 import com.olo.annotations.KeywordDriven;
 import com.olo.annotations.Reporter;
 import com.olo.keyworddriven.KeywordReporterData;
-import com.olo.propobject.KeywordPropObject;
+import com.olo.keyworddriven.KeywordPropObject;
 import com.olo.util.TestProp;
 import com.olo.util.VerificationErrorsInTest;
 
@@ -52,17 +52,14 @@ public class TestReporter {
 				
 				String reporterFileDirectory = result.getTestContext().getCurrentXmlTest().getName()+File.separator+Utility.getStatusString(result.getStatus());
 				result.setAttribute("reporterFilePath", reporterFileDirectory+File.separator+reporterFileName);
-				//HashMap<String,Object> keywordDrivenTestInfo = (HashMap<String, Object>) result.getTestContext().getAttribute(result.getName()+"-"+testCount);
-				//HashMap<String,Object> keywordDrivenTestInfo = KeywordReporterData.getTestExecutionDetails(result);
 				sb.append("<div class='table-responsive'>");
 				sb.append("<table class='table table-bordered'>");
 				sb.append("<tr><th>Test Case</th><td>"+result.getName()+"</td></tr>");
-				sb.append("<tr><th>Test Path</th><td>"+result.getAttribute(TestProp.PATH)+"</td></tr>");
+				//sb.append("<tr><th>Test Path</th><td>"+result.getAttribute(TestProp.PATH)+"</td></tr>");
 				sb.append("<tr><th>Started</th><td>"+Utility.sdf.format(new Date(result.getStartMillis()))+"</td></tr>");
 				sb.append("<tr><th>Completed</th><td>"+Utility.sdf.format(new Date(result.getEndMillis()))+"</td></tr>");
 				sb.append("<tr><th>Time Taken</th><td>"+Utility.timeTaken(result.getEndMillis()-result.getStartMillis())+"</td></tr>");
 				sb.append("<tr "+(result.getStatus()==1 ? "class='passed'" : "class='danger'")+"><th>Status</th><td>"+Utility.getStatusString(result.getStatus())+"</td></tr>");
-				//sb.append("<tr><th>Total Verifications</th><td>"+keywordDrivenTestInfo.get("totalVerifications")+"</td></tr>");
 				sb.append("<tr><th nowrap='nowrap'>Verifications Failed</th><td>"+VerificationErrorsInTest.getTestErrors(result).size()+"</td></tr>");
 				sb.append("</table>");
 				sb.append("</div>");
@@ -73,7 +70,7 @@ public class TestReporter {
 				sb.append("<div class='btn-group' data-toggle='buttons-checkbox'>");
 				
 				for (Map.Entry<String, String> column : reportColumns.entrySet()) {
-					if(column.getKey().equals("propertyValue") || column.getKey().equals("value") || column.getKey().equals("options") || column.getKey().equals("startTime") || column.getKey().equals("endTime") || column.getKey().equals("status")){
+					if(column.getKey().equals("timeTaken") || column.getKey().equals("targetValue") || column.getKey().equals("value") || column.getKey().equals("options") || column.getKey().equals("startTime") || column.getKey().equals("endTime") || column.getKey().equals("status") || column.getKey().equals("screenShot")){
 						sb.append("<button type='button' class='btn btn-primary' id='"+column.getKey()+"'>"+column.getValue()+"</button>");
 					}else{
 						sb.append("<button type='button' class='btn btn-primary active' id='"+column.getKey()+"'>"+column.getValue()+"</button>");
@@ -87,7 +84,7 @@ public class TestReporter {
 				sb.append("<th>S.No</th>");
 				
 				for (Map.Entry<String, String> column : reportColumns.entrySet()) {
-					if(column.getKey().equals("propertyValue") || column.getKey().equals("value") || column.getKey().equals("options") || column.getKey().equals("startTime") || column.getKey().equals("endTime") || column.getKey().equals("status")){
+					if(column.getKey().equals("timeTaken") || column.getKey().equals("targetValue") || column.getKey().equals("value") || column.getKey().equals("options") || column.getKey().equals("startTime") || column.getKey().equals("endTime") || column.getKey().equals("status") || column.getKey().equals("screenShot")){
 						sb.append("<th style='display:none' id='"+column.getKey()+"'> ");
 					}else{
 						sb.append("<th id='"+column.getKey()+"'> ");
@@ -100,7 +97,7 @@ public class TestReporter {
 					KeywordPropObject localStep = keywordExecutionSteps.get(i);
 					String timeTaken = Utility.timeTaken(localStep.getEndTime()-localStep.getStartTime());
 					
-					sb.append("<tr "+ (!localStep.isConditionSkip() ? (localStep.getHasError() ? (localStep.getIsVerification() ? (localStep.getHasVerificationError() ? "class='warning'" : "class='danger'") : "class='danger'") : "class='success'" ) : "class='ifskipped'")+">");
+					sb.append("<tr "+ (!localStep.isConditionSkip() ? (localStep.getHasError() ? (localStep.getIsVerification() ? (localStep.getIsVerificationError() ? "class='warning'" : "class='danger'") : "class='danger'") : "class='success'" ) : "class='ifskipped'")+">");
 					
 					sb.append("<td>"+(i+1)+"</td>");
 					
@@ -122,13 +119,21 @@ public class TestReporter {
 						}else if(column.getKey().equals("endTime")){
 							sb.append("<td style='display:none'>"+(!localStep.isConditionSkip() ? (localStep.getEndTime()!=0 ? Utility.hourFormat.format(localStep.getEndTime()) : "") : "-")  +"</td>");
 						}else if(column.getKey().equals("timeTaken")){
-							sb.append("<td>"+(!localStep.isConditionSkip() ? (localStep.getStartTime()!=0 ? timeTaken : "") : "-") +"</td>");
+							sb.append("<td style='display:none'>"+(!localStep.isConditionSkip() ? (localStep.getStartTime()!=0 ? timeTaken : "") : "-") +"</td>");
 						}else if(column.getKey().equals("status")){
-							sb.append("<td style='display:none'>"+(!localStep.isConditionSkip() ? (localStep.getStartTime()!=0 ? localStep.getHasError() ? Utility.getStatusString(2) : Utility.getStatusString(1) : "") : "-")+"</td>");
+							sb.append("<td style='display:none'>"+(!localStep.isConditionSkip() ? (localStep.getStartTime()!=0 ? localStep.getHasError() ? Utility.getStatusString(ITestResult.FAILURE) : Utility.getStatusString(ITestResult.SUCCESS) : "") : "-")+"</td>");
 						}else if(column.getKey().equals("exception")){
-							sb.append("<td style='max-width:200px;overflow:hidden;'>"+(localStep.getHasError() ? localStep.getErrorMessage() : "")+"</td>");
+							sb.append("<td style='overflow:hidden;'>"+(localStep.getHasError() ? localStep.getIsVerificationError() ? Utils.escapeHtml(VerificationErrorsInTest.getTestErrors(result).get(localStep.getVerificationIndex()).getAssertionError().getMessage()) : Utils.escapeHtml(result.getThrowable().getMessage()) : "")+"</td>");
 						}else if(column.getKey().equals("screenShot")){
-							sb.append("<td>"+(localStep.getScreenShotName()!="" ? "<a href='"+".."+File.separator+".."+File.separator+"screenshots"+File.separator+localStep.getScreenShotName()+"'>Screenshot</a>" : "")+"</td>");
+							String screenshot = "";
+							if(localStep.getHasError()){
+								if(localStep.getIsVerificationError()){
+									screenshot = "<a href='"+".."+File.separator+".."+File.separator+"screenshots"+File.separator+VerificationErrorsInTest.getTestErrors(result).get(localStep.getVerificationIndex()).getScreenShotFileName()+"'>Screenshot</a>";
+								}else{
+									screenshot = "<a href='"+".."+File.separator+".."+File.separator+"screenshots"+File.separator+result.getAttribute(TestProp.SCREENSHOT)+"'>Screenshot</a>";
+								}
+							}
+							sb.append("<td style='display:none'>"+screenshot+"</td>");
 						}
 					}
 					
@@ -138,11 +143,6 @@ public class TestReporter {
 				sb.append("</div>");
 				sb.append("</div></div></body></html>");
 				Utils.writeFile(result.getTestContext().getOutputDirectory()+File.separator+reporterFileDirectory, reporterFileName, sb.toString());
-			} catch (Exception e) {
-				logger.error(e.getMessage());
-			}
-			try {
-				result.getTestContext().removeAttribute(result.getName()+"-"+testCount);
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 			}

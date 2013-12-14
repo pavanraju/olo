@@ -2,17 +2,17 @@ package com.olo.util;
 
 public class VerificationError {
 	
-	private String screenshotPath = null;
+	private String screenShotFileName = null;
 	private Error assertionError = null;
-	
-	public String getScreenshotPath() {
-		return screenshotPath;
+
+	public String getScreenShotFileName() {
+		return screenShotFileName;
 	}
-	
-	public void setScreenshotPath(String screenshotPath) {
-		this.screenshotPath = screenshotPath;
+
+	public void setScreenShotFileName(String screenShotFileName) {
+		this.screenShotFileName = screenShotFileName;
 	}
-	
+
 	public Error getAssertionError() {
 		return assertionError;
 	}

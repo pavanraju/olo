@@ -109,7 +109,7 @@ public class MailSuiteListener implements ISuiteListener{
 			suiteReportDetailed.append(errorModelWindow);
 			suiteReportDetailed.append(Utility.endRow());
 			suiteReportDetailed.append(Utility.endContainer());
-			suiteReportDetailed.append(Utility.getDescriptionTooltipJs());
+			suiteReportDetailed.append(Utility.getCustomJs());
 			suiteReportDetailed.append(Utility.endBodyAndHtml());
 			String fileName = "mail-suite-"+suiteName+"-index.html";
 		    Utils.writeFile(suite.getOutputDirectory(), fileName, suiteReportDetailed.toString());

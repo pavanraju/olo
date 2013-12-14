@@ -32,7 +32,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.internal.Utils;
 
 import com.olo.exceptions.KeywordConfigurationException;
-import com.olo.propobject.KeywordPropObject;
+import com.olo.keyworddriven.KeywordPropObject;
 
 
 public class Commons {

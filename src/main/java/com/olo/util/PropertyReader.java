@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Properties;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -40,31 +41,24 @@ public class PropertyReader {
 						for (File nextFile : propFolder.listFiles()) {
 							if (nextFile.isFile() && !nextFile.isHidden()) {
 								String fileName=nextFile.getName();
-								String extension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-								String propName= fileName.substring(0,fileName.lastIndexOf("."));
-								
-								if(extension.equals("properties")){
-									logger.info("Loading "+nextFile.getAbsolutePath());
+								if(FilenameUtils.getExtension(fileName).equals("properties")){
+									logger.info("Loading /webElements/"+fileName);
 									Properties temp = new Properties();
 									temp.load(new FileInputStream(nextFile));
-									webElements.put(propName, temp);
+									webElements.put(FilenameUtils.getBaseName(fileName), temp);
 								}
-								
 							}
 					    }
 					} catch (URISyntaxException e) {
 						logger.error(e.getMessage());
-						e.printStackTrace();
 					}
 				}
 			}
 			
 		} catch (FileNotFoundException e) {
 			logger.error("File Not Found in the specified location "+e.getMessage());
-			e.printStackTrace();
 		} catch (IOException e) {
 			logger.error("Could not able to open file "+e.getMessage());
-			e.printStackTrace();
 		}
 	}
 }

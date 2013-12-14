@@ -45,14 +45,12 @@ public class ExecutionInitiator {
 			
 			TestNG testng = new TestNG();
 			InvokedMethodListener methodListener = new InvokedMethodListener();
-			TestListener testListener = new TestListener();
 			SuiteListener suiteListner = new SuiteListener();
 			Reporter reporter = new Reporter();
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy_HH-mm-ss");
 			testng.setTestSuites(suiteFiles);
 			testng.setUseDefaultListeners(false);
 			testng.addListener(methodListener);
-			testng.addListener(testListener);
 			testng.addListener(suiteListner);
 			testng.addListener(reporter);
 			

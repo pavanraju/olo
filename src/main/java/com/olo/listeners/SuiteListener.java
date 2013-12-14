@@ -156,7 +156,7 @@ public class SuiteListener implements ISuiteListener{
 			suiteReportDetailed.append(errorModelWindow);
 			suiteReportDetailed.append(Utility.endRow());
 			suiteReportDetailed.append(Utility.endContainer());
-			suiteReportDetailed.append(Utility.getDescriptionTooltipJs());
+			suiteReportDetailed.append(Utility.getCustomJs());
 			suiteReportDetailed.append(Utility.endBodyAndHtml());
 			String fileName = "suite-"+suiteName+"-index.html";
 		    Utils.writeFile(suite.getOutputDirectory(), fileName, suiteReportDetailed.toString());
@@ -189,7 +189,7 @@ public class SuiteListener implements ISuiteListener{
 				suiteReportPassed.append(Utility.endColumn());
 				suiteReportPassed.append(Utility.endRow());
 				suiteReportPassed.append(Utility.endContainer());
-				suiteReportPassed.append(Utility.getDescriptionTooltipJs());
+				suiteReportPassed.append(Utility.getCustomJs());
 				suiteReportPassed.append(Utility.endBodyAndHtml());
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-passed.html", suiteReportPassed.toString());
 		    }
@@ -224,7 +224,7 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportFailed.append(errorModelWindow);
 		    	suiteReportFailed.append(Utility.endRow());
 		    	suiteReportFailed.append(Utility.endContainer());
-		    	suiteReportFailed.append(Utility.getDescriptionTooltipJs());
+		    	suiteReportFailed.append(Utility.getCustomJs());
 		    	suiteReportFailed.append(Utility.endBodyAndHtml());
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-failed.html", suiteReportFailed.toString());
 		    }
@@ -259,7 +259,7 @@ public class SuiteListener implements ISuiteListener{
 		    	suiteReportSkipped.append(errorModelWindow);
 		    	suiteReportSkipped.append(Utility.endRow());
 		    	suiteReportSkipped.append(Utility.endContainer());
-		    	suiteReportSkipped.append(Utility.getDescriptionTooltipJs());
+		    	suiteReportSkipped.append(Utility.getCustomJs());
 		    	suiteReportSkipped.append(Utility.endBodyAndHtml());
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-skipped.html", suiteReportSkipped.toString());
 		    }

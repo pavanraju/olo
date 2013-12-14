@@ -26,6 +26,7 @@ import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.SkipException;
 
+import com.olo.util.Commons;
 import com.olo.util.TestProp;
 import com.opera.core.systems.OperaDriver;
 
@@ -250,7 +251,7 @@ public class Configuration {
 	}
 	
 	public void handleAfterMethod(WebDriver driver, ITestResult result){
-		if(result.getStatus()==ITestResult.FAILURE){
+		if(result.getStatus()==ITestResult.FAILURE && result.getThrowable().getMessage()!=Commons.verificationFailuresMessage){
 			takeScreenShotForTest(driver, result);
 		}
 		closeDriver(driver);
