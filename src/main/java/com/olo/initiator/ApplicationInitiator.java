@@ -8,14 +8,14 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
-public class ApplicationInitiator extends Configuration{
+public class ApplicationInitiator extends InitiatorUtil{
 	
 	protected ThreadLocal<WebDriver> threadDriver = new InheritableThreadLocal<WebDriver>();
 	
 	@BeforeMethod
 	public void beforeTestMethod(ITestContext ctx) throws Exception{
-		threadDriver.set(getDriverBySetTimeOuts(ctx));
-		openUrl(getDriver(), configProp.getProperty("url"));
+		threadDriver.set(driverConfig.getDriverBySetTimeOuts(ctx));
+		openUrl(getDriver(), configProp.getProperty("applicationUrl"));
 	}
 	
 	public WebDriver getDriver() {

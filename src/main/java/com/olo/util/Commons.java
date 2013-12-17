@@ -39,9 +39,8 @@ public class Commons {
 	
 	private static final Logger logger = LogManager.getLogger(Commons.class.getName());
 	
-	public static final Pattern messagesPattern = Pattern.compile("\\<\\{(.*?)\\}\\>");
-	public static final Pattern testDataPattern = Pattern.compile("\\<\\<(.*?)\\>\\>");
-	public static final Pattern dynamicPattern = Pattern.compile("\\<\\?(.*?)\\?\\>");
+	public static final Pattern dataProviderPattern = Pattern.compile("\\{\\{(.*?)\\}\\}");
+	public static final Pattern getDataPattern = Pattern.compile("\\{\\?(.*?)\\?\\}");
 	public static final String verificationFailuresMessage = "Verification Failures";
 	
 	public static Workbook getWorkbookFromXls(String xlsPath) throws Exception{
@@ -172,30 +171,10 @@ public class Commons {
 				if(prop.getCommand().equals("Else") || prop.getCommand().equals("EndIf")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
-					/*
-				}else if(prop.getAction().equals("StartDataTable")){
-					prop.setSkip(true);
-					excelRowsAsProbObject.add(prop);
-					try {
-						excelRowsAsProbObject.addAll(startDataProviderSteps(rows,Commons.class.getResource(prop.getValue())));
-					}catch (KeywordConfigurationException e) {
-						throw new Exception(e.getMessage());	
-					} catch (Exception e) {
-						throw e;
-					}
-					KeywordPropObject lprop = new KeywordPropObject();
-					lprop.setAction("EndDataTable");
-					lprop.setSkip(true);
-					excelRowsAsProbObject.add(lprop);
-					*/
 				}else if(prop.getCommand().equals("IncludeFile")){
 					prop.setSkip(true);
 					excelRowsAsProbObject.add(prop);
 					excelRowsAsProbObject.addAll(getExcelSteps(Commons.class.getResource(prop.getValue())));
-					/*
-				}else if(prop.getAction().equals("EndDataTable")){
-					break;
-					*/
 				}else{
 					if(!prop.getTarget().isEmpty()){
 						String property = prop.getTarget();
@@ -211,15 +190,6 @@ public class Commons {
 							throw new KeywordConfigurationException("Missing Property Name at Line Number : "+(row.getRowNum()+1));
 						}
 					}
-					/*
-					try {
-						prop.setActualValue(Commons.replaceMessageMatchers(prop.getValue()));
-					} catch (KeywordConfigurationException e) {
-						throw new Exception(e.getMessage()+ " at Line Number "+(row.getRowNum()+1));
-					} catch (Exception e) {
-						throw e;
-					}
-					*/
 					excelRowsAsProbObject.add(prop);
 				}
 			}
@@ -356,7 +326,7 @@ public class Commons {
 	
 	public static boolean expectedValueCheck(String expectedValue,String actualValue){
         StringBuffer sb = new StringBuffer(expectedValue);
-        Matcher matcher = dynamicPattern.matcher(sb);
+        Matcher matcher = getDataPattern.matcher(sb);
         while(matcher.find()){
                if(matcher.group(1).equals("!")){
                      int start = matcher.start();
@@ -376,7 +346,7 @@ public class Commons {
 	
 	public static String replaceDynamicValueMatchers(String expectedValue,HashMap<String,String> storedData) throws Exception{
 		StringBuffer sb = new StringBuffer(expectedValue);
-		Matcher matcher = dynamicPattern.matcher(sb);
+		Matcher matcher = getDataPattern.matcher(sb);
 		
 		while(matcher.find()){
 			int matchIndexStart=matcher.start();
@@ -384,7 +354,7 @@ public class Commons {
 			String matchedValue=matcher.group(1);
 			if(storedData.containsKey(matchedValue)){
 				sb.replace(matchIndexStart, matchIndexEnd, storedData.get(matchedValue));
-				matcher = dynamicPattern.matcher(sb);
+				matcher = getDataPattern.matcher(sb);
 			}else{
 				throw new KeywordConfigurationException("Haven't stored any value with : "+matchedValue);
 			}
@@ -394,7 +364,7 @@ public class Commons {
 	
 	public static String replaceTestData(String expectedValue,HashMap<String,String> testData) throws Exception{
 		StringBuffer sb = new StringBuffer(expectedValue);
-		Matcher matcher = testDataPattern.matcher(sb);
+		Matcher matcher = dataProviderPattern.matcher(sb);
 		
 		while(matcher.find()){
 			int matchIndexStart=matcher.start();
@@ -402,34 +372,14 @@ public class Commons {
 			String matchedValue=matcher.group(1);
 			if(testData.containsKey(matchedValue)){
 				sb.replace(matchIndexStart, matchIndexEnd, testData.get(matchedValue));
-				matcher = testDataPattern.matcher(sb);
+				matcher = dataProviderPattern.matcher(sb);
 			}else{
 				throw new KeywordConfigurationException("Data definition missing in test data file : "+matchedValue);
 			}
 		}
 		return sb.toString();
 	}
-	/*
-	public static String replaceMessageMatchers(String expectedValue) throws Exception{
-		StringBuffer sb = new StringBuffer(expectedValue);
-		Matcher matcher = messagesPattern.matcher(sb);
-		
-		while(matcher.find()){
-			int matchIndexStart=matcher.start();
-			int matchIndexEnd=matcher.end();
-			String matchedValue=matcher.group(1);
-			String propFileKey=matchedValue.substring(0, matchedValue.indexOf("."));
-			String propValueKey=matchedValue.substring(matchedValue.indexOf(".")+1);
-			if(app.containsKey(propFileKey) && app.get(propFileKey).containsKey(propValueKey)){
-				sb.replace(matchIndexStart, matchIndexEnd, app.get(propFileKey).getProperty(propValueKey));
-				matcher = messagesPattern.matcher(sb);
-			}else{
-				throw new KeywordConfigurationException("Property in Value column Not Found");
-			}
-		}
-		return sb.toString();
-	}
-	*/
+	
 	public static String getStackTraceAsString(Error e){
 		StringWriter sw = new StringWriter();
 	    PrintWriter pw = new PrintWriter(sw);

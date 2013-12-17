@@ -18,12 +18,12 @@ import com.olo.keyworddriven.KeywordPropObject;
 import com.olo.util.Commons;
 import com.olo.util.VerificationErrorsInTest;
 
-public class Execution {
+public class TestExecution {
 	
-	private static final Logger logger = LogManager.getLogger(Execution.class.getName());
+	private static final Logger logger = LogManager.getLogger(TestExecution.class.getName());
 	private Keywords keywords;
 	
-	public Execution(Keywords keywords){
+	public TestExecution(Keywords keywords){
 		this.keywords=keywords;
 	}
 	

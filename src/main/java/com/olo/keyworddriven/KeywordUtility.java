@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.testng.SkipException;
@@ -26,7 +27,7 @@ public class KeywordUtility {
 		}
 		
 		try {
-			logger.info("#### Read and Get steps "+testFile+" #####");
+			logger.info("#### Read and Get steps "+FilenameUtils.getName(testFile)+" #####");
 			excelSteps = new Commons().getExcelSteps(xlsFile);
 		} catch (Exception e) {
 			logger.error("Skipping Test: Error occured while reading test file "+e.getMessage());
@@ -79,7 +80,7 @@ public class KeywordUtility {
 	public ArrayList<HashMap<String, String>> getDataProiderData(String testFile){
 		ArrayList<HashMap<String, String>> testData = new ArrayList<HashMap<String, String>>();
 		try {
-			logger.info("#### Reading Data from "+testFile+" #####");
+			logger.info("#### Reading Data from "+FilenameUtils.getName(testFile)+" #####");
 			testData = Commons.getDataProviderSheetData(testFile);
 		} catch (Exception e) {
 			logger.error("Skipping Test: Error occured while reading test file data "+e.getMessage());

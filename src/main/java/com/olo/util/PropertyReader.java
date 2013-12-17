@@ -25,11 +25,11 @@ public class PropertyReader {
 		try {
 			
 			if(configProp.isEmpty()){
-				logger.info("Loading config.properties");
+				logger.info("Loading /config/config.properties");
 				configProp.load(PropertyReader.class.getResourceAsStream("/config/config.properties"));
 			}
 			if(mailProp.isEmpty()){
-				logger.info("Loading mail.properties");
+				logger.info("Loading /config/mail.properties");
 				mailProp.load(PropertyReader.class.getResourceAsStream("/config/mail.properties"));
 			}
 			

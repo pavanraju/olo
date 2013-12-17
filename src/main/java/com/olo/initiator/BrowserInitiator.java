@@ -6,13 +6,13 @@ import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
-public class BrowserInitiator extends Configuration{
+public class BrowserInitiator extends InitiatorUtil{
 	
 	protected ThreadLocal<WebDriver> threadDriver = new InheritableThreadLocal<WebDriver>();
 	
 	@BeforeMethod
 	public void beforeTestMethod(ITestContext ctx) throws Exception{
-		threadDriver.set(getDriverBySetTimeOuts(ctx));
+		threadDriver.set(driverConfig.getDriverBySetTimeOuts(ctx));
 	}
 	
 	public WebDriver getDriver() {

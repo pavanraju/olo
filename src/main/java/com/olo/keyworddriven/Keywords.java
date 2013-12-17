@@ -568,7 +568,7 @@ public class Keywords{
 			step.setIfSkipped(true);
 		}
 	}
-	
+	/*
 	@Keyword("PutValueIn")
 	public HashMap<String, String> putValueIn(KeywordPropObject step) throws Exception{
 		HashMap<String, String> storeData = new HashMap<String, String>();
@@ -588,5 +588,5 @@ public class Keywords{
 		step.setActualValue(elementText);
 		return storeData;
 	}
-	
+	*/
 }

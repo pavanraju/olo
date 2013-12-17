@@ -214,8 +214,8 @@ public class Utility {
 		summaryTable.append("<div class='col-md-7'><div class='table-responsive'>");
 		summaryTable.append("<table class='table table-bordered col-md-6'>");
 		summaryTable.append("<thead><tr><th colspan='2'><p class='text-center'>Configuration</p></th></tr></thead>");
-	    if(configProp.containsKey("url")){
-	    	summaryTable.append("<tr><th>URL</th><td>"+configProp.getProperty("url")+"</td></tr>");
+	    if(configProp.containsKey("applicationUrl")){
+	    	summaryTable.append("<tr><th>Application Url</th><td>"+configProp.getProperty("applicationUrl")+"</td></tr>");
 	    }
 	    summaryTable.append("<tr><th>Browser</th><td>"+configProp.getProperty("browser")+"</td></tr>");
 	    

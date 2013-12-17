@@ -2,8 +2,7 @@ package com.olo.keyworddriven;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.io.FilenameUtils;
 import org.testng.ITest;
 import org.testng.ITestContext;
 import org.testng.annotations.Test;
@@ -14,15 +13,14 @@ import com.olo.keyworddriven.Keywords;
 import com.olo.keyworddriven.KeywordPropObject;
 
 
-public class Runner extends ApplicationInitiator implements ITest{
+public class TestRunner extends ApplicationInitiator implements ITest{
 	
-	private static final Logger logger = LogManager.getLogger(Runner.class.getName());
 	private String testFilePath;
 	private String testName;
 	
-	public Runner(String testFileName,String testFilePath){
+	public TestRunner(String testFilePath){
 		this.testFilePath = testFilePath;
-		testName = testFileName;
+		testName = FilenameUtils.getName(testFilePath);
 	}
 	
 	public String getTestName() {
@@ -34,8 +32,7 @@ public class Runner extends ApplicationInitiator implements ITest{
 	public void keywordTest(ITestContext ctx) throws Exception{
 		ArrayList<KeywordPropObject> excelSteps = new KeywordUtility().getExcelSteps(testFilePath);
 		new KeywordUtility().validateSteps(excelSteps);
-		logger.info("Executing Test File "+testFilePath);
-		new Execution(new Keywords(getDriver())).run(ctx, excelSteps);
+		new TestExecution(new Keywords(getDriver())).run(ctx, excelSteps);
 	}
 
 }

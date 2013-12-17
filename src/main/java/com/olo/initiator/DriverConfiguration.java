@@ -2,16 +2,12 @@ package com.olo.initiator;
 
 import static com.olo.util.PropertyReader.configProp;
 
-import java.io.File;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Platform;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -22,17 +18,14 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.testng.ITestContext;
-import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.SkipException;
 
-import com.olo.util.Commons;
-import com.olo.util.TestProp;
 import com.opera.core.systems.OperaDriver;
 
-public class Configuration {
+public class DriverConfiguration {
 	
-	private static final Logger logger = LogManager.getLogger(Configuration.class.getName());
+	private static final Logger logger = LogManager.getLogger(DriverConfiguration.class.getName());
 	
 	public DesiredCapabilities getInternetExplorerCapabilities(){
 		return DesiredCapabilities.internetExplorer();
@@ -173,31 +166,6 @@ public class Configuration {
 		}
 	}
 	
-	public void takeScreenShotForTest(WebDriver driver) {
-		ITestResult result = org.testng.Reporter.getCurrentTestResult();
-		takeScreenShotForTest(driver, result);
-	}
-	
-	public void takeScreenShotForTest(WebDriver driver, ITestResult result){
-		boolean takeScreenshot = true;
-		if(result.getTestContext().getSuite().getParallel().equals("true") && configProp.containsKey("remoteExecution") && configProp.getProperty("remoteExecution").equals("true")){
-			takeScreenshot = false;
-		}
-		if(takeScreenshot){
-			try {
-				String screenShotFileName=System.currentTimeMillis()+".png";
-				String screenShotPath=result.getTestContext().getOutputDirectory()+File.separator+"screenshots"+File.separator+screenShotFileName;
-				File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-				FileUtils.copyFile(srcFile, new File(screenShotPath));
-				result.setAttribute(TestProp.SCREENSHOT, screenShotFileName);
-			} catch (Exception e) {
-				if(e != null){
-					logger.warn("Could not take screenshot "+e.getMessage());
-				}
-			}
-		}
-	}
-	
 	public void setWaitForPageToLoadInSec(WebDriver driver){
 		if(configProp.containsKey("pageWaitAndWaitTimeOut")){
 			int timeout = Integer.parseInt(configProp.getProperty("pageWaitAndWaitTimeOut"));
@@ -228,16 +196,6 @@ public class Configuration {
 		driver.switchTo().window(driver.getWindowHandle());
 	}
 	
-	public void openUrl(WebDriver driver,String url){
-		logger.info("Trying to open url "+url);
-		driver.get(url);
-		logger.info("current url is "+driver.getCurrentUrl());
-	}
-	
-	public void deleteCookies(WebDriver driver){
-		driver.manage().deleteAllCookies();
-	}
-	
 	public void closeDriver(WebDriver driver){
 		if(driver!=null){
 			try {
@@ -248,21 +206,6 @@ public class Configuration {
 				logger.error("Error in stopping WebDriver "+e.getMessage());
 			}
 		}
-	}
-	
-	public void handleAfterMethod(WebDriver driver, ITestResult result){
-		if(result.getStatus()==ITestResult.FAILURE && result.getThrowable().getMessage()!=Commons.verificationFailuresMessage){
-			takeScreenShotForTest(driver, result);
-		}
-		closeDriver(driver);
-	}
-	
-	public void setPropertyForTest(ITestResult result, String propertyName, String propertyValue){
-		result.setAttribute(propertyName, propertyValue);
-	}
-	
-	public void setPropertyForTest(String propertyName, String propertyValue){
-		Reporter.getCurrentTestResult().setAttribute(propertyName, propertyValue);
 	}
 	
 }
