@@ -1,3 +1,28 @@
+0.16.0
+------------
+
+**Enhancements**
+
+* Rewritten KeywordDriven support
+* Keyword driven tests will use the browser bot
+* Added new methods to BrowserBot.
+* Updated selenium to 2.39
+* Logger enhancements
+* New Listeners MailReporter and MailSuiteListener for sending emails
+* Added ApplicationInitiator for starting and stoping driver
+* Reports uses Bootstrap3 and are completely responsive
+* Enhanced reports
+
+**Breaking Changes**
+
+* In config.properties 'url' property changed to 'applicationUrl'
+* removed support for android driver and it is depricated in selenium 2.39
+* keyword driven reports will be generated at suite listener level
+* removed Put Keywords temporary
+* removed app messages loading feature for keyword driven tests
+* syntax changed for accessing data provider data
+  - {{username}}  to access data
+
 0.15.0
 ------------
 
