@@ -9,7 +9,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.android.AndroidDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
@@ -47,10 +46,6 @@ public class DriverConfiguration {
 		return DesiredCapabilities.safari();
 	}
 	
-	public DesiredCapabilities getAndroidCapabilities(){
-		return DesiredCapabilities.android();
-	}
-	
 	public DesiredCapabilities getHtmlUnitCapabilities(){
 		return DesiredCapabilities.htmlUnit();
 	}
@@ -67,8 +62,6 @@ public class DriverConfiguration {
 			capabilities = getOperaCapabilities();
 		}else if(browser.equals("safari")){
 			capabilities = getSafariCapabilities();
-		}else if(browser.equals("android")){
-			capabilities = getAndroidCapabilities();
 		}else if(browser.equals("htmlunit")){
 			capabilities = getHtmlUnitCapabilities();
 		}else{
@@ -107,10 +100,6 @@ public class DriverConfiguration {
 		return new SafariDriver(capabilities);
 	}
 	
-	public WebDriver getAndroidDriver(DesiredCapabilities capabilities){
-		return new AndroidDriver(capabilities);
-	}
-	
 	public WebDriver getHtmlUnitDriver(DesiredCapabilities capabilities){
 		capabilities.setJavascriptEnabled(true);
 		return new HtmlUnitDriver(capabilities);
@@ -137,8 +126,6 @@ public class DriverConfiguration {
 				return getOperaDriver(capabilities);
 			}else if(browser.equals("safari")){
 				return getSafariDriver(capabilities);
-			}else if(browser.equals("android")){
-				return getAndroidDriver(capabilities);
 			}else if(browser.equals("htmlunit")){
 				return getHtmlUnitDriver(capabilities);
 			}else{
