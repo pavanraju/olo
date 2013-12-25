@@ -5,14 +5,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.olo.reporter.TestReporter;
-
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Reporter {
+public @interface Then {
 	
-	Class<?> value() ;
-	
-	Class<TestReporter> reporterClass() default TestReporter.class;
+	String value() ;
+	String[] aliases();
 	
 }

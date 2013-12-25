@@ -1,10 +1,6 @@
 package com.olo.listeners;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -12,25 +8,14 @@ import org.testng.ISuite;
 import org.testng.ISuiteListener;
 import org.testng.ISuiteResult;
 import org.testng.ITestContext;
-import org.testng.ITestNGMethod;
-import org.testng.ITestResult;
-import org.testng.collections.Lists;
-import org.testng.collections.Maps;
-import org.testng.collections.Sets;
-import org.testng.internal.MethodHelper;
+
 import org.testng.internal.Utils;
-import org.testng.xml.XmlClass;
-import org.testng.xml.XmlInclude;
-import org.testng.xml.XmlSuite;
-import org.testng.xml.XmlTest;
 
 import com.olo.reporter.Utility;
 
 public class SuiteListener implements ISuiteListener{
 	
 	private static final Logger logger = LogManager.getLogger(SuiteListener.class.getName());
-	
-	private XmlSuite m_xmlSuite;
 	
 	public void onFinish(ISuite suite) {
 		try {
@@ -271,141 +256,6 @@ public class SuiteListener implements ISuiteListener{
 	
 	public void onStart(ISuite suite) {
 		
-	}
-	
-	protected void generateFailureSuite(XmlSuite xmlSuite, ISuite suite, String outputDir) {
-	    XmlSuite failedSuite = (XmlSuite) xmlSuite.clone();
-	    failedSuite.setName(xmlSuite.getName());
-	    m_xmlSuite= failedSuite;
-	    Map<String, XmlTest> xmlTests= Maps.newHashMap();
-	    for(XmlTest xmlT: xmlSuite.getTests()) {
-	      xmlTests.put(xmlT.getName(), xmlT);
-	    }
-	    
-	    Map<String, ISuiteResult> results = suite.getResults();
-
-	    for(Map.Entry<String, ISuiteResult> entry : results.entrySet()) {
-	      ISuiteResult suiteResult = entry.getValue();
-	      ITestContext testContext = suiteResult.getTestContext();
-
-	      generateXmlTest(suite,
-	                      xmlTests.get(testContext.getName()),
-	                      testContext,
-	                      testContext.getFailedTests().getAllResults(),
-	                      testContext.getSkippedTests().getAllResults());
-	    }
-
-	    if(null != failedSuite.getTests() && failedSuite.getTests().size() > 0) {
-	      Utils.writeUtf8File(outputDir, suite.getName()+"-failed.xml", failedSuite.toXml());
-	    }
-	}
-	
-
-	
-	private void generateXmlTest(ISuite suite,  XmlTest xmlTest, ITestContext context, Collection<ITestResult> failedTests, Collection<ITestResult> skippedTests) {
-		// Note:  we can have skipped tests and no failed tests
-		// if a method depends on nonexistent groups
-		if (skippedTests.size() > 0 || failedTests.size() > 0) {
-			Set<ITestNGMethod> methodsToReRun = Sets.newHashSet();
-			
-			// Get the transitive closure of all the failed methods and the methods
-			// they depend on
-			Collection[] allTests = new Collection[] {failedTests, skippedTests};
-			
-			for (Collection<ITestResult> tests : allTests) {
-				for (ITestResult failedTest : tests) {
-					ITestNGMethod current = failedTest.getMethod();
-					if (current.isTest()) {
-						methodsToReRun.add(current);
-						ITestNGMethod method = failedTest.getMethod();
-						// Don't count configuration methods
-						if (method.isTest()) {
-							List<ITestNGMethod> methodsDependedUpon =MethodHelper.getMethodsDependedUpon(method,
-							context.getAllTestMethods());
-				
-							for (ITestNGMethod m : methodsDependedUpon) {
-								if (m.isTest()) {
-									methodsToReRun.add(m);
-								}
-							}
-						}
-					}
-				}
-			}
-			List<ITestNGMethod> result = Lists.newArrayList();
-			for (ITestNGMethod m : context.getAllTestMethods()) {
-				if (methodsToReRun.contains(m)) {
-					result.add(m);
-				}
-			}
-			
-			methodsToReRun.clear();
-			Collection<ITestNGMethod> invoked= suite.getInvokedMethods();
-			for(ITestNGMethod tm: invoked) {
-				if(!tm.isTest()) {
-					methodsToReRun.add(tm);
-				}
-			}				
-			result.addAll(methodsToReRun);
-			createXmlTest(context, result, xmlTest);
-		}
-	}
-	
-	 private void createXmlTest(ITestContext context, List<ITestNGMethod> methods, XmlTest srcXmlTest) {
-		    XmlTest xmlTest = new XmlTest(m_xmlSuite);
-		    xmlTest.setName(context.getName());
-		    xmlTest.setBeanShellExpression(srcXmlTest.getExpression());
-		    xmlTest.setIncludedGroups(srcXmlTest.getIncludedGroups());
-		    xmlTest.setExcludedGroups(srcXmlTest.getExcludedGroups());
-		    xmlTest.setParallel(srcXmlTest.getParallel());
-		    xmlTest.setJUnit(srcXmlTest.isJUnit());
-		    List<XmlClass> xmlClasses = createXmlClasses(methods, srcXmlTest);
-		    xmlTest.setXmlClasses(xmlClasses);
-	}
-
-	private List<XmlClass> createXmlClasses(List<ITestNGMethod> methods, XmlTest srcXmlTest) {
-	    List<XmlClass> result = Lists.newArrayList();
-	    Map<Class, Set<ITestNGMethod>> methodsMap= Maps.newHashMap();
-
-	    for (ITestNGMethod m : methods) {
-	      Object[] instances= m.getInstances();
-	      Class clazz= instances == null || instances.length == 0 || instances[0] == null
-	          ? m.getRealClass()
-	          : instances[0].getClass();
-	      Set<ITestNGMethod> methodList= methodsMap.get(clazz);
-	      if(null == methodList) {
-	        methodList= new HashSet<ITestNGMethod>();
-	        methodsMap.put(clazz, methodList);
-	      }
-	      methodList.add(m);
-	    }
-
-	    // Ideally, we should preserve each parameter in each class but putting them
-	    // all in the same bag for now
-	    Map<String, String> parameters = Maps.newHashMap();
-	    for (XmlClass c : srcXmlTest.getClasses()) {
-	      parameters.putAll(c.getLocalParameters());
-	    }
-
-	    int index = 0;
-	    for(Map.Entry<Class, Set<ITestNGMethod>> entry: methodsMap.entrySet()) {
-	      Class clazz= entry.getKey();
-	      Set<ITestNGMethod> methodList= entry.getValue();
-	      XmlClass xmlClass= new XmlClass(clazz.getName(), index++, false /* don't load classes */);
-	      List<XmlInclude> methodNames= Lists.newArrayList(methodList.size());
-	      int ind = 0;
-	      for(ITestNGMethod m: methodList) {
-	        methodNames.add(new XmlInclude(m.getMethod().getName(), m.getFailedInvocationNumbers(),ind++));
-	      }
-	      
-	      xmlClass.setIncludedMethods(methodNames);
-	      
-	      xmlClass.setParameters(parameters);
-	      result.add(xmlClass);
-
-	    }
-
-	    return result;
 	}
 	
 }

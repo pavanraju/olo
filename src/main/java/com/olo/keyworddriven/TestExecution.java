@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.testng.Assert;
@@ -72,10 +73,16 @@ public class TestExecution {
 									localStep.setIsVerification(true);
 								}
 								if(localStep.getCommand().startsWith("Put")){
-									HashMap<String, String> storedData =  (HashMap<String, String>)method.invoke(keywords,localStep);
-									storeData.putAll(storedData);
+									//HashMap<String, String> storedData =  (HashMap<String, String>)method.invoke(keywords,localStep);
+									//storeData.putAll(storedData);
+									Object storedData = MethodUtils.invokeMethod(keywords, method.getName(), localStep);
+									if(storedData==null){
+										throw new Exception("Check return type of your keyword");
+									}
+									storeData.putAll((HashMap<String, String>)storeData);
 								}else{
-									method.invoke(keywords,localStep);
+									MethodUtils.invokeMethod(keywords, method.getName(), localStep);
+									//method.invoke(keywords,localStep);
 								}
 								
 								if(localStep.getCommand().startsWith("If") && localStep.getIfSkipped()){
