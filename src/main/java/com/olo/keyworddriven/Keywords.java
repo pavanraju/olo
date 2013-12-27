@@ -77,11 +77,6 @@ public class Keywords{
 		browser.waitForNotText(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("WaitForAlert")
-	public void waitForAlert(KeywordPropObject step) throws Exception{
-		browser.waitForAlert(step.getActualValue());
-	}
-	
 	@Keyword("WaitForAlertPresent")
 	public void waitForAlertPresent(KeywordPropObject step) throws Exception{
 		browser.waitForAlertPresent();

@@ -25,7 +25,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.internal.Coordinates;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -107,127 +106,51 @@ public class BrowserBot{
 	}
 	
 	public void waitForValue(final WebElement element, final String value) throws Exception{
-		new WebDriverWait(driver, pageWaitAndWaitTimeOut) {
-    	}.until(new ExpectedCondition<Boolean>() {
-    		public Boolean apply(WebDriver driver) {
-    			return getValue(element).equals(value);
-    		}
-    	});
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(ExpectedConditions.textToBePresentInElementValue(element, value));
 	}
 	
 	public void waitForNotValue(final WebElement element, final String value) throws Exception{
-		new WebDriverWait(driver, pageWaitAndWaitTimeOut) {
-    	}.until(new ExpectedCondition<Boolean>() {
-    		public Boolean apply(WebDriver driver) {
-    			return !getValue(element).equals(value);
-    		}
-    	});
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementValue(element, value)));
 	}
 	
 	public void waitForValue(final WebElement element, final String value,long timeOutInSeconds) throws Exception{
-		new WebDriverWait(driver, timeOutInSeconds) {
-    	}.until(new ExpectedCondition<Boolean>() {
-    		public Boolean apply(WebDriver driver) {
-    			return getValue(element).equals(value);
-    		}
-    	});
+		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.textToBePresentInElementValue(element, value));
 	}
 	
 	public void waitForNotValue(final WebElement element, final String value,long timeOutInSeconds) throws Exception{
-		new WebDriverWait(driver, timeOutInSeconds) {
-    	}.until(new ExpectedCondition<Boolean>() {
-    		public Boolean apply(WebDriver driver) {
-    			return !getValue(element).equals(value);
-    		}
-    	});
+		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementValue(element, value)));
 	}
 	
 	public void waitForEditable(final WebElement element) throws Exception{
-		new WebDriverWait(driver, pageWaitAndWaitTimeOut) {
-    	}.until(new ExpectedCondition<Boolean>() {
-    		public Boolean apply(WebDriver driver) {
-    			return isElementPresent(element) && isVisible(element) && isEnabled(element);
-    		}
-    	});
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(ExpectedConditions.elementToBeClickable(element));
 	}
 	
 	public void waitForNotEditable(final WebElement element) throws Exception{
-		new WebDriverWait(driver, pageWaitAndWaitTimeOut) {
-    	}.until(new ExpectedCondition<Boolean>() {
-    		public Boolean apply(WebDriver driver) {
-    			return isElementPresent(element) && isVisible(element) && !isEnabled(element);
-    		}
-    	});
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(ExpectedConditions.not(ExpectedConditions.elementToBeClickable(element)));
 	}
 	
 	public void waitForEditable(final WebElement element,long timeOutInSeconds) throws Exception{
-		new WebDriverWait(driver, timeOutInSeconds) {
-    	}.until(new ExpectedCondition<Boolean>() {
-    		public Boolean apply(WebDriver driver) {
-    			return isElementPresent(element) && isVisible(element) && isEnabled(element);
-    		}
-    	});
+		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.elementToBeClickable(element));
 	}
 	
 	public void waitForNotEditable(final WebElement element,long timeOutInSeconds) throws Exception{
-		new WebDriverWait(driver, timeOutInSeconds) {
-    	}.until(new ExpectedCondition<Boolean>() {
-    		public Boolean apply(WebDriver driver) {
-    			return isElementPresent(element) && isVisible(element) && !isEnabled(element);
-    		}
-    	});
+		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.not(ExpectedConditions.elementToBeClickable(element)));
 	}
 	
 	public void waitForText(final WebElement element, final String value) throws Exception{
-		new WebDriverWait(driver, pageWaitAndWaitTimeOut) {
-    	}.until(new ExpectedCondition<Boolean>() {
-    		public Boolean apply(WebDriver driver) {
-    			return getText(element).equals(value);
-    		}
-    	});
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(ExpectedConditions.textToBePresentInElement(element, value));
 	}
 	
 	public void waitForNotText(final WebElement element, final String value) throws Exception{
-		new WebDriverWait(driver, pageWaitAndWaitTimeOut) {
-    	}.until(new ExpectedCondition<Boolean>() {
-    		public Boolean apply(WebDriver driver) {
-    			return !getText(element).equals(value);
-    		}
-    	});
+		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(element, value)));
 	}
 	
 	public void waitForText(final WebElement element, final String value,long timeOutInSeconds) throws Exception{
-		new WebDriverWait(driver, timeOutInSeconds) {
-    	}.until(new ExpectedCondition<Boolean>() {
-    		public Boolean apply(WebDriver driver) {
-    			return getText(element).equals(value);
-    		}
-    	});
+		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.textToBePresentInElement(element, value));
 	}
 	
 	public void waitForNotText(final WebElement element, final String value,long timeOutInSeconds) throws Exception{
-		new WebDriverWait(driver, timeOutInSeconds) {
-    	}.until(new ExpectedCondition<Boolean>() {
-    		public Boolean apply(WebDriver driver) {
-    			return !getText(element).equals(value);
-    		}
-    	});
-	}
-	
-	public void waitForAlert(final String pattern){
-		new WebDriverWait(driver, pageWaitAndWaitTimeOut).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-            	return d.switchTo().alert().getText().equals(pattern);
-            }
-        });
-	}
-	
-	public void waitForAlert(final String pattern,long timeOutInSeconds){
-		new WebDriverWait(driver, timeOutInSeconds).until(new ExpectedCondition<Boolean>() {
-            public Boolean apply(WebDriver d) {
-            	return d.switchTo().alert().getText().equals(pattern);
-            }
-        });
+		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(element, value)));
 	}
 	
 	public void waitForAlertPresent(){
@@ -854,11 +777,11 @@ public class BrowserBot{
 	
 	public void clickAt(WebElement element,String value){
 		String[] v = value.split(",");
-		new Actions(driver).moveByOffset(Integer.parseInt(v[0]), Integer.parseInt(v[1])).click(element).perform();
+		new Actions(driver).moveByOffset(Integer.parseInt(v[0]), Integer.parseInt(v[1])).click(element).build().perform();
 	}
 	
 	public void doubleClick(WebElement element){
-		new Actions(driver).doubleClick(element).perform();
+		new Actions(driver).doubleClick(element).build().perform();
 	}
 	
 	public void selectByText(WebElement element, String visibleText){
@@ -867,16 +790,16 @@ public class BrowserBot{
 	
 	public void dragAndDrop(WebElement element,String value) throws Exception {
 		String[] v = value.split(",");
-		new Actions(driver).dragAndDropBy(element, Integer.parseInt(v[0]), Integer.parseInt(v[1])).perform();
+		new Actions(driver).dragAndDropBy(element, Integer.parseInt(v[0]), Integer.parseInt(v[1])).build().perform();
 	}
 	
 	public void contextMenu(WebElement element){
-		new Actions(driver).contextClick(element).perform();
+		new Actions(driver).contextClick(element).build().perform();
 	}
 	
 	public void contextMenuAt(WebElement element,String value){
 		String[] v = value.split(",");
-		new Actions(driver).moveByOffset(Integer.parseInt(v[0]), Integer.parseInt(v[1])).contextClick(element).perform();
+		new Actions(driver).moveByOffset(Integer.parseInt(v[0]), Integer.parseInt(v[1])).contextClick(element).build().perform();
 	}
 	
 	public void mouseDown(WebElement element){
@@ -906,27 +829,27 @@ public class BrowserBot{
 	}
 	
 	public void keyDown(WebElement element, String value){
-		new Actions(driver).keyDown(element, Keys.valueOf(value)).perform();
+		new Actions(driver).keyDown(element, Keys.valueOf(value)).build().perform();
 	}
 	
 	public void keyDown(WebElement element, Keys key){
-		new Actions(driver).keyDown(element, key).perform();
+		new Actions(driver).keyDown(element, key).build().perform();
 	}
 	
 	public void keyUp(WebElement element, String value){
-		new Actions(driver).keyUp(element, Keys.valueOf(value)).perform();
+		new Actions(driver).keyUp(element, Keys.valueOf(value)).build().perform();
 	}
 	
 	public void keyUp(WebElement element, Keys key){
-		new Actions(driver).keyUp(element, key).perform();
+		new Actions(driver).keyUp(element, key).build().perform();
 	}
 	
 	public void controlKeyUp(){
-		new Actions(driver).keyUp(Keys.CONTROL).perform();
+		new Actions(driver).keyUp(Keys.CONTROL).build().perform();
 	}
 	
 	public void controlKeyDown(){
-		new Actions(driver).keyDown(Keys.CONTROL).perform();
+		new Actions(driver).keyDown(Keys.CONTROL).build().perform();
 	}
 	
 	public void chooseOk(){
