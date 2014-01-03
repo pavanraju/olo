@@ -1,7 +1,5 @@
 package com.olo.initiator;
 
-import static com.olo.util.PropertyReader.configProp;
-
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
@@ -13,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 
+import com.olo.propertyutil.ConfigProperties;
 import com.olo.util.Commons;
 import com.olo.util.TestProp;
 
@@ -43,7 +42,7 @@ public class InitiatorUtil {
 	
 	public void takeScreenShotForTest(WebDriver driver, ITestResult result){
 		boolean takeScreenshot = true;
-		if(result.getTestContext().getSuite().getParallel().equals("true") && configProp.containsKey("remoteExecution") && configProp.getProperty("remoteExecution").equals("true")){
+		if(result.getTestContext().getSuite().getParallel().equals("true") && ConfigProperties.getRemoteExecution()){
 			takeScreenshot = false;
 		}
 		if(takeScreenshot){

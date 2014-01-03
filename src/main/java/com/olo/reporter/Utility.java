@@ -1,7 +1,5 @@
 package com.olo.reporter;
 
-import static com.olo.util.PropertyReader.configProp;
-
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -26,6 +24,7 @@ import org.testng.internal.Utils;
 
 import com.olo.annotations.Reporter;
 import com.olo.listeners.InvokedMethodListener;
+import com.olo.propertyutil.ConfigProperties;
 import com.olo.util.Commons;
 import com.olo.util.TestProp;
 import com.olo.util.VerificationError;
@@ -214,10 +213,10 @@ public class Utility {
 		summaryTable.append("<div class='col-md-7'><div class='table-responsive'>");
 		summaryTable.append("<table class='table table-bordered col-md-6'>");
 		summaryTable.append("<thead><tr><th colspan='2'><p class='text-center'>Configuration</p></th></tr></thead>");
-	    if(configProp.containsKey("applicationUrl")){
-	    	summaryTable.append("<tr><th>Application Url</th><td>"+configProp.getProperty("applicationUrl")+"</td></tr>");
+	    if(ConfigProperties.getApplicationUrl()!=null){
+	    	summaryTable.append("<tr><th>Application Url</th><td>"+ConfigProperties.getApplicationUrl()+"</td></tr>");
 	    }
-	    summaryTable.append("<tr><th>Browser</th><td>"+configProp.getProperty("browser")+"</td></tr>");
+	    summaryTable.append("<tr><th>Browser</th><td>"+ConfigProperties.getBrowser()+"</td></tr>");
 	    
 	    summaryTable.append("</table>");
 	    summaryTable.append("</div></div>");

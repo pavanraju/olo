@@ -1,6 +1,6 @@
 package com.olo.mailer;
 
-import static com.olo.util.PropertyReader.mailProp;
+import static com.olo.propertyutil.MailProperties.mailProp;
 
 import java.util.Properties;
 

@@ -31,9 +31,9 @@ public class TestBuilder {
 			String fileName = directoryOrFile.getName();
 			if(fileName.startsWith("KWD-") && (fileName.endsWith(".xls") || fileName.endsWith(".xlsx"))){
 				if(Commons.getWorkbookFromXls(directoryOrFile).getSheet("dataProvider")!=null){
-					keywordDrivenTests.add(new DataDrivenTestRunner(directoryOrFile.getAbsolutePath()));
+					keywordDrivenTests.add(new DataDrivenTestRunner(directoryOrFile.getAbsolutePath(),Keywords.class));
 				}else{
-					keywordDrivenTests.add(new TestRunner(directoryOrFile.getAbsolutePath()));
+					keywordDrivenTests.add(new TestRunner(directoryOrFile.getAbsolutePath(),Keywords.class));
 				}
 			}
 		}

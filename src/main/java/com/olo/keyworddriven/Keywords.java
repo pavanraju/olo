@@ -1,7 +1,5 @@
 package com.olo.keyworddriven;
 
-import static com.olo.util.PropertyReader.configProp;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -13,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import com.olo.annotations.Keyword;
 import com.olo.bot.BrowserBot;
 import com.olo.keyworddriven.KeywordPropObject;
+import com.olo.propertyutil.ConfigProperties;
 
 public class Keywords{
 	
@@ -141,7 +140,7 @@ public class Keywords{
 			cal.add(Calendar.DATE, Integer.parseInt(value));
 		}
 		if(step.getOptions()==null || step.getOptions().equals("")){
-			SimpleDateFormat defaultFormat = new SimpleDateFormat(configProp.getProperty("dateFormat"));
+			SimpleDateFormat defaultFormat = new SimpleDateFormat(ConfigProperties.getDateFormat());
 			String newdate = defaultFormat.format(cal.getTime());
 			step.setActualValue(newdate);
 		}else{
@@ -356,22 +355,22 @@ public class Keywords{
 	
 	@Keyword("AssertSelectOptionsSize")
 	public void assertSelectOptionsSize(KeywordPropObject step) throws Exception{
-		browser.assertSelectOptionsSize(browser.findElement(step.getTargetValue()),step.getActualValue());
+		browser.assertSelectOptionsSize(browser.findElement(step.getTargetValue()),Integer.parseInt(step.getActualValue()));
 	}
 	
 	@Keyword("VerifySelectOptionsSize")
 	public void verifySelectOptionsSize(KeywordPropObject step) throws Exception{
-		browser.verifySelectOptionsSize(browser.findElement(step.getTargetValue()),step.getActualValue());
+		browser.verifySelectOptionsSize(browser.findElement(step.getTargetValue()),Integer.parseInt(step.getActualValue()));
 	}
 	
 	@Keyword("AssertNotSelectOptionsSize")
 	public void assertNotSelectOptionsSize(KeywordPropObject step) throws Exception{
-		browser.assertNotSelectOptionsSize(browser.findElement(step.getTargetValue()),step.getActualValue());
+		browser.assertNotSelectOptionsSize(browser.findElement(step.getTargetValue()),Integer.parseInt(step.getActualValue()));
 	}
 	
 	@Keyword("VerifyNotSelectOptionsSize")
 	public void verifyNotSelectOptionsSize(KeywordPropObject step) throws Exception{
-		browser.verifyNotSelectOptionsSize(browser.findElement(step.getTargetValue()),step.getActualValue());
+		browser.verifyNotSelectOptionsSize(browser.findElement(step.getTargetValue()),Integer.parseInt(step.getActualValue()));
 	}
 	
 	@Keyword("AssertEditable")

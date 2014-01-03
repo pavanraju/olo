@@ -22,13 +22,8 @@ import com.olo.util.VerificationErrorsInTest;
 public class TestExecution {
 	
 	private static final Logger logger = LogManager.getLogger(TestExecution.class.getName());
-	private Keywords keywords;
 	
-	public TestExecution(Keywords keywords){
-		this.keywords=keywords;
-	}
-	
-	public void run(ITestContext ctx, ArrayList<KeywordPropObject> excelSteps) throws Exception{
+	public void run(ITestContext ctx, ArrayList<KeywordPropObject> excelSteps, Keywords keywords) throws Exception{
 		ITestResult testResult = Reporter.getCurrentTestResult();
 		Throwable throwableException = null;
 		HashMap<String, String> storeData = new HashMap<String, String>();

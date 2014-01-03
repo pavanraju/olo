@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.commons.io.FilenameUtils;
+import org.openqa.selenium.WebDriver;
 import org.testng.ITest;
 import org.testng.ITestContext;
 import org.testng.annotations.DataProvider;
@@ -17,9 +18,11 @@ public class DataDrivenTestRunner extends ApplicationInitiator implements ITest{
 	
 	private String testFilePath;
 	private String testName;
+	private Class<? extends Keywords> keywords;
 	
-	public DataDrivenTestRunner(String testFilePath){
+	public DataDrivenTestRunner(String testFilePath, Class<? extends Keywords> keywords){
 		this.testFilePath = testFilePath;
+		this.keywords = keywords;
 		testName = FilenameUtils.getName(testFilePath);
 	}
 	
@@ -43,7 +46,7 @@ public class DataDrivenTestRunner extends ApplicationInitiator implements ITest{
 		ArrayList<KeywordPropObject> excelSteps = new KeywordUtility().getExcelSteps(testFilePath);
 		new KeywordUtility().replaceTestData(excelSteps, testData);
 		new KeywordUtility().validateSteps(excelSteps);
-		new TestExecution(new Keywords(getDriver())).run(ctx, excelSteps);
+		new TestExecution().run(ctx, excelSteps, keywords.getConstructor(WebDriver.class).newInstance(getDriver()));
 	}
 
 }

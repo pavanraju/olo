@@ -1,7 +1,5 @@
 package com.olo.initiator;
 
-import static com.olo.util.PropertyReader.configProp;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.testng.TestNG;
 
 import com.olo.listeners.*;
+import com.olo.propertyutil.ConfigProperties;
 
 public class ExecutionInitiator {
 	
@@ -30,10 +29,10 @@ public class ExecutionInitiator {
 			String[] suitsToRun=args[0].split(",");
 			
 			if ( args.length > 1){
-				configProp.setProperty("browser", args[1]);
+				ConfigProperties.setBrowser(args[1]);
 			}
 			
-			String browser = configProp.getProperty("browser");
+			String browser = ConfigProperties.getBrowser();
 			
 			List<String> suiteFiles = new ArrayList<String>();
 			for(int i=0;i<suitsToRun.length;i++){

@@ -8,6 +8,7 @@ public class Step {
 	private String description = null;
 	private long startTime = 0;
 	private long endTime = 0;
+	private int status = 0;
 	private List<Integer> verificationErrorIndexes = null;
 	
 	public String getName() {
@@ -42,6 +43,14 @@ public class Step {
 		this.endTime = endTime;
 	}
 	
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	public List<Integer> getVerificationErrorIndexes() {
 		return verificationErrorIndexes;
 	}

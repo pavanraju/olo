@@ -1,7 +1,5 @@
 package com.olo.initiator;
 
-import static com.olo.util.PropertyReader.configProp;
-
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
@@ -20,6 +18,7 @@ import org.testng.ITestContext;
 import org.testng.Reporter;
 import org.testng.SkipException;
 
+import com.olo.propertyutil.ConfigProperties;
 import com.opera.core.systems.OperaDriver;
 
 public class DriverConfiguration {
@@ -110,10 +109,10 @@ public class DriverConfiguration {
 	}
 	
 	public WebDriver getWebDriver(ITestContext ctx) throws Exception{
-		String browser = configProp.getProperty("browser");
+		String browser = ConfigProperties.getBrowser();
 		DesiredCapabilities capabilities =  getCapabilities(browser);
-		if(!ctx.getSuite().getParallel().equals("false") && configProp.containsKey("remoteExecution") && configProp.getProperty("remoteExecution").equals("true")){
-			String hubURL = configProp.getProperty("hubURL");
+		if(!ctx.getSuite().getParallel().equals("false") && ConfigProperties.getRemoteExecution()){
+			String hubURL = ConfigProperties.getHubUrl();
 			return getRemoteWebDriverDriver(hubURL, capabilities);
 		}else{
 			if(browser.equals("firefox")){
@@ -154,10 +153,7 @@ public class DriverConfiguration {
 	}
 	
 	public void setWaitForPageToLoadInSec(WebDriver driver){
-		if(configProp.containsKey("pageWaitAndWaitTimeOut")){
-			int timeout = Integer.parseInt(configProp.getProperty("pageWaitAndWaitTimeOut"));
-			setWaitForPageToLoadInSec(driver, timeout);
-		}
+		setWaitForPageToLoadInSec(driver, ConfigProperties.getPageWaitAndWaitTimeOut());
 	}
 	
 	public void setWaitForPageToLoadInSec(WebDriver driver,long sec){
@@ -166,10 +162,7 @@ public class DriverConfiguration {
 	}
 	
 	public void setImplicitWaitInSec(WebDriver driver){
-		if(configProp.containsKey("implicitWait")){
-			int implicitWait = Integer.parseInt(configProp.getProperty("implicitWait"));
-			setImplicitWaitInSec(driver, implicitWait);
-		}
+		setImplicitWaitInSec(driver, ConfigProperties.getImplicitWait());
 	}
 	
 	public void setImplicitWaitInSec(WebDriver driver,long sec){

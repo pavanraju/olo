@@ -1,6 +1,6 @@
 package com.olo.listeners;
 
-import static com.olo.util.PropertyReader.mailProp;
+import static com.olo.propertyutil.MailProperties.mailProp;
 
 import java.io.File;
 import java.util.Map;

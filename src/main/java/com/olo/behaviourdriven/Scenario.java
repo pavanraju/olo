@@ -7,6 +7,7 @@ public class Scenario {
 	private String description = null;
 	private long startTime = 0;
 	private long endTime = 0;
+	private int status = 0;
 	private List<Step> steps = null;
 	
 	public String getDescription() {
@@ -33,6 +34,14 @@ public class Scenario {
 		this.endTime = endTime;
 	}
 	
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	public List<Step> getSteps() {
 		return steps;
 	}
