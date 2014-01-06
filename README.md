@@ -40,4 +40,4 @@ REQUIRED LIBRARIES BY OLO
 HOW TO START EXECUTION
 --------------------
       Pass 1st argument as suitefiles(comma separated) where it is located to com.olo.initiator.ExecutionInitiator.
-      If you are on maven project, then include these listeners(com.olo.listeners.InvokedMethodListener,com.olo.listeners.SuiteListener,com.olo.listeners.Reporter) in your pom.xml and run your project(pom.xml) as maven tests
+      If you are on maven project, then include these listeners(com.olo.listeners.CheckVerificationErrorListener,com.olo.listeners.SuiteListener,com.olo.listeners.Reporter) in your pom.xml and run your project(pom.xml) as maven tests

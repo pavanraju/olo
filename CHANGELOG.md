@@ -1,3 +1,20 @@
+0.17.0
+------------
+
+**Enhancements**
+
+* Renamed InvokedMethodListener to CheckVerificationErrorListener
+* Keyword driven tests will use the browser bot
+* Using Apache commons api for invoking methods
+* Using updated Expected Conditions for BrowserBot methods
+* Added new class Verify for verifications which is a wrapper for Assert class
+* Added ConfigProperties,MailProperties class for accessing config.properties,mail.properties data
+
+**Breaking Changes**
+
+* Removed WaitForAlert Keyword
+* Removed few methods from BrowserBot which will be part of Verify class now
+
 0.16.0
 ------------
 
@@ -9,7 +26,7 @@
 * Updated selenium to 2.39
 * Logger enhancements
 * New Listeners MailReporter and MailSuiteListener for sending emails
-* Added ApplicationInitiator for starting and stoping driver
+* Added ApplicationInitiator for starting and stopping driver
 * Reports uses Bootstrap3 and are completely responsive
 * Enhanced reports
 
