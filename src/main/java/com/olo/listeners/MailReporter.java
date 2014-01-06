@@ -1,7 +1,5 @@
 package com.olo.listeners;
 
-import static com.olo.propertyutil.MailProperties.mailProp;
-
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.testng.IReporter;
@@ -12,6 +10,7 @@ import org.testng.internal.Utils;
 import org.testng.xml.XmlSuite;
 
 import com.olo.mailer.MailClient;
+import com.olo.propertyutil.MailProperties;
 import com.olo.reporter.Utility;
 import com.olo.util.Commons;
 
@@ -139,8 +138,8 @@ public class MailReporter implements IReporter{
 	    Utils.writeFile(outputDirectory, fileName, suitesSummaryHtml.toString());
 	    
 	    try{
-    		String cc=mailProp.getProperty("mail.cc");
-	    	String to = mailProp.getProperty("mail.to");
+    		String cc = MailProperties.getMailCC();
+	    	String to = MailProperties.getMailTo();
 	    	String subject = "Suites Summary Report - Total : "+(totalPassedTests+totalFailedTests+totalSkippedTests)+"; Passed : "+totalPassedTests+"; Failed : "+totalFailedTests+"; Skipped : "+totalSkippedTests;
 	    	StringBuffer body = new StringBuffer();
 	    	body.append("Execution Summary Report is in below mentioned location.<br/><br/>Ip Address : "+Commons.getSystemIpAddress()+"<br/>Folder Path : "+outputDirectory);

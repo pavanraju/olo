@@ -23,7 +23,6 @@ import org.testng.ITestResult;
 import org.testng.internal.Utils;
 
 import com.olo.annotations.Reporter;
-import com.olo.listeners.InvokedMethodListener;
 import com.olo.propertyutil.ConfigProperties;
 import com.olo.util.Commons;
 import com.olo.util.TestProp;
@@ -32,7 +31,7 @@ import com.olo.util.VerificationErrorsInTest;
 
 public class Utility {
 	
-	private static final Logger logger = LogManager.getLogger(InvokedMethodListener.class.getName());
+	private static final Logger logger = LogManager.getLogger(Utility.class.getName());
 	
 	public static final SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd-MMM-yyyy HH:mm:ss");
 	public static final SimpleDateFormat sdfTests = new SimpleDateFormat("HH:mm:ss");

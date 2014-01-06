@@ -43,13 +43,13 @@ public class ExecutionInitiator {
 			}
 			
 			TestNG testng = new TestNG();
-			InvokedMethodListener methodListener = new InvokedMethodListener();
+			CheckVerificationErrorListener verificationErrorCheckListener = new CheckVerificationErrorListener();
 			SuiteListener suiteListner = new SuiteListener();
 			Reporter reporter = new Reporter();
 			SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy_HH-mm-ss");
 			testng.setTestSuites(suiteFiles);
 			testng.setUseDefaultListeners(false);
-			testng.addListener(methodListener);
+			testng.addListener(verificationErrorCheckListener);
 			testng.addListener(suiteListner);
 			testng.addListener(reporter);
 			

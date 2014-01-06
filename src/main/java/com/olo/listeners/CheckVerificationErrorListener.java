@@ -10,9 +10,9 @@ import com.olo.reporter.Utility;
 import com.olo.util.Commons;
 import com.olo.util.VerificationErrorsInTest;
 
-public class InvokedMethodListener implements IInvokedMethodListener{
+public class CheckVerificationErrorListener implements IInvokedMethodListener{
 	
-	private static final Logger logger = LogManager.getLogger(InvokedMethodListener.class.getName());
+	private static final Logger logger = LogManager.getLogger(CheckVerificationErrorListener.class.getName());
 
 	@Override
 	public void beforeInvocation(IInvokedMethod method, ITestResult testResult) {

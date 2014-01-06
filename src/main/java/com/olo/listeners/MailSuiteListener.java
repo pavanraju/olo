@@ -14,6 +14,7 @@ import org.testng.ITestContext;
 import org.testng.internal.Utils;
 
 import com.olo.mailer.MailClient;
+import com.olo.propertyutil.MailProperties;
 import com.olo.reporter.Utility;
 import com.olo.util.Commons;
 
@@ -115,8 +116,8 @@ public class MailSuiteListener implements ISuiteListener{
 		    Utils.writeFile(suite.getOutputDirectory(), fileName, suiteReportDetailed.toString());
 		    
 		    try{
-	    		String toMail=mailProp.getProperty("mail.to");
-    			String CCMail=mailProp.getProperty("mail.cc");
+	    		String toMail = MailProperties.getMailTo();
+    			String CCMail = MailProperties.getMailCC();
 	    		if(mailProp.containsKey("mail."+suiteName+".to")){
 	    			toMail=mailProp.getProperty("mail."+suiteName+".to");
 	    		}
@@ -148,10 +149,10 @@ public class MailSuiteListener implements ISuiteListener{
 		try{
     		String suiteName=suite.getName();
     		
-    		String ToMail=mailProp.getProperty("mail.to");
-			String CCMail=mailProp.getProperty("mail.cc");
+    		String toMail = MailProperties.getMailTo();
+			String CCMail = MailProperties.getMailCC();
     		if(mailProp.containsKey("mail."+suiteName+".to")){
-    			ToMail=mailProp.getProperty("mail."+suiteName+".to");
+    			toMail=mailProp.getProperty("mail."+suiteName+".to");
     		}
     		if(mailProp.containsKey("mail."+suiteName+".cc")){
     			CCMail=mailProp.getProperty("mail."+suiteName+".cc");
@@ -163,9 +164,9 @@ public class MailSuiteListener implements ISuiteListener{
     		body.append("Execution Report for '"+suiteName+"' suite is in below mentioned location.<br/><br/>Ip Address : "+Commons.getSystemIpAddress()+"<br/>Folder Path : "+suite.getOutputDirectory());
 	    	MailClient mail = new MailClient();
 	    	if(CCMail==null || CCMail.equals("")){
-	    		mail.sendMail(ToMail.split(","), subject.toString(), body);
+	    		mail.sendMail(toMail.split(","), subject.toString(), body);
 	    	}else{
-	    		mail.sendMail(ToMail.split(","), subject.toString(), body, CCMail.split(","));
+	    		mail.sendMail(toMail.split(","), subject.toString(), body, CCMail.split(","));
 	    	}
 	    	logger.info("Mail sent on suite start '"+suiteName+"'");
 	    }catch(Exception e){

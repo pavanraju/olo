@@ -843,7 +843,7 @@ public class Verify {
 		}
 	}
 	
-	public static void verifyNotEquals(Object actual1, Object actual2) {
+	static public void verifyNotEquals(Object actual1, Object actual2) {
 		try {
 			Assert.assertNotEquals(actual1, actual2);
 		} catch (AssertionError e) {
@@ -851,7 +851,7 @@ public class Verify {
 		}
 	}
 	
-	public static void verifyNotEquals(Object actual1, Object actual2, WebDriver driver) {
+	static public void verifyNotEquals(Object actual1, Object actual2, WebDriver driver) {
 		try {
 			Assert.assertNotEquals(actual1, actual2);
 		} catch (AssertionError e) {

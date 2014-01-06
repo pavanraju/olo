@@ -197,19 +197,19 @@ public class Commons {
 		return excelRowsAsProbObject;
 	}
 	
-	public Iterator<Row> getRowsInExcel(String xlsPath) throws Exception{
+	public static Iterator<Row> getRowsInExcel(String xlsPath) throws Exception{
 		Sheet sheet = getSheetFromXlsPath(xlsPath);
 		Iterator<Row> rows = sheet.rowIterator();
 		return rows;
 	}
 	
-	public Iterator<Row> getRowsInExcel(File xlsFile) throws Exception{
+	public static Iterator<Row> getRowsInExcel(File xlsFile) throws Exception{
 		Sheet sheet = getSheetFromXlsPath(xlsFile);
 		Iterator<Row> rows = sheet.rowIterator();
 		return rows;
 	}
 	
-	public Iterator<Row> getRowsInExcel(URL xlsFileURL) throws Exception{
+	public static Iterator<Row> getRowsInExcel(URL xlsFileURL) throws Exception{
 		Sheet sheet = getSheetFromXlsPath(xlsFileURL);
 		Iterator<Row> rows = sheet.rowIterator();
 		return rows;
