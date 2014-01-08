@@ -68,8 +68,6 @@ public class TestExecution {
 									localStep.setIsVerification(true);
 								}
 								if(localStep.getCommand().startsWith("Put")){
-									//HashMap<String, String> storedData =  (HashMap<String, String>)method.invoke(keywords,localStep);
-									//storeData.putAll(storedData);
 									Object storedData = MethodUtils.invokeMethod(keywords, method.getName(), localStep);
 									if(storedData==null){
 										throw new Exception("Check return type of your keyword");
@@ -77,7 +75,6 @@ public class TestExecution {
 									storeData.putAll((HashMap<String, String>)storeData);
 								}else{
 									MethodUtils.invokeMethod(keywords, method.getName(), localStep);
-									//method.invoke(keywords,localStep);
 								}
 								
 								if(localStep.getCommand().startsWith("If") && localStep.getIfSkipped()){

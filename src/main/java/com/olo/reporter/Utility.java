@@ -711,8 +711,6 @@ public class Utility {
 		testResultsHeader.append("<thead><tr>");
 		testResultsHeader.append("<th>S.No</th>");
 		testResultsHeader.append("<th>Test Case</th>");
-		//testResultsHeader.append("<th>Start Time</th>");
-		//testResultsHeader.append("<th>End Time</th>");
 		testResultsHeader.append("<th>Time Taken</th>");
 		testResultsHeader.append("<th>Status</th>");
 		testResultsHeader.append("</tr></thead>");
@@ -758,7 +756,7 @@ public class Utility {
 		String contextEndTime = Utility.sdf.format(ctx.getEndDate().getTime());
 		String contextTimeTaken = Utility.timeTaken(ctx.getEndDate().getTime()-ctx.getStartDate().getTime());
 		StringBuffer textContextSummary = new StringBuffer();
-	    textContextSummary.append("<div class='row'><div class='col-md-6'><div class='table-responsive'><table class='table table-bordered' id='"+ctx.getName().replaceAll(" ", "-")+"'><tr><th>Test</th><td>"+ctx.getName()+"</td></tr>");
+	    textContextSummary.append("<div class='row'><div class='col-md-6'><div class='table-responsive'><table class='table table-bordered'><tr><th>Test</th><td>"+ctx.getName()+"</td></tr>");
 	    textContextSummary.append("<tr><th>Start Time</th><td>"+contextStartTime+"</td></tr>");
 	    textContextSummary.append("<tr><th>End Time</th><td>"+contextEndTime+"</td></tr>");
 	    textContextSummary.append("<tr><th>Time Taken</th><td>"+contextTimeTaken+"</td></tr>");
@@ -779,7 +777,7 @@ public class Utility {
 		errorModelWindow.append("<div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>");
 		errorModelWindow.append("<div class='modal-dialog'>");
 		errorModelWindow.append("<div class='modal-content'>");
-		errorModelWindow.append("<div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title'>Error Details</h4></div>");
+		errorModelWindow.append("<div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title' id='myModalLabel'>Error Details</h4></div>");
 		errorModelWindow.append("<div class='modal-body'></div>");
 		errorModelWindow.append("</div>");
 		errorModelWindow.append("</div>");

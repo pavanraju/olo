@@ -153,7 +153,9 @@ public class DriverConfiguration {
 	}
 	
 	public void setWaitForPageToLoadInSec(WebDriver driver){
-		setWaitForPageToLoadInSec(driver, ConfigProperties.getPageWaitAndWaitTimeOut());
+		if(ConfigProperties.getPageLoadTimeout()!=0){
+			setWaitForPageToLoadInSec(driver, ConfigProperties.getPageLoadTimeout());
+		}
 	}
 	
 	public void setWaitForPageToLoadInSec(WebDriver driver,long sec){

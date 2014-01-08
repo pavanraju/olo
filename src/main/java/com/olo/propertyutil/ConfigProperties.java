@@ -63,9 +63,17 @@ public class ConfigProperties {
 		}
 	}
 	
-	public static int getPageWaitAndWaitTimeOut(){
+	public static int getPageLoadTimeout(){
 		try {
-			return Integer.parseInt(configProp.getProperty("pageWaitAndWaitTimeOut"));
+			return Integer.parseInt(configProp.getProperty("pageLoadTimeout"));
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	public static int getWaitTimeOut(){
+		try {
+			return Integer.parseInt(configProp.getProperty("waitTimeOut"));
 		} catch (Exception e) {
 			return 0;
 		}

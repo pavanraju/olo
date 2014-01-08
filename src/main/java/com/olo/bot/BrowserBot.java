@@ -1,13 +1,9 @@
 package com.olo.bot;
 
-import java.io.File;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.HasInputDevices;
 import org.openqa.selenium.JavascriptExecutor;
@@ -15,8 +11,6 @@ import org.openqa.selenium.interactions.Keyboard;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Mouse;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -26,27 +20,20 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.ITestResult;
-import org.testng.Reporter;
 
 import com.olo.Verify;
 import com.olo.propertyutil.ConfigProperties;
-import com.olo.util.Commons;
 import com.olo.util.OloExpectedConditions;
-import com.olo.util.VerificationError;
-import com.olo.util.VerificationErrorsInTest;
 
 
 public class BrowserBot{
 	
 	private final WebDriver driver;
 	private WebDriverWait wait = null;
-	
-	private static final Logger logger = LogManager.getLogger(BrowserBot.class.getName());
 
 	public BrowserBot(WebDriver driver) {
 		this.driver = driver;
-		wait = new WebDriverWait(driver, ConfigProperties.getPageWaitAndWaitTimeOut());
+		wait = new WebDriverWait(driver, ConfigProperties.getWaitTimeOut());
 	}
 	
 	public BrowserBot Wait(int timeOutSec) throws Exception {
@@ -54,13 +41,13 @@ public class BrowserBot{
 		return this;
 	}
 	
-	public BrowserBot waitForFrameToBeAvailableAndSwitchToIt(String frameLocator,long timeOutInSeconds){
-		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameLocator));
+	public BrowserBot waitForFrameToBeAvailableAndSwitchToIt(String frameLocator){
+		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameLocator));
 		return this;
 	}
 	
-	public BrowserBot waitForFrameToBeAvailableAndSwitchToIt(String frameLocator){
-		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameLocator));
+	public BrowserBot waitForFrameToBeAvailableAndSwitchToIt(String frameLocator,long timeOutInSeconds){
+		new WebDriverWait(driver, timeOutInSeconds).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameLocator));
 		return this;
 	}
 	
@@ -216,56 +203,48 @@ public class BrowserBot{
 	
 	public BrowserBot assertValue(WebElement element, String expectedValue){
 		String actualValue = getAttribute(element,"value");
-		logger.info("Comparing elementValue : '"+actualValue +"' equals to expectedValue : '"+expectedValue+"' in element "+element);
 		Assert.assertEquals( actualValue, expectedValue);
 		return this;
 	}
 	
 	public BrowserBot verifyValue(WebElement element, String expectedValue) throws Exception{
 		String actualValue = getAttribute(element,"value");
-		logger.info("Comparing elementValue : '"+actualValue +"' equals to expectedValue : '"+expectedValue+"' in element "+element);
 		Verify.verifyEquals( actualValue, expectedValue, driver);
 		return this;
 	}
 	
 	public BrowserBot assertNotValue(WebElement element,String unexpectedValue) throws Exception {
 		String actualValue = getAttribute(element,"value");
-		logger.info("Comparing elementValue : '"+actualValue +"' not equals to unexpectedValue : '"+unexpectedValue+"' in element "+element);
 		Assert.assertNotEquals(actualValue, unexpectedValue);
 		return this;
 	}
 	
 	public BrowserBot verifyNotValue(WebElement element,String unexpectedValue) throws Exception {
 		String actualValue = getAttribute(element,"value");
-		logger.info("Comparing elementValue : '"+actualValue +"' not equals to unexpectedValue : '"+unexpectedValue+"' in element "+element);
 		Verify.verifyNotEquals(actualValue, unexpectedValue, driver);
 		return this;
 	}
 	
 	public BrowserBot assertText(WebElement element, String expectedText){
 		String actualText = getText(element).toString();
-		logger.info("Comparing elementText : '"+actualText +"' equals to expectedText : '"+expectedText+"' in element "+element);
 		Assert.assertEquals(actualText, expectedText);
 		return this;
 	}
 	
 	public BrowserBot verifyText(WebElement element, String expectedText) throws Exception{
 		String actualText = getText(element).toString();
-		logger.info("Comparing elementText : '"+actualText +"' equals to expectedText : '"+expectedText+"' in element "+element);
 		Verify.verifyEquals(actualText, expectedText, driver);
 		return this;
 	}
 	
 	public BrowserBot assertNotText(WebElement element,String unexpectedText) throws Exception{
 		String actualText = getText(element);
-		logger.info("Comparing elementText : '"+actualText +"' not equals to unexpectedText : '"+unexpectedText+"' in element "+element);
 		Assert.assertNotEquals(actualText, unexpectedText);
 		return this;
 	}
 	
 	public BrowserBot verifyNotText(WebElement element,String unexpectedText) throws Exception{
 		String actualText = getText(element);
-		logger.info("Comparing elementText : '"+actualText +"' not equals to unexpectedText : '"+unexpectedText+"' in element "+element);
 		Verify.verifyNotEquals(actualText, unexpectedText, driver);
 		return this;
 	}
@@ -901,27 +880,6 @@ public class BrowserBot{
 		}else{
 			return By.id(locator);
 		}
-	}
-	
-	protected void addVerificationError(AssertionError e) throws Exception{
-		ITestResult testResult = Reporter.getCurrentTestResult();
-		String screenShotFileName = System.currentTimeMillis()+".png";
-		String screenShotPath = testResult.getTestContext().getOutputDirectory()+File.separator+"screenshots"+File.separator+screenShotFileName;
-		captureScreenshot(screenShotPath);
-		VerificationError ve = new VerificationError();
-		if(e.getStackTrace() != null) {
-			logger.error("Verification Error : "+Commons.getStackTraceAsString(e));
-		}else{
-			logger.error("Verification Error : Null");
-		}
-		ve.setScreenShotFileName(screenShotFileName);
-		ve.setAssertionError(e);
-		VerificationErrorsInTest.addError(testResult, ve);
-	}
-	
-	private void captureScreenshot(String screenShotPath) throws Exception{
-		File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(srcFile, new File(screenShotPath));
 	}
 	
 }

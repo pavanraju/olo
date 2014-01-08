@@ -11,16 +11,16 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.olo.annotations.Reporter;
-import com.olo.initiator.ApplicationInitiator;
+import com.olo.initiator.BrowserInitiator;
 import com.olo.keyworddriven.KeywordPropObject;
 
-public class DataDrivenTestRunner extends ApplicationInitiator implements ITest{
+public class BrowserInitiatorDataDrivenRunner extends BrowserInitiator implements ITest{
 	
 	private String testFilePath;
 	private String testName;
 	private Class<? extends Keywords> keywords;
 	
-	public DataDrivenTestRunner(String testFilePath, Class<? extends Keywords> keywords){
+	public BrowserInitiatorDataDrivenRunner(String testFilePath, Class<? extends Keywords> keywords){
 		this.testFilePath = testFilePath;
 		this.keywords = keywords;
 		testName = FilenameUtils.getName(testFilePath);
