@@ -8,13 +8,13 @@ import com.olo.util.Commons;
 
 public class ApplicationInitiatorTestBuilder {
 	
-	private Class<? extends Keywords> keywords;
+	private Class<? extends Commands> keywords;
 	
 	public Object[] create(String path) throws Exception {
-		return create(path, Keywords.class);
+		return create(path, Commands.class);
     }
 	
-	public Object[] create(String path, Class<? extends Keywords> keywords) throws Exception {
+	public Object[] create(String path, Class<? extends Commands> keywords) throws Exception {
 		if(path.startsWith("/") || path.startsWith("\\")){
 			return create(new File(ApplicationInitiatorTestBuilder.class.getResource(path).getPath()), keywords);
 		}else{
@@ -23,10 +23,10 @@ public class ApplicationInitiatorTestBuilder {
     }
 	
 	public Object[] create(final File directoryOrFile) throws Exception {
-		return create(directoryOrFile, Keywords.class);
+		return create(directoryOrFile, Commands.class);
     }
 	
-	public Object[] create(final File directoryOrFile, Class<? extends Keywords> keywords) throws Exception {
+	public Object[] create(final File directoryOrFile, Class<? extends Commands> keywords) throws Exception {
 		this.keywords = keywords;
         return getKeywordTests(directoryOrFile).toArray();
     }

@@ -18,12 +18,12 @@ public class BrowserInitiatorDataDrivenRunner extends BrowserInitiator implement
 	
 	private String testFilePath;
 	private String testName;
-	private Class<? extends Keywords> keywords;
+	private Class<? extends Commands> keywords;
 	
-	public BrowserInitiatorDataDrivenRunner(String testFilePath, Class<? extends Keywords> keywords){
+	public BrowserInitiatorDataDrivenRunner(String testFilePath, Class<? extends Commands> keywords){
 		this.testFilePath = testFilePath;
 		this.keywords = keywords;
-		testName = FilenameUtils.getName(testFilePath);
+		testName = FilenameUtils.getBaseName(testFilePath);
 	}
 	
 	public String getTestName() {

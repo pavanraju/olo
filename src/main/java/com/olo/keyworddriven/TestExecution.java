@@ -13,8 +13,8 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 
-import com.olo.annotations.Keyword;
-import com.olo.keyworddriven.Keywords;
+import com.olo.annotations.Command;
+import com.olo.keyworddriven.Commands;
 import com.olo.keyworddriven.KeywordPropObject;
 import com.olo.util.Commons;
 import com.olo.util.VerificationErrorsInTest;
@@ -23,7 +23,7 @@ public class TestExecution {
 	
 	private static final Logger logger = LogManager.getLogger(TestExecution.class.getName());
 	
-	public void run(ITestContext ctx, ArrayList<KeywordPropObject> excelSteps, Keywords keywords) throws Exception{
+	public void run(ITestContext ctx, ArrayList<KeywordPropObject> excelSteps, Commands keywords) throws Exception{
 		ITestResult testResult = Reporter.getCurrentTestResult();
 		Throwable throwableException = null;
 		HashMap<String, String> storeData = new HashMap<String, String>();
@@ -58,7 +58,7 @@ public class TestExecution {
 				localStep.setStartTime(System.currentTimeMillis());
 				try {
 					for (final Method method : keywords.getClass().getDeclaredMethods()) {
-						Keyword annotation = method.getAnnotation(com.olo.annotations.Keyword.class);
+						Command annotation = method.getAnnotation(com.olo.annotations.Command.class);
 						if(annotation!=null){
 							if(annotation.value().equals(localStep.getCommand())){
 								foundKeyword=true;

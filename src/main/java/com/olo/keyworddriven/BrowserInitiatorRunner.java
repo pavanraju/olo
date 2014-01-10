@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
 
 import com.olo.annotations.Reporter;
 import com.olo.initiator.BrowserInitiator;
-import com.olo.keyworddriven.Keywords;
+import com.olo.keyworddriven.Commands;
 import com.olo.keyworddriven.KeywordPropObject;
 
 
@@ -18,12 +18,12 @@ public class BrowserInitiatorRunner extends BrowserInitiator implements ITest{
 	
 	private String testFilePath;
 	private String testName;
-	private Class<? extends Keywords> keywords;
+	private Class<? extends Commands> keywords;
 	
-	public BrowserInitiatorRunner(String testFilePath, Class<? extends Keywords> keywords){
+	public BrowserInitiatorRunner(String testFilePath, Class<? extends Commands> keywords){
 		this.testFilePath = testFilePath;
 		this.keywords = keywords;
-		testName = FilenameUtils.getName(testFilePath);
+		testName = FilenameUtils.getBaseName(testFilePath);
 	}
 	
 	public String getTestName() {

@@ -40,8 +40,6 @@ public class KeywordUtility {
 	public void validateSteps(ArrayList<KeywordPropObject> excelSteps) throws Exception{
 		int ifConditionCount = 0;
 		int endIfcount = 0;
-		int startDataTableCount = 0;
-		int endDataTableCount = 0;
 		for(int i=0;i<excelSteps.size();i++){
 			if(excelSteps.get(i).getCommand().startsWith("If")){
 				ifConditionCount++;
@@ -49,23 +47,11 @@ public class KeywordUtility {
 			if(excelSteps.get(i).getCommand().equals("EndIf")){
 				endIfcount++;
 			}
-			if(excelSteps.get(i).getCommand().equals("StartDataTable")){
-				startDataTableCount++;
-			}
-			if(excelSteps.get(i).getCommand().equals("EndDataTable")){
-				endDataTableCount++;
-			}
 		}
 		logger.info("validating If conditions matching to ElseIf");
 		if(ifConditionCount != endIfcount){
 			String message = "EndIf actions are not matching with If condition actions";
 			logger.error("Skipping Test: "+ message);
-			throw new SkipException(message);
-		}
-		
-		if(startDataTableCount != endDataTableCount){
-			String message = "StartDataTable action count is not matching to EndDataTable count";
-			logger.error("Skipping Test: "+message);
 			throw new SkipException(message);
 		}
 	}

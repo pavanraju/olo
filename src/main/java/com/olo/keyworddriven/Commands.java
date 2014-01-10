@@ -8,129 +8,129 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONObject;
 import org.openqa.selenium.WebDriver;
 
-import com.olo.annotations.Keyword;
+import com.olo.annotations.Command;
 import com.olo.bot.BrowserBot;
 import com.olo.keyworddriven.KeywordPropObject;
 import com.olo.propertyutil.ConfigProperties;
 
-public class Keywords{
+public class Commands{
 	
 	private BrowserBot browser;
 	
-	public Keywords(WebDriver driver){
+	public Commands(WebDriver driver){
 		browser = new BrowserBot(driver);
 	}
 	
-	@Keyword("Wait")
+	@Command("Wait")
 	public void Wait(KeywordPropObject step) throws Exception{
 		browser.Wait(Integer.parseInt(step.getActualValue()));
 	}
 	
-	@Keyword("WaitForElementPresent")
+	@Command("WaitForElementPresent")
 	public void waitForElementPresent(KeywordPropObject step) throws Exception{
 		browser.waitForElementPresent(browser.byLocator(step.getTargetValue()));
 	}
 	
-	@Keyword("WaitForElementNotPresent")
+	@Command("WaitForElementNotPresent")
 	public void waitForElementNotPresent(KeywordPropObject step) throws Exception{
 		browser.waitForElementNotPresent(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("WaitForVisible")
+	@Command("WaitForVisible")
 	public void waitForVisible(KeywordPropObject step) throws Exception{
 		browser.waitForVisible(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("WaitForNotVisible")
+	@Command("WaitForNotVisible")
 	public void waitForNotVisible(KeywordPropObject step) throws Exception{
 		browser.waitForNotVisible(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("WaitForValue")
+	@Command("WaitForValue")
 	public void waitForValue(KeywordPropObject step) throws Exception{
 		browser.waitForValue(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("WaitForNotValue")
+	@Command("WaitForNotValue")
 	public void waitForNotValue(KeywordPropObject step) throws Exception{
 		browser.waitForNotValue(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("WaitForEditable")
+	@Command("WaitForEditable")
 	public void waitForEditable(KeywordPropObject step) throws Exception{
 		browser.waitForEditable(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("WaitForNotEditable")
+	@Command("WaitForNotEditable")
 	public void waitForNotEditable(KeywordPropObject step) throws Exception{
 		browser.waitForNotEditable(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("WaitForText")
+	@Command("WaitForText")
 	public void waitForText(KeywordPropObject step) throws Exception{
 		browser.waitForText(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("WaitForNotText")
+	@Command("WaitForNotText")
 	public void waitForNotText(KeywordPropObject step) throws Exception{
 		browser.waitForNotText(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("WaitForAlertPresent")
+	@Command("WaitForAlertPresent")
 	public void waitForAlertPresent(KeywordPropObject step) throws Exception{
 		browser.waitForAlertPresent();
 	}
 	
-	@Keyword("WaitForTitle")
+	@Command("WaitForTitle")
 	public void waitForTitle(KeywordPropObject step) throws Exception{
 		browser.waitForTitle(step.getActualValue());
 	}
 	
-	@Keyword("WaitForFrameAndSwitchToIt")
+	@Command("WaitForFrameAndSwitchToIt")
 	public void waitForFrameAndSwitchToIt(KeywordPropObject step) throws Exception{
 		browser.waitForFrameToBeAvailableAndSwitchToIt(step.getActualValue());
 	}
 	
-	@Keyword("SwitchToDefault")
+	@Command("SwitchToDefault")
 	public void switchToDefault(KeywordPropObject step) throws Exception{
 		browser.switchToDefault();
 	}
 	
-	@Keyword("Get")
+	@Command("Get")
 	public void get(KeywordPropObject step){
 		browser.get(step.getActualValue());
 	}
 	
-	@Keyword("Type")
+	@Command("Type")
 	public void type(KeywordPropObject step){
 		browser.type(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("Clear")
+	@Command("Clear")
 	public void clear(KeywordPropObject step){
 		browser.clear(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("ClearAndType")
+	@Command("ClearAndType")
 	public void clearAndType(KeywordPropObject step){
 		browser.clearAndType(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("TypeRandomAlphabets")
+	@Command("TypeRandomAlphabets")
 	public void typeUnique(KeywordPropObject step){
 		String typeValue = step.getActualValue()+RandomStringUtils.randomAlphabetic(8);
 		browser.type(browser.findElement(step.getTargetValue()),typeValue);
 		step.setActualValue(typeValue);
 	}
 	
-	@Keyword("ClearAndTypeRandomAlphabets")
+	@Command("ClearAndTypeRandomAlphabets")
 	public void clearAndTypeUnique(KeywordPropObject step){
 		String typeValue = step.getActualValue()+RandomStringUtils.randomAlphabetic(8);
 		browser.clearAndType(browser.findElement(step.getTargetValue()),typeValue);
 		step.setActualValue(typeValue);
 	}
 	
-	@Keyword("TypeDate")
+	@Command("TypeDate")
 	public void typeDate(KeywordPropObject step) throws Exception{
 		Calendar cal = Calendar.getInstance();
 		String value = step.getActualValue();
@@ -153,282 +153,282 @@ public class Keywords{
 		browser.type(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("Click")
+	@Command("Click")
 	public void click(KeywordPropObject step) throws Exception{
 		browser.click(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("ClickAt")
+	@Command("ClickAt")
 	public void clickAt(KeywordPropObject step) throws Exception{
 		browser.clickAt(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("DoubleClick")
+	@Command("DoubleClick")
 	public void doubleClick(KeywordPropObject step) throws Exception{
 		browser.doubleClick(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("Check")
+	@Command("Check")
 	public void check(KeywordPropObject step) throws Exception{
 		browser.check(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("UnCheck")
+	@Command("UnCheck")
 	public void unCheck(KeywordPropObject step) throws Exception{
 		browser.uncheck(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("SelectByText")
+	@Command("SelectByText")
 	public void selectByText(KeywordPropObject step) throws Exception{
 		browser.selectByText(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("ContextMenu")
+	@Command("ContextMenu")
 	public void contextMenu(KeywordPropObject step) throws Exception{
 		browser.contextMenu(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("ContextMenuAt")
+	@Command("ContextMenuAt")
 	public void contextMenuAt(KeywordPropObject step) throws Exception{
 		browser.contextMenuAt(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("MouseDown")
+	@Command("MouseDown")
 	public void mouseDown(KeywordPropObject step) throws Exception{
 		browser.mouseDown(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("MouseDownAt")
+	@Command("MouseDownAt")
 	public void mouseDownAt(KeywordPropObject step) throws Exception{
 		browser.mouseDownAt(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("MouseUp")
+	@Command("MouseUp")
 	public void mouseUp(KeywordPropObject step) throws Exception{
 		browser.mouseUp(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("MouseUpAt")
+	@Command("MouseUpAt")
 	public void mouseUpAt(KeywordPropObject step) throws Exception{
 		browser.mouseUpAt(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("MouseOver")
+	@Command("MouseOver")
 	public void mouseOver(KeywordPropObject step) throws Exception{
 		browser.mouseOver(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("Focus")
+	@Command("Focus")
 	public void focus(KeywordPropObject step) throws Exception{
 		browser.focus(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("KeyDown")
+	@Command("KeyDown")
 	public void keyDown(KeywordPropObject step) throws Exception{
 		browser.keyDown(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("KeyUp")
+	@Command("KeyUp")
 	public void keyUp(KeywordPropObject step) throws Exception{
 		browser.keyUp(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("ControlKeyUp")
+	@Command("ControlKeyUp")
 	public void keyControlKeyUp(KeywordPropObject step) throws Exception{
 		browser.controlKeyUp();
 	}
 	
-	@Keyword("ControlKeyDown")
+	@Command("ControlKeyDown")
 	public void controlKeyDown(KeywordPropObject step) throws Exception{
 		browser.controlKeyDown();
 	}
 	
-	@Keyword("ChooseOK")
+	@Command("ChooseOK")
 	public void chooseOK(KeywordPropObject step) throws Exception{
 		browser.chooseOk();
 	}
 	
-	@Keyword("ChooseCancel")
+	@Command("ChooseCancel")
 	public void chooseCancel(KeywordPropObject step) throws Exception{
 		browser.chooseCancel();
 	}
 	
-	@Keyword("AssertTitle")
+	@Command("AssertTitle")
 	public void asertTitle(KeywordPropObject step) throws Exception{
 		browser.assertTitle(step.getActualValue());
 	}
 	
-	@Keyword("VerifyTitle")
+	@Command("VerifyTitle")
 	public void verifyTitle(KeywordPropObject step) throws Exception{
 		browser.verifyTitle(step.getActualValue());
 	}
 	
-	@Keyword("AssertNotTitle")
+	@Command("AssertNotTitle")
 	public void asertNotTitle(KeywordPropObject step) throws Exception{
 		browser.assertNotTitle(step.getActualValue());
 	}
 	
-	@Keyword("VerifyNotTitle")
+	@Command("VerifyNotTitle")
 	public void verifyNotTitle(KeywordPropObject step) throws Exception{
 		browser.verifyNotTitle(step.getActualValue());
 	}
 	
-	@Keyword("AssertSelectedText")
+	@Command("AssertSelectedText")
 	public void assertSelectedText(KeywordPropObject step) throws Exception{
 		browser.assertSelectedText(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("VerifySelectedText")
+	@Command("VerifySelectedText")
 	public void verifySelectedLabel(KeywordPropObject step) throws Exception{
 		browser.verifySelectedText(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("AssertNotSelectedText")
+	@Command("AssertNotSelectedText")
 	public void assertNotSelectedText(KeywordPropObject step) throws Exception{
 		browser.assertNotSelectedText(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("VerifyNotSelectedText")
+	@Command("VerifyNotSelectedText")
 	public void verifyNotSelectedLabel(KeywordPropObject step) throws Exception{
 		browser.verifyNotSelectedText(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("AssertElementPresent")
+	@Command("AssertElementPresent")
 	public void assertElementPresent(KeywordPropObject step) throws Exception{
 		browser.assertElementPresent(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("VerifyElementPresent")
+	@Command("VerifyElementPresent")
 	public void verifyElementPresent(KeywordPropObject step) throws Exception{
 		browser.verifyElementPresent(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("AssertElementNotPresent")
+	@Command("AssertElementNotPresent")
 	public void assertElementNotPresent(KeywordPropObject step) throws Exception{
 		browser.assertElementNotPresent(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("VerifyElementNotPresent")
+	@Command("VerifyElementNotPresent")
 	public void verifyElementNotPresent(KeywordPropObject step) throws Exception{
 		browser.verifyElementNotPresent(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("AssertChecked")
+	@Command("AssertChecked")
 	public void assertChecked(KeywordPropObject step) throws Exception{
 		browser.assertChecked(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("VerifyChecked")
+	@Command("VerifyChecked")
 	public void verifyChecked(KeywordPropObject step) throws Exception{
 		browser.verifyChecked(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("AssertNotChecked")
+	@Command("AssertNotChecked")
 	public void assertNotChecked(KeywordPropObject step) throws Exception{
 		browser.assertNotChecked(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("VerifyNotChecked")
+	@Command("VerifyNotChecked")
 	public void verifyNotChecked(KeywordPropObject step) throws Exception{
 		browser.verifyNotChecked(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("AssertSelectOptions")
+	@Command("AssertSelectOptions")
 	public void assertSelectOptions(KeywordPropObject step) throws Exception{
 		browser.assertSelectOptions(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("VerifySelectOptions")
+	@Command("VerifySelectOptions")
 	public void verifySelectOptions(KeywordPropObject step) throws Exception{
 		browser.verifySelectOptions(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("AssertNotSelectOptions")
+	@Command("AssertNotSelectOptions")
 	public void assertNotSelectOptions(KeywordPropObject step) throws Exception{
 		browser.assertNotSelectOptions(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("VerifyNotSelectOptions")
+	@Command("VerifyNotSelectOptions")
 	public void verifyNotSelectOptions(KeywordPropObject step) throws Exception{
 		browser.verifyNotSelectOptions(browser.findElement(step.getTargetValue()),step.getActualValue());
 	}
 	
-	@Keyword("AssertSelectOptionsSize")
+	@Command("AssertSelectOptionsSize")
 	public void assertSelectOptionsSize(KeywordPropObject step) throws Exception{
 		browser.assertSelectOptionsSize(browser.findElement(step.getTargetValue()),Integer.parseInt(step.getActualValue()));
 	}
 	
-	@Keyword("VerifySelectOptionsSize")
+	@Command("VerifySelectOptionsSize")
 	public void verifySelectOptionsSize(KeywordPropObject step) throws Exception{
 		browser.verifySelectOptionsSize(browser.findElement(step.getTargetValue()),Integer.parseInt(step.getActualValue()));
 	}
 	
-	@Keyword("AssertNotSelectOptionsSize")
+	@Command("AssertNotSelectOptionsSize")
 	public void assertNotSelectOptionsSize(KeywordPropObject step) throws Exception{
 		browser.assertNotSelectOptionsSize(browser.findElement(step.getTargetValue()),Integer.parseInt(step.getActualValue()));
 	}
 	
-	@Keyword("VerifyNotSelectOptionsSize")
+	@Command("VerifyNotSelectOptionsSize")
 	public void verifyNotSelectOptionsSize(KeywordPropObject step) throws Exception{
 		browser.verifyNotSelectOptionsSize(browser.findElement(step.getTargetValue()),Integer.parseInt(step.getActualValue()));
 	}
 	
-	@Keyword("AssertEditable")
+	@Command("AssertEditable")
 	public void assertEditable(KeywordPropObject step) throws Exception{
 		browser.assertEditable(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("VerifyEditable")
+	@Command("VerifyEditable")
 	public void verifyEditable(KeywordPropObject step) throws Exception{
 		browser.verifyEditable(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("AssertNotEditable")
+	@Command("AssertNotEditable")
 	public void assertNotEditable(KeywordPropObject step) throws Exception{
 		browser.assertNotEditable(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("VerifyNotEditable")
+	@Command("VerifyNotEditable")
 	public void verifyNotEditable(KeywordPropObject step) throws Exception{
 		browser.verifyNotEditable(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("AssertAlert")
+	@Command("AssertAlert")
 	public void assertAlert(KeywordPropObject step) throws Exception{
 		browser.assertAlert(step.getActualValue());
 	}
 	
-	@Keyword("VerifyAlert")
+	@Command("VerifyAlert")
 	public void verifyAlert(KeywordPropObject step) throws Exception{
 		browser.verifyAlert(step.getActualValue());
 	}
 	
-	@Keyword("AssertNotAlert")
+	@Command("AssertNotAlert")
 	public void assertNotAlert(KeywordPropObject step) throws Exception{
 		browser.assertNotAlert(step.getActualValue());
 	}
 	
-	@Keyword("VerifyNotAlert")
+	@Command("VerifyNotAlert")
 	public void verifyNotAlert(KeywordPropObject step) throws Exception{
 		browser.verifyNotAlert(step.getActualValue());
 	}
 	
-	@Keyword("AssertVisible")
+	@Command("AssertVisible")
 	public void assertVisible(KeywordPropObject step) throws Exception{
 		browser.assertVisible(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("VerifyVisible")
+	@Command("VerifyVisible")
 	public void verifyVisible(KeywordPropObject step) throws Exception{
 		browser.verifyVisible(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("AssertNotVisible")
+	@Command("AssertNotVisible")
 	public void assertNotVisible(KeywordPropObject step) throws Exception{
 		browser.assertNotVisible(browser.findElement(step.getTargetValue()));
 	}
 	
-	@Keyword("VerifyNotVisible")
+	@Command("VerifyNotVisible")
 	public void verifyNotVisible(KeywordPropObject step) throws Exception{
 		browser.verifyNotVisible(browser.findElement(step.getTargetValue()));
 	}
@@ -443,120 +443,120 @@ public class Keywords{
 		return locatorAndAttr;
 	}
 	
-	@Keyword("AssertAttribute")
+	@Command("AssertAttribute")
 	public void assertAttribute(KeywordPropObject step) throws Exception{
 		HashMap<String, String> locatorAndAttr = getAttributeNameFromLocator(step.getTargetValue());
 		browser.assertAttribute(browser.findElement(locatorAndAttr.get("locator")), locatorAndAttr.get("attribute") ,step.getActualValue());
 	}
 	
-	@Keyword("VerifyAttribute")
+	@Command("VerifyAttribute")
 	public void verifyAttribute(KeywordPropObject step) throws Exception{
 		HashMap<String, String> locatorAndAttr = getAttributeNameFromLocator(step.getTargetValue());
 		browser.verifyAttribute(browser.findElement(locatorAndAttr.get("locator")), locatorAndAttr.get("attribute") ,step.getActualValue());
 	}
 	
-	@Keyword("AssertNotAttribute")
+	@Command("AssertNotAttribute")
 	public void assertNotAttribute(KeywordPropObject step) throws Exception{
 		HashMap<String, String> locatorAndAttr = getAttributeNameFromLocator(step.getTargetValue());
 		browser.assertNotAttribute(browser.findElement(locatorAndAttr.get("locator")), locatorAndAttr.get("attribute") ,step.getActualValue());
 	}
 	
-	@Keyword("VerifyNotAttribute")
+	@Command("VerifyNotAttribute")
 	public void verifyNotAttribute(KeywordPropObject step) throws Exception{
 		HashMap<String, String> locatorAndAttr = getAttributeNameFromLocator(step.getTargetValue());
 		browser.verifyNotAttribute(browser.findElement(locatorAndAttr.get("locator")), locatorAndAttr.get("attribute") ,step.getActualValue());
 	}
 	
-	@Keyword("AssertValue")
+	@Command("AssertValue")
 	public void assertValue(KeywordPropObject step) throws Exception{
 		browser.assertValue(browser.findElement(step.getTargetValue()), step.getActualValue());
 	}
 	
-	@Keyword("VerifyValue")
+	@Command("VerifyValue")
 	public void verifyValue(KeywordPropObject step) throws Exception{
 		browser.verifyValue(browser.findElement(step.getTargetValue()), step.getActualValue());
 	}
 	
-	@Keyword("AssertNotValue")
+	@Command("AssertNotValue")
 	public void assertNotValue(KeywordPropObject step) throws Exception{
 		browser.assertNotValue(browser.findElement(step.getTargetValue()), step.getActualValue());
 	}
 	
-	@Keyword("VerifyNotValue")
+	@Command("VerifyNotValue")
 	public void verifyNotValue(KeywordPropObject step) throws Exception{
 		browser.verifyNotValue(browser.findElement(step.getTargetValue()), step.getActualValue());
 	}
 	
-	@Keyword("AssertText")
+	@Command("AssertText")
 	public void assertText(KeywordPropObject step) throws Exception{
 		browser.assertText(browser.findElement(step.getTargetValue()), step.getActualValue());
 	}
 	
-	@Keyword("VerifyText")
+	@Command("VerifyText")
 	public void verifyText(KeywordPropObject step) throws Exception{
 		browser.verifyText(browser.findElement(step.getTargetValue()), step.getActualValue());
 	}
 	
-	@Keyword("AssertNotText")
+	@Command("AssertNotText")
 	public void assertNotText(KeywordPropObject step) throws Exception{
 		browser.assertNotText(browser.findElement(step.getTargetValue()), step.getActualValue());
 	}
 	
-	@Keyword("VerifyNotText")
+	@Command("VerifyNotText")
 	public void verifyNotText(KeywordPropObject step) throws Exception{
 		browser.verifyNotText(browser.findElement(step.getTargetValue()), step.getActualValue());
 	}
 	
-	@Keyword("IfElementPresent")
+	@Command("IfElementPresent")
 	public void ifElementPresent(KeywordPropObject step) throws Exception{
 		if(!browser.isElementPresent(browser.findElement(step.getTargetValue()))){
 			step.setIfSkipped(true);
 		}
 	}
 	
-	@Keyword("IfElementNotPresent")
+	@Command("IfElementNotPresent")
 	public void ifElementNotPresent(KeywordPropObject step) throws Exception{
 		if(browser.isElementPresent(browser.findElement(step.getTargetValue()))){
 			step.setIfSkipped(true);
 		}
 	}
 	
-	@Keyword("IfElementVisible")
+	@Command("IfElementVisible")
 	public void ifElementVisible(KeywordPropObject step) throws Exception{
 		if(!browser.isVisible(browser.findElement(step.getTargetValue()))){
 			step.setIfSkipped(true);
 		}
 	}
 	
-	@Keyword("IfElementNotVisible")
+	@Command("IfElementNotVisible")
 	public void ifElementNotVisible(KeywordPropObject step) throws Exception{
 		if(browser.isVisible(browser.findElement(step.getTargetValue()))){
 			step.setIfSkipped(true);
 		}
 	}
 	
-	@Keyword("IfElementValueEquals")
+	@Command("IfElementValueEquals")
 	public void ifElementValueEquals(KeywordPropObject step) throws Exception{
 		if(!browser.getValue(browser.findElement(step.getTargetValue())).equals(step.getActualValue())){
 			step.setIfSkipped(true);
 		}
 	}
 	
-	@Keyword("IfElementValueNotEquals")
+	@Command("IfElementValueNotEquals")
 	public void ifElementValueNotEquals(KeywordPropObject step) throws Exception{
 		if(browser.getValue(browser.findElement(step.getTargetValue())).equals(step.getActualValue())){
 			step.setIfSkipped(true);
 		}
 	}
 	
-	@Keyword("IfElementTextEquals")
+	@Command("IfElementTextEquals")
 	public void ifElementTextEquals(KeywordPropObject step) throws Exception{
 		if(!browser.getText(browser.findElement(step.getTargetValue())).equals(step.getActualValue())){
 			step.setIfSkipped(true);
 		}
 	}
 	
-	@Keyword("IfElementTextNotEquals")
+	@Command("IfElementTextNotEquals")
 	public void ifElementTextNotEquals(KeywordPropObject step) throws Exception{
 		if(browser.getText(browser.findElement(step.getTargetValue())).equals(step.getActualValue())){
 			step.setIfSkipped(true);

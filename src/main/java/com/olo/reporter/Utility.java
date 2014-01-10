@@ -123,7 +123,7 @@ public class Utility {
 	}
 	
 	public static String getInlineCss(){
-		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;}@media screen and (min-width: 1080px) {.modal-dialog {width: 950px;}}</style>";
+		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;}@media screen and (min-width: 1080px) {.modal-dialog {width: 900px;}}</style>";
 	}
 	
 	public static String getGoogleChartsJs(){
@@ -710,7 +710,7 @@ public class Utility {
 		StringBuffer testResultsHeader = new StringBuffer();
 		testResultsHeader.append("<thead><tr>");
 		testResultsHeader.append("<th>S.No</th>");
-		testResultsHeader.append("<th>Test Case</th>");
+		testResultsHeader.append("<th>Test Method</th>");
 		testResultsHeader.append("<th>Time Taken</th>");
 		testResultsHeader.append("<th>Status</th>");
 		testResultsHeader.append("</tr></thead>");

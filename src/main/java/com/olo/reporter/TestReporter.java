@@ -26,7 +26,6 @@ public class TestReporter {
 	@Reporter(KeywordDriven.class)
 	public void keywordDrivenTest(ITestResult result){
 		if(result.getStatus() == ITestResult.SUCCESS || result.getStatus() == ITestResult.FAILURE){
-			String testCount = "0";
 			try {
 				String suiteName = result.getTestContext().getSuite().getName();
 				StringBuffer sb = new StringBuffer();
@@ -43,19 +42,13 @@ public class TestReporter {
 				sb.append(Utility.startRow());
 				String reporterFileName = null;
 				
-				try {
-					testCount = result.getParameters()[1].toString();
-				} catch (Exception e) {
-					
-				}
-				reporterFileName = result.getName()+"-"+testCount+".html";
+				reporterFileName = result.getName()+"-"+result.getStartMillis()+"-"+result.getEndMillis()+".html";
 				
 				String reporterFileDirectory = result.getTestContext().getCurrentXmlTest().getName()+File.separator+Utility.getStatusString(result.getStatus());
 				result.setAttribute("reporterFilePath", reporterFileDirectory+File.separator+reporterFileName);
 				sb.append("<div class='table-responsive'>");
 				sb.append("<table class='table table-bordered'>");
 				sb.append("<tr><th>Test Case</th><td>"+result.getName()+"</td></tr>");
-				//sb.append("<tr><th>Test Path</th><td>"+result.getAttribute(TestProp.PATH)+"</td></tr>");
 				sb.append("<tr><th>Started</th><td>"+Utility.sdf.format(new Date(result.getStartMillis()))+"</td></tr>");
 				sb.append("<tr><th>Completed</th><td>"+Utility.sdf.format(new Date(result.getEndMillis()))+"</td></tr>");
 				sb.append("<tr><th>Time Taken</th><td>"+Utility.timeTaken(result.getEndMillis()-result.getStartMillis())+"</td></tr>");
@@ -136,7 +129,6 @@ public class TestReporter {
 							sb.append("<td style='display:none'>"+screenshot+"</td>");
 						}
 					}
-					
 					sb.append("</tr>");
 				}
 				sb.append("</table>");

@@ -18,12 +18,12 @@ public class ApplicationInitiatorDataDrivenRunner extends ApplicationInitiator i
 	
 	private String testFilePath;
 	private String testName;
-	private Class<? extends Keywords> keywords;
+	private Class<? extends Commands> keywords;
 	
-	public ApplicationInitiatorDataDrivenRunner(String testFilePath, Class<? extends Keywords> keywords){
+	public ApplicationInitiatorDataDrivenRunner(String testFilePath, Class<? extends Commands> keywords){
 		this.testFilePath = testFilePath;
 		this.keywords = keywords;
-		testName = FilenameUtils.getName(testFilePath);
+		testName = FilenameUtils.getBaseName(testFilePath);
 	}
 	
 	public String getTestName() {

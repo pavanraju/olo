@@ -518,6 +518,10 @@ public class BrowserBot{
 		return element.getAttribute("value");
 	}
 	
+	public String getValueFromHiddenElement(WebElement element){
+		return executeJavascript(element, "return arguments[0].value");
+	}
+	
 	public String getAttribute(WebElement element,String attributeName){
 		return element.getAttribute(attributeName);
 	}
