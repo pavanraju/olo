@@ -7,21 +7,21 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.Reporter;
+import org.testng.internal.Utils;
+import org.testng.log4testng.Logger;
 
 import com.olo.util.VerificationError;
 import com.olo.util.VerificationErrorsInTest;
 
 public class Verify {
 	
-	private static final Logger logger = LogManager.getLogger(Verify.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(Verify.class);
 	
 	protected Verify(){
 		
@@ -859,7 +859,7 @@ public class Verify {
 		}
 	}
 	
-	static public void verifyNotEquals(String actual1, String actual2, String message) {
+	static void verifyNotEquals(String actual1, String actual2, String message) {
 		try {
 			Assert.assertNotEquals(actual1, actual2, message);
 		} catch (AssertionError e) {
@@ -867,7 +867,7 @@ public class Verify {
 		}
 	}
 	
-	static public void verifyNotEquals(String actual1, String actual2, String message, WebDriver driver) {
+	static void verifyNotEquals(String actual1, String actual2, String message, WebDriver driver) {
 		try {
 			Assert.assertNotEquals(actual1, actual2, message);
 		} catch (AssertionError e) {
@@ -875,7 +875,7 @@ public class Verify {
 		}
 	}
 	
-	static public void verifyNotEquals(String actual1, String actual2) {
+	static void verifyNotEquals(String actual1, String actual2) {
 		try {
 			Assert.assertNotEquals(actual1, actual2);
 		} catch (AssertionError e) {
@@ -883,7 +883,7 @@ public class Verify {
 		}
 	}
 	
-	static public void verifyNotEquals(String actual1, String actual2, WebDriver driver) {
+	static void verifyNotEquals(String actual1, String actual2, WebDriver driver) {
 		try {
 			Assert.assertNotEquals(actual1, actual2);
 		} catch (AssertionError e) {
@@ -891,7 +891,7 @@ public class Verify {
 		}
 	}
 	
-	static public void verifyNotEquals(long actual1, long actual2, String message) {
+	static void verifyNotEquals(long actual1, long actual2, String message) {
 		try {
 			Assert.assertNotEquals(actual1, actual2);
 		} catch (AssertionError e) {
@@ -899,7 +899,7 @@ public class Verify {
 		}
 	}
 	
-	static public void verifyNotEquals(long actual1, long actual2, String message, WebDriver driver) {
+	static void verifyNotEquals(long actual1, long actual2, String message, WebDriver driver) {
 		try {
 			Assert.assertNotEquals(actual1, actual2);
 		} catch (AssertionError e) {
@@ -907,7 +907,7 @@ public class Verify {
 		}
 	}
 	
-	static public void verifyNotEquals(long actual1, long actual2) {
+	static void verifyNotEquals(long actual1, long actual2) {
 		try {
 			Assert.assertNotEquals(actual1, actual2);
 		} catch (AssertionError e) {
@@ -915,7 +915,7 @@ public class Verify {
 		}
 	}
 	
-	static public void verifyNotEquals(long actual1, long actual2, WebDriver driver) {
+	static void verifyNotEquals(long actual1, long actual2, WebDriver driver) {
 		try {
 			Assert.assertNotEquals(actual1, actual2);
 		} catch (AssertionError e) {
@@ -1152,6 +1152,7 @@ public class Verify {
 		VerificationError ve = new VerificationError();
 		ve.setAssertionError(e);
 		VerificationErrorsInTest.addError(testResult, ve);
+		LOGGER.warn(Utils.stackTrace(e, true)[0]);
 	}
 	
 	static private void addVerificationError(AssertionError e, WebDriver driver) {
@@ -1164,10 +1165,11 @@ public class Verify {
 			FileUtils.copyFile(srcFile, new File(screenShotPath));
 			ve.setScreenShotFileName(screenShotFileName);
 		} catch (Exception e2) {
-			logger.error("Screen shot Problem "+e2.getMessage());
+			LOGGER.error("Screen shot Problem "+e2.getMessage());
 		}
 		ve.setAssertionError(e);
 		VerificationErrorsInTest.addError(testResult, ve);
+		LOGGER.warn(Utils.stackTrace(e, true)[0]);
 	}
 	
 }

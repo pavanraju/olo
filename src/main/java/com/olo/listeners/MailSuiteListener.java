@@ -5,13 +5,12 @@ import static com.olo.propertyutil.MailProperties.mailProp;
 import java.io.File;
 import java.util.Map;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.testng.ISuite;
 import org.testng.ISuiteListener;
 import org.testng.ISuiteResult;
 import org.testng.ITestContext;
 import org.testng.internal.Utils;
+import org.testng.log4testng.Logger;
 
 import com.olo.mailer.MailClient;
 import com.olo.propertyutil.MailProperties;
@@ -20,7 +19,7 @@ import com.olo.util.Commons;
 
 public class MailSuiteListener implements ISuiteListener{
 	
-	private static final Logger logger = LogManager.getLogger(MailSuiteListener.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(MailSuiteListener.class);
 	
 	public void onFinish(ISuite suite) {
 		try {
@@ -107,9 +106,9 @@ public class MailSuiteListener implements ISuiteListener{
 			suiteReportDetailed.append(Utility.startColumn(8));
 			suiteReportDetailed.append(textContextSummaryAndDetailedReport);
 			suiteReportDetailed.append(Utility.endColumn());
-			suiteReportDetailed.append(errorModelWindow);
 			suiteReportDetailed.append(Utility.endRow());
 			suiteReportDetailed.append(Utility.endContainer());
+			suiteReportDetailed.append(errorModelWindow);
 			suiteReportDetailed.append(Utility.getCustomJs());
 			suiteReportDetailed.append(Utility.endBodyAndHtml());
 			String fileName = "mail-suite-"+suiteName+"-index.html";
@@ -135,13 +134,13 @@ public class MailSuiteListener implements ISuiteListener{
 		    	}else{
 		    		mail.sendMail(toMail.split(","), subject.toString(), body, CCMail.split(","),suite.getOutputDirectory()+File.separator+fileName);
 		    	}
-		    	logger.info("Mail sent on suite completed '"+suiteName+"'");
+		    	LOGGER.info("Mail sent on suite completed '"+suiteName+"'");
 		    }catch(Exception e){
-		    	logger.error("Mail sending failed!! "+e.getMessage());
+		    	LOGGER.error("Mail sending failed!! "+e.getMessage());
 		    }
 		    
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 		}
 	}
 	
@@ -168,9 +167,9 @@ public class MailSuiteListener implements ISuiteListener{
 	    	}else{
 	    		mail.sendMail(toMail.split(","), subject.toString(), body, CCMail.split(","));
 	    	}
-	    	logger.info("Mail sent on suite start '"+suiteName+"'");
+	    	LOGGER.info("Mail sent on suite start '"+suiteName+"'");
 	    }catch(Exception e){
-	    	logger.error("Mail sending failed!! "+e.getMessage());
+	    	LOGGER.error("Mail sending failed!! "+e.getMessage());
 	    }
 	}
 	

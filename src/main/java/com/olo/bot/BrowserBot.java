@@ -15,6 +15,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.internal.Coordinates;
+import org.openqa.selenium.internal.seleniumemulation.JavascriptLibrary;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -36,8 +37,8 @@ public class BrowserBot{
 		wait = new WebDriverWait(driver, ConfigProperties.getWaitTimeOut());
 	}
 	
-	public BrowserBot Wait(int timeOutSec) throws Exception {
-		Thread.sleep(timeOutSec*1000);
+	public BrowserBot Wait(int timeInSec) throws Exception {
+		Thread.sleep(timeInSec*1000);
 		return this;
 	}
 	
@@ -290,22 +291,22 @@ public class BrowserBot{
 	}
 	
 	public BrowserBot assertChecked(WebElement element){
-		Assert.assertTrue(element.isSelected());
+		Assert.assertTrue(isSelected(element));
 		return this;
 	}
 	
 	public BrowserBot verifyChecked(WebElement element) throws Exception{
-		Verify.verifyTrue(element.isSelected(), driver);
+		Verify.verifyTrue(isSelected(element), driver);
 		return this;
 	}
 	
 	public BrowserBot assertNotChecked(WebElement element){
-		Assert.assertFalse(element.isSelected());
+		Assert.assertFalse(isSelected(element));
 		return this;
 	}
 	
 	public BrowserBot verifyNotChecked(WebElement element) throws Exception{
-		Verify.verifyFalse(element.isSelected(), driver);
+		Verify.verifyFalse(isSelected(element), driver);
 		return this;
 	}
 	
@@ -504,6 +505,10 @@ public class BrowserBot{
 	
 	public boolean isEnabled(WebElement element){
 		return element.isEnabled();
+	}
+	
+	public boolean isSelected(WebElement element){
+		return element.isSelected();
 	}
 	
 	public String getText(WebElement element){
@@ -805,14 +810,14 @@ public class BrowserBot{
 	}
 	
 	public BrowserBot check(WebElement checkBoxElement){
-		if(!checkBoxElement.isSelected()){
+		if(!isSelected(checkBoxElement)){
 			checkBoxElement.click();
 		}
 		return this;
 	}
 	
 	public BrowserBot uncheck(WebElement checkBoxElement){
-		if(checkBoxElement.isSelected()){
+		if(isSelected(checkBoxElement)){
 			checkBoxElement.click();
 		}
 		return this;
@@ -829,6 +834,10 @@ public class BrowserBot{
 	
 	public String executeJavascript(WebElement webElement,String executeJavascript){
 		return (String) ((JavascriptExecutor)driver).executeScript(executeJavascript, webElement);
+	}
+	
+	public void fireEvent(WebElement element, String eventName){
+		new JavascriptLibrary().callEmbeddedSelenium(driver, "triggerEvent", element, eventName);
 	}
 	
 	public BrowserBot switchToDefault(){

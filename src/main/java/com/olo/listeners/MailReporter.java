@@ -1,12 +1,11 @@
 package com.olo.listeners;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.testng.IReporter;
 import org.testng.ISuite;
 import org.testng.ISuiteResult;
 import org.testng.ITestContext;
 import org.testng.internal.Utils;
+import org.testng.log4testng.Logger;
 import org.testng.xml.XmlSuite;
 
 import com.olo.mailer.MailClient;
@@ -21,7 +20,7 @@ import java.util.Map;
 
 public class MailReporter implements IReporter{
 	
-	private static final Logger logger = LogManager.getLogger(MailReporter.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(MailReporter.class);
 	
 	public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
 		try {
@@ -149,9 +148,9 @@ public class MailReporter implements IReporter{
 	    	}else{
 	    		mail.sendMail(to.split(","), subject, body, cc.split(","), outputDirectory+File.separator+fileName);
 	    	}
-	    	logger.info("Suites Summary mail sent");
+	    	LOGGER.info("Suites Summary mail sent");
 	    }catch(Exception e){
-	    	logger.error("Mail sending failed!!");
+	    	LOGGER.error("Mail sending failed!!");
 	    	e.printStackTrace();
 	    }
 	}

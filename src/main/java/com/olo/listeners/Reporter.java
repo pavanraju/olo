@@ -1,28 +1,28 @@
 package com.olo.listeners;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.testng.IReporter;
 import org.testng.ISuite;
 import org.testng.ISuiteResult;
 import org.testng.ITestContext;
 import org.testng.internal.Utils;
+import org.testng.log4testng.Logger;
 import org.testng.xml.XmlSuite;
 
 import com.olo.reporter.Utility;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class Reporter implements IReporter{
 	
-	private static final Logger logger = LogManager.getLogger(Reporter.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(Reporter.class);
 	
 	public void generateReport(List<XmlSuite> xmlSuites, List<ISuite> suites, String outputDirectory) {
 		try {
 			generateNewIndex(suites,outputDirectory);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 		}
 		
 	}

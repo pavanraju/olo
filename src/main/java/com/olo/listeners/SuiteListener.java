@@ -2,20 +2,18 @@ package com.olo.listeners;
 
 import java.util.Map;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.testng.ISuite;
 import org.testng.ISuiteListener;
 import org.testng.ISuiteResult;
 import org.testng.ITestContext;
-
 import org.testng.internal.Utils;
+import org.testng.log4testng.Logger;
 
 import com.olo.reporter.Utility;
 
 public class SuiteListener implements ISuiteListener{
 	
-	private static final Logger logger = LogManager.getLogger(SuiteListener.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(SuiteListener.class);
 	
 	public void onFinish(ISuite suite) {
 		try {
@@ -138,9 +136,9 @@ public class SuiteListener implements ISuiteListener{
 			suiteReportDetailed.append(Utility.startColumn(8));
 			suiteReportDetailed.append(textContextSummaryAndDetailedReport);
 			suiteReportDetailed.append(Utility.endColumn());
-			suiteReportDetailed.append(errorModelWindow);
 			suiteReportDetailed.append(Utility.endRow());
 			suiteReportDetailed.append(Utility.endContainer());
+			suiteReportDetailed.append(errorModelWindow);
 			suiteReportDetailed.append(Utility.getCustomJs());
 			suiteReportDetailed.append(Utility.endBodyAndHtml());
 			String fileName = "suite-"+suiteName+"-index.html";
@@ -206,9 +204,9 @@ public class SuiteListener implements ISuiteListener{
 				suiteReportFailed.append(Utility.startColumn(9));
 		    	suiteReportFailed.append(failedTextContextReport);
 		    	suiteReportFailed.append(Utility.endColumn());
-		    	suiteReportFailed.append(errorModelWindow);
 		    	suiteReportFailed.append(Utility.endRow());
 		    	suiteReportFailed.append(Utility.endContainer());
+		    	suiteReportFailed.append(errorModelWindow);
 		    	suiteReportFailed.append(Utility.getCustomJs());
 		    	suiteReportFailed.append(Utility.endBodyAndHtml());
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-failed.html", suiteReportFailed.toString());
@@ -241,16 +239,16 @@ public class SuiteListener implements ISuiteListener{
 				suiteReportSkipped.append(Utility.startColumn(9));
 		    	suiteReportSkipped.append(skippedTextContextReport);
 		    	suiteReportSkipped.append(Utility.endColumn());
-		    	suiteReportSkipped.append(errorModelWindow);
 		    	suiteReportSkipped.append(Utility.endRow());
 		    	suiteReportSkipped.append(Utility.endContainer());
+		    	suiteReportSkipped.append(errorModelWindow);
 		    	suiteReportSkipped.append(Utility.getCustomJs());
 		    	suiteReportSkipped.append(Utility.endBodyAndHtml());
 				Utils.writeFile(suite.getOutputDirectory(), "suite-"+suiteName+"-skipped.html", suiteReportSkipped.toString());
 		    }
 		    
 		} catch (Exception e) {
-			logger.error(e.getMessage());
+			LOGGER.error(e.getMessage());
 		}
 	}
 	

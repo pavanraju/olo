@@ -15,12 +15,11 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.testng.log4testng.Logger;
 
 public class MailClient {
 	
-	private static final Logger logger = LogManager.getLogger(MailClient.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(MailClient.class);
 	
 	private static Properties mailProperties(){
     	Properties props = new Properties();
@@ -73,9 +72,9 @@ public class MailClient {
 	        }
 	        transport.sendMessage(message,message.getAllRecipients());
 	        transport.close();
-	        logger.info("Mail sent succesfully !!!");
+	        LOGGER.info("Mail sent succesfully !!!");
 		} catch (Exception e) {
-			logger.error("Could not send email" +e.getMessage());
+			LOGGER.error("Could not send email" +e.getMessage());
 		}
 		
 	}
@@ -113,9 +112,9 @@ public class MailClient {
 	        }
 	        transport.sendMessage(message,message.getAllRecipients());
 	        transport.close();
-	        logger.info("Mail sent succesfully !!!");
+	        LOGGER.info("Mail sent succesfully !!!");
 		} catch (Exception e) {
-			logger.error("Could not send email" +e.getMessage());
+			LOGGER.error("Could not send email" +e.getMessage());
 		}
 		
 	}
@@ -149,9 +148,9 @@ public class MailClient {
 	        }
 	        transport.sendMessage(message,message.getAllRecipients());
 	        transport.close();
-	        logger.info("Mail sent succesfully !!!");
+	        LOGGER.info("Mail sent succesfully !!!");
 		} catch (Exception e) {
-			logger.error("Could not send email" +e.getMessage());
+			LOGGER.error("Could not send email" +e.getMessage());
 		}
 		
 	}
@@ -192,9 +191,9 @@ public class MailClient {
 	        }
 	        transport.sendMessage(message,message.getAllRecipients());
 	        transport.close();
-	        logger.info("Mail sent succesfully !!!");
+	        LOGGER.info("Mail sent succesfully !!!");
 		} catch (Exception e) {
-			logger.error("Could not send email" +e.getMessage());
+			LOGGER.error("Could not send email" +e.getMessage());
 		}
 		
 	}

@@ -2,7 +2,6 @@ package com.olo.reporter;
 
 import java.io.File;
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -11,18 +10,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.testng.ISuite;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.internal.Utils;
 
-import com.olo.annotations.Reporter;
 import com.olo.propertyutil.ConfigProperties;
 import com.olo.util.Commons;
 import com.olo.util.TestProp;
@@ -31,32 +26,10 @@ import com.olo.util.VerificationErrorsInTest;
 
 public class Utility {
 	
-	private static final Logger logger = LogManager.getLogger(Utility.class.getName());
-	
 	public static final SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd-MMM-yyyy HH:mm:ss");
 	public static final SimpleDateFormat sdfTests = new SimpleDateFormat("HH:mm:ss");
 	public static final SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm:ss.SSS");
 	public static final NumberFormat formatter = new DecimalFormat("#,##0.0");
-	
-	public static final LinkedHashMap<String, String> testCaseReportColumns = new LinkedHashMap<String, String>(){
-		private static final long serialVersionUID = 1L;
-
-			{
-				put("command", "Command");
-		        put("target", "Target");
-		        put("targetValue", "Target Value");
-		        put("value", "Value");
-		        put("actualValue", "Actual Value");
-		        put("options", "Options");
-		        put("startTime", "Start Time");
-		        put("endTime", "End Time");
-		        put("timeTaken", "Time Taken");
-		        put("status", "Status");
-		        put("exception", "Exception");
-		        put("screenShot", "ScreenShot");
-
-			}
-	};
 	
 	public static String getStatusString(int testResultStatus) {
 		switch (testResultStatus) {
@@ -111,19 +84,19 @@ public class Utility {
 	}
 	
 	public static String getBootstrapCss(){
-		return "<link rel=\"stylesheet\" href=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css\">";
+		return "<link rel=\"stylesheet\" href=\"http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css\">";
 	}
 	
 	public static String getBootstrapJs(){
-		return "<script src=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js\"></script>";
+		return "<script src=\"http://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js\"></script>";
 	}
 	
 	public static String getJqueryJs(){
-		return "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>";
+		return "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js'></script>";
 	}
 	
 	public static String getInlineCss(){
-		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;}@media screen and (min-width: 1080px) {.modal-dialog {width: 900px;}}</style>";
+		return "<style type='text/css'>.ifskipped{background-color: #d6e1c9;}</style>";
 	}
 	
 	public static String getGoogleChartsJs(){
@@ -301,9 +274,9 @@ public class Utility {
 		StringBuffer suitePassedContextSummaryInfo = new StringBuffer();
 		suitePassedContextSummaryInfo.append("<div class='row'><div class='col-md-12'><div class='table-responsive'>");
 		suitePassedContextSummaryInfo.append(startCondensedTable());
-		suitePassedContextSummaryInfo.append("<tr><th>Test</th><th>Pass</th></tr>");
+		suitePassedContextSummaryInfo.append("<thead><tr><th>Test</th><th>Pass</th></tr></thead>");
 		suitePassedContextSummaryInfo.append(passedtextContextSummaryReport);
-		suitePassedContextSummaryInfo.append("<tr><th>Total</th><th class='success'>"+suitePassedTests+"</th></tr>");
+		suitePassedContextSummaryInfo.append("<tfoot><tr><th>Total</th><th class='success'>"+suitePassedTests+"</th></tr></tfoot>");
 		suitePassedContextSummaryInfo.append(endTable());
 		suitePassedContextSummaryInfo.append("</div></div></div>");
 		return suitePassedContextSummaryInfo;
@@ -313,9 +286,9 @@ public class Utility {
 		StringBuffer suiteFailedContextSummaryInfo = new StringBuffer();
 		suiteFailedContextSummaryInfo.append("<div class='row'><div class='col-md-12'><div class='table-responsive'>");
 		suiteFailedContextSummaryInfo.append(startCondensedTable());
-		suiteFailedContextSummaryInfo.append("<tr><th>Test</th><th>Fail</th></tr>");
+		suiteFailedContextSummaryInfo.append("<thead><tr><th>Test</th><th>Fail</th></tr></thead>");
 		suiteFailedContextSummaryInfo.append(failedtextContextSummaryReport);
-		suiteFailedContextSummaryInfo.append("<tr><th>Total</th><th class='danger'>"+suiteFailedTests+"</th></tr>");
+		suiteFailedContextSummaryInfo.append("<tfoot><tr><th>Total</th><th class='danger'>"+suiteFailedTests+"</th></tr></tfoot>");
 		suiteFailedContextSummaryInfo.append(endTable());
 		suiteFailedContextSummaryInfo.append("</div></div></div>");
 		return suiteFailedContextSummaryInfo;
@@ -325,9 +298,9 @@ public class Utility {
 		StringBuffer suiteSkippedContextSummaryInfo = new StringBuffer();
 		suiteSkippedContextSummaryInfo.append("<div class='row'><div class='col-md-12'><div class='table-responsive'>");
 		suiteSkippedContextSummaryInfo.append(startCondensedTable());
-		suiteSkippedContextSummaryInfo.append("<tr><th>Test</th><th>Skip</th></tr>");
+		suiteSkippedContextSummaryInfo.append("<thead><tr><th>Test</th><th>Skip</th></tr></thead>");
 		suiteSkippedContextSummaryInfo.append(skippedtextContextSummaryReport);
-		suiteSkippedContextSummaryInfo.append("<tr><th>Total</th><th class='warning'>"+suiteSkippedTests+"</th></tr>");
+		suiteSkippedContextSummaryInfo.append("<tfoot><tr><th>Total</th><th class='warning'>"+suiteSkippedTests+"</th></tr></tfoot>");
 		suiteSkippedContextSummaryInfo.append(endTable());
 		suiteSkippedContextSummaryInfo.append("</div></div></div>");
 		return suiteSkippedContextSummaryInfo;
@@ -579,9 +552,6 @@ public class Utility {
 		StringBuffer resultsStringBuffer = new StringBuffer();
 		int i=1;
 		for (ITestResult eachTestResult : testResults) {
-			if(!isMail){
-				testResultCustomReport(eachTestResult);
-			}
 			String testName = eachTestResult.getName();
 	    	String testCasePath=null;
 	    	if(eachTestResult.getAttribute(TestProp.PATH)!=null){
@@ -610,16 +580,19 @@ public class Utility {
     					errorMessage+="<div class=\"panel panel-info\">";
     						errorMessage+="<div class=\"panel-heading\">";
     							errorMessage+="<h4 class=\"panel-title\">";
-    								errorMessage+="<a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse"+errorId+"\">"+errorDetails.getAssertionError().getMessage()+"</a>";
+    								errorMessage+="<a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse"+errorId+"\">"+errorDetails.getAssertionError().getMessage();
+    								if(!isMail){
+    									if(errorDetails.getScreenShotFileName()!=null){
+    										errorMessage+="  <a class=\"btn btn-default btn-sm\" role=\"button\" href=\"screenshots"+File.separator+errorDetails.getScreenShotFileName()+"\" target=\"_blank\">Screenshot</a>";
+    									}
+    								}
+    								errorMessage+="</a>";
     							errorMessage+="</h4>";
     						errorMessage+="</div>";
     						errorMessage+="<div id=\"collapse"+errorId+"\" class=\"panel-collapse collapse\">";
     							errorMessage+="<div class=\"panel-body\">";
     								errorMessage+="Verification Failure <br>";
-    								errorMessage+=Commons.getStackTraceAsString(errorDetails.getAssertionError())+"<br>";
-    								if(!isMail){
-    									errorMessage+="<a href=\"screenshots"+File.separator+errorDetails.getScreenShotFileName()+"\">Screenshot</a>";
-    								}
+    								errorMessage+=Utils.stackTrace(errorDetails.getAssertionError(), true)[0]+"<br>";
     							errorMessage+="</div>";
     						errorMessage+="</div>";
 						errorMessage+="</div>";
@@ -628,21 +601,21 @@ public class Utility {
 				}
 	    		
 				if(eachTestResult.getThrowable()!=null && !eachTestResult.getThrowable().getMessage().equals(Commons.verificationFailuresMessage)){
-					String[] stackTraces = Utils.stackTrace(eachTestResult.getThrowable(), true);
 					errorMessage+="<div class=\"panel panel-danger\">";
 						errorMessage+="<div class=\"panel-heading\">";
 							errorMessage+="<h4 class=\"panel-title\">";
-								errorMessage+="<a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse"+errorId+"\">"+eachTestResult.getThrowable().getMessage()+"</a>";
+								errorMessage+="<a class=\"accordion-toggle\" data-toggle=\"collapse\" data-parent=\"#accordion\" href=\"#collapse"+errorId+"\">"+eachTestResult.getThrowable().getMessage();
+								if(!isMail){
+									if(eachTestResult.getAttribute("screenshot")!=null){
+										errorMessage+="  <a class=\"btn btn-default btn-sm\" role=\"button\" href=\"screenshots"+File.separator+eachTestResult.getAttribute(TestProp.SCREENSHOT)+"\" target=\"_blank\">Screenshot</a>";
+									}
+								}
+								errorMessage+="</a>";
 							errorMessage+="</h4>";
 						errorMessage+="</div>";
 						errorMessage+="<div id=\"collapse"+errorId+"\" class=\"panel-collapse collapse\">";
 							errorMessage+="<div class=\"panel-body\">";
-								errorMessage+=stackTraces[1]+"<br>";
-								if(!isMail){
-									if(eachTestResult.getAttribute("screenshot")!=null){
-										errorMessage+="<a href=\"screenshots"+File.separator+eachTestResult.getAttribute(TestProp.SCREENSHOT)+"\">Screenshot</a>";
-									}
-								}
+								errorMessage+=Utils.stackTrace(eachTestResult.getThrowable(), true)[0]+"<br>";
 							errorMessage+="</div>";
 						errorMessage+="</div>";
 					errorMessage+="</div>";
@@ -657,26 +630,6 @@ public class Utility {
     	}
 		return resultsStringBuffer;
 	}
-	
-	public static void testResultCustomReport(ITestResult result){
-		Reporter reporter = result.getMethod().getConstructorOrMethod().getMethod().getAnnotation(com.olo.annotations.Reporter.class);
-		if(reporter!=null){
-			try {
-				Class<TestReporter> testReporterClass = reporter.reporterClass();
-				for (final Method reporterMethod : testReporterClass.getDeclaredMethods()) {
-					Reporter annotation = reporterMethod.getAnnotation(com.olo.annotations.Reporter.class);
-					if(annotation!=null){
-						if(annotation.value().equals(reporter.value())){
-							reporterMethod.invoke(testReporterClass.newInstance(),result);
-						}
-					}
-				}
-			} catch (Exception e) {
-				logger.error(e.getMessage());
-			}
-		}
-	}
-	
 	
 	public static StringBuffer getTestInformationRow(ITestResult eachTestResult){
 		Object[] parameters = eachTestResult.getParameters();
@@ -727,7 +680,7 @@ public class Utility {
 	private static StringBuffer getContextDetailedReport(String contextName,Set<ITestResult> results, boolean isMail){
 		StringBuffer contextReport = new StringBuffer();
 		contextReport.append("<div class='row'><div class='col-md-12'><div class='table-responsive'><table class='table table-bordered' id='"+contextName.replaceAll(" ", "-")+"' >");
-		contextReport.append("<caption>Detailed report of "+contextName+" Tests</caption>");
+		contextReport.append("<caption>Detailed report of <strong>"+contextName+"</strong></caption>");
 		contextReport.append(headerContextDetailedReport());
 		if(isMail){
 			contextReport.append(mailTestDetailReport(sortResults(results)));
@@ -774,8 +727,8 @@ public class Utility {
 	
 	public static StringBuffer getErrorModelWindow(){
 		StringBuffer errorModelWindow = new StringBuffer();
-		errorModelWindow.append("<div class='modal fade' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>");
-		errorModelWindow.append("<div class='modal-dialog'>");
+		errorModelWindow.append("<div class='modal fade bs-modal-lg' id='myModal' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>");
+		errorModelWindow.append("<div class='modal-dialog modal-lg'>");
 		errorModelWindow.append("<div class='modal-content'>");
 		errorModelWindow.append("<div class='modal-header'><button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button><h4 class='modal-title' id='myModalLabel'>Error Details</h4></div>");
 		errorModelWindow.append("<div class='modal-body'></div>");

@@ -3,13 +3,13 @@ package com.olo.initiator;
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;
+import org.testng.log4testng.Logger;
 
 import com.olo.propertyutil.ConfigProperties;
 import com.olo.util.Commons;
@@ -17,8 +17,9 @@ import com.olo.util.TestProp;
 
 public class InitiatorUtil {
 	
-	private static final Logger logger = LogManager.getLogger(InitiatorUtil.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(InitiatorUtil.class);
 	public DriverConfiguration driverConfig = new DriverConfiguration();
+	protected ThreadLocal<WebDriver> threadDriver = new ThreadLocal<WebDriver>();
 	
 	public void handleAfterMethod(WebDriver driver, ITestResult result){
 		if(result.getStatus()==ITestResult.FAILURE && result.getThrowable().getMessage()!=Commons.verificationFailuresMessage){
@@ -26,6 +27,14 @@ public class InitiatorUtil {
 		}
 		driverConfig.closeDriver(driver);
 	}
+	
+	public void configureDriver(ITestContext ctx){
+		threadDriver.set(driverConfig.getDriverBySetTimeOuts(ctx));
+	}
+	
+	public WebDriver getDriver() {
+        return threadDriver.get();
+    }
 	
 	public void setPropertyForTest(ITestResult result, String propertyName, String propertyValue){
 		result.setAttribute(propertyName, propertyValue);
@@ -54,16 +63,16 @@ public class InitiatorUtil {
 				result.setAttribute(TestProp.SCREENSHOT, screenShotFileName);
 			} catch (Exception e) {
 				if(e != null){
-					logger.warn("Could not take screenshot "+e.getMessage());
+					LOGGER.warn("Could not take screenshot "+e.getMessage());
 				}
 			}
 		}
 	}
 	
-	public void openUrl(WebDriver driver,String url){
-		logger.info("Trying to open url "+url);
-		driver.get(url);
-		logger.info("current url is "+driver.getCurrentUrl());
+	public void openUrl(String url){
+		LOGGER.info("Trying to open url "+url);
+		getDriver().get(url);
+		LOGGER.info("current url is "+getDriver().getCurrentUrl());
 	}
 	
 	public void deleteCookies(WebDriver driver){

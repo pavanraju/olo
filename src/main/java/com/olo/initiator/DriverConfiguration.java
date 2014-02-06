@@ -3,8 +3,6 @@ package com.olo.initiator;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,13 +15,14 @@ import org.openqa.selenium.safari.SafariDriver;
 import org.testng.ITestContext;
 import org.testng.Reporter;
 import org.testng.SkipException;
+import org.testng.log4testng.Logger;
 
 import com.olo.propertyutil.ConfigProperties;
 import com.opera.core.systems.OperaDriver;
 
 public class DriverConfiguration {
 	
-	private static final Logger logger = LogManager.getLogger(DriverConfiguration.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(DriverConfiguration.class);
 	
 	public DesiredCapabilities getInternetExplorerCapabilities(){
 		return DesiredCapabilities.internetExplorer();
@@ -143,7 +142,7 @@ public class DriverConfiguration {
 			setWaitForPageToLoadInSec(driver);
 			setImplicitWaitInSec(driver);
 			windowMaximizeAndWindowFocus(driver);
-			logger.info("setting up browser preferences completed");
+			LOGGER.info("setting up browser preferences completed");
 			return driver;
 		} catch (Exception e) {
 			throw new SkipException(e.getMessage());
@@ -159,7 +158,7 @@ public class DriverConfiguration {
 	}
 	
 	public void setWaitForPageToLoadInSec(WebDriver driver,long sec){
-		logger.info("Setting pageLoadTimeout to "+sec+" seconds");
+		LOGGER.info("Setting pageLoadTimeout to "+sec+" seconds");
 		driver.manage().timeouts().pageLoadTimeout(sec, TimeUnit.SECONDS);
 	}
 	
@@ -168,12 +167,12 @@ public class DriverConfiguration {
 	}
 	
 	public void setImplicitWaitInSec(WebDriver driver,long sec){
-		logger.info("Setting implicitlyWait to "+sec+" seconds");
+		LOGGER.info("Setting implicitlyWait to "+sec+" seconds");
 		driver.manage().timeouts().implicitlyWait(sec, TimeUnit.SECONDS);
 	}
 	
 	public void windowMaximizeAndWindowFocus(WebDriver driver){
-		logger.info("Trying to maximize and focus the window");
+		LOGGER.info("Trying to maximize and focus the window");
 		driver.manage().window().maximize();
 		driver.switchTo().window(driver.getWindowHandle());
 	}
@@ -181,11 +180,11 @@ public class DriverConfiguration {
 	public void closeDriver(WebDriver driver){
 		if(driver!=null){
 			try {
-				logger.info("Trying to Stop WebDriver");
+				LOGGER.info("Trying to Stop WebDriver");
 				driver.quit();
-				logger.info("WebDriver Stopped");
+				LOGGER.info("WebDriver Stopped");
 			} catch (Exception e) {
-				logger.error("Error in stopping WebDriver "+e.getMessage());
+				LOGGER.error("Error in stopping WebDriver "+e.getMessage());
 			}
 		}
 	}
