@@ -1,3 +1,24 @@
+0.18.0
+------------
+
+**Enhancements**
+
+* Splitted pageWaitAndWaitTimeOut to two different properties 'pageLoadTimeout' and 'waitTimeOut'. If pageLoadTimeOut is 0 then not setting pageloadtimeout at driver level.
+* Added new methods to browserBot
+* Showing screenshot at error message level
+* Loggers using testng logger
+* CheckVerificationListener is added to testNG services, so it works by default, no need to add in listeners either in testng.xml, maven, etc..
+* Added new property captureScreenshot in config.properties to capture screenshots for your test execution or not.
+
+**Bug Fixes**
+
+* Fixed issues in suite detailed report
+* Removed unused code
+
+**Breaking Changes**
+
+* Not Supporting keywordDriven due to limitations
+
 0.17.0
 ------------
 
