@@ -177,16 +177,4 @@ public class DriverConfiguration {
 		driver.switchTo().window(driver.getWindowHandle());
 	}
 	
-	public void closeDriver(WebDriver driver){
-		if(driver!=null){
-			try {
-				LOGGER.info("Trying to Stop WebDriver");
-				driver.quit();
-				LOGGER.info("WebDriver Stopped");
-			} catch (Exception e) {
-				LOGGER.error("Error in stopping WebDriver "+e.getMessage());
-			}
-		}
-	}
-	
 }

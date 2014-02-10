@@ -21,11 +21,22 @@ public class InitiatorUtil {
 	public DriverConfiguration driverConfig = new DriverConfiguration();
 	protected ThreadLocal<WebDriver> threadDriver = new ThreadLocal<WebDriver>();
 	
-	public void handleAfterMethod(WebDriver driver, ITestResult result){
+	public void captureScreenShotOnTestFailure(ITestResult result){
 		if(result.getStatus()==ITestResult.FAILURE && result.getThrowable().getMessage()!=Commons.verificationFailuresMessage){
-			takeScreenShotForTest(driver, result);
+			takeScreenShotForTest(getDriver(), result);
 		}
-		driverConfig.closeDriver(driver);
+	}
+	
+	public void closeDriver(){
+		if(getDriver()!=null){
+			try {
+				LOGGER.info("Trying to Stop WebDriver");
+				getDriver().quit();
+				LOGGER.info("WebDriver Stopped");
+			} catch (Exception e) {
+				LOGGER.error("Error in stopping WebDriver "+e.getMessage());
+			}
+		}
 	}
 	
 	public void configureDriver(ITestContext ctx){
@@ -54,7 +65,7 @@ public class InitiatorUtil {
 		if(result.getTestContext().getSuite().getParallel().equals("true") && ConfigProperties.getRemoteExecution()){
 			takeScreenshot = false;
 		}
-		if(takeScreenshot){
+		if(takeScreenshot && ConfigProperties.getCaptureScreenshot()){
 			try {
 				String screenShotFileName=System.currentTimeMillis()+".png";
 				String screenShotPath=result.getTestContext().getOutputDirectory()+File.separator+"screenshots"+File.separator+screenShotFileName;

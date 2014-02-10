@@ -68,6 +68,14 @@ public class ConfigProperties {
 		return configProp.getProperty("hubURL");
 	}
 	
+	public static boolean getCaptureScreenshot(){
+		try {
+			return Boolean.parseBoolean(configProp.getProperty("captureScreenshot"));
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
 	public static void setBrowser(String browser){
 		configProp.setProperty("browser", browser);
 	}

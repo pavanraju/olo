@@ -30,11 +30,9 @@ import com.olo.util.OloExpectedConditions;
 public class BrowserBot{
 	
 	private final WebDriver driver;
-	private WebDriverWait wait = null;
 
 	public BrowserBot(WebDriver driver) {
 		this.driver = driver;
-		wait = new WebDriverWait(driver, ConfigProperties.getWaitTimeOut());
 	}
 	
 	public BrowserBot Wait(int timeInSec) throws Exception {
@@ -43,7 +41,7 @@ public class BrowserBot{
 	}
 	
 	public BrowserBot waitForFrameToBeAvailableAndSwitchToIt(String frameLocator){
-		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameLocator));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(frameLocator));
 		return this;
 	}
 	
@@ -53,7 +51,7 @@ public class BrowserBot{
 	}
 	
 	public BrowserBot waitForElementPresent(By by) throws Exception{
-		wait.until(ExpectedConditions.presenceOfElementLocated(by));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.presenceOfElementLocated(by));
 		return this;
 	}
 	
@@ -63,7 +61,7 @@ public class BrowserBot{
 	}
 	
 	public BrowserBot waitForElementNotPresent(WebElement element){
-		wait.until(OloExpectedConditions.elementNotPresent(element));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(OloExpectedConditions.elementNotPresent(element));
 		return this;
 	}
 	
@@ -73,7 +71,7 @@ public class BrowserBot{
 	}
 	
 	public BrowserBot waitForElementNotPresent(By by){
-		wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(by)));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(by)));
 		return this;
 	}
 	
@@ -83,12 +81,12 @@ public class BrowserBot{
 	}
 	
 	public BrowserBot waitForVisible(WebElement element){
-		wait.until(ExpectedConditions.visibilityOf(element));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.visibilityOf(element));
 		return this;
 	}
 	
 	public BrowserBot waitForNotVisible(WebElement element) throws Exception{
-		wait.until(ExpectedConditions.not(ExpectedConditions.visibilityOf(element)));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.not(ExpectedConditions.visibilityOf(element)));
 		return this;
 	}
 	
@@ -103,12 +101,12 @@ public class BrowserBot{
 	}
 	
 	public BrowserBot waitForValue(final WebElement element, final String value) throws Exception{
-		wait.until(ExpectedConditions.textToBePresentInElementValue(element, value));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.textToBePresentInElementValue(element, value));
 		return this;
 	}
 	
 	public BrowserBot waitForNotValue(final WebElement element, final String value) throws Exception{
-		wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementValue(element, value)));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElementValue(element, value)));
 		return this;
 	}
 	
@@ -123,12 +121,12 @@ public class BrowserBot{
 	}
 	
 	public BrowserBot waitForEditable(final WebElement element) throws Exception{
-		wait.until(ExpectedConditions.elementToBeClickable(element));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.elementToBeClickable(element));
 		return this;
 	}
 	
 	public BrowserBot waitForNotEditable(final WebElement element) throws Exception{
-		wait.until(ExpectedConditions.not(ExpectedConditions.elementToBeClickable(element)));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.not(ExpectedConditions.elementToBeClickable(element)));
 		return this;
 	}
 	
@@ -143,12 +141,12 @@ public class BrowserBot{
 	}
 	
 	public BrowserBot waitForText(final WebElement element, final String value) throws Exception{
-		wait.until(ExpectedConditions.textToBePresentInElement(element, value));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.textToBePresentInElement(element, value));
 		return this;
 	}
 	
 	public BrowserBot waitForNotText(final WebElement element, final String value) throws Exception{
-		wait.until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(element, value)));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.not(ExpectedConditions.textToBePresentInElement(element, value)));
 		return this;
 	}
 	
@@ -163,7 +161,7 @@ public class BrowserBot{
 	}
 	
 	public BrowserBot waitForAlertPresent(){
-		wait.until(ExpectedConditions.alertIsPresent());
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.alertIsPresent());
 		return this;
 	}
 	
@@ -173,7 +171,7 @@ public class BrowserBot{
 	}
 	
 	public BrowserBot waitForTitle(String pageTitle){
-		wait.until(ExpectedConditions.titleIs(pageTitle));
+		new WebDriverWait(driver, ConfigProperties.getWaitTimeOut()).until(ExpectedConditions.titleIs(pageTitle));
 		return this;
 	}
 	

@@ -17,7 +17,8 @@ public class ApplicationInitiator extends InitiatorUtil{
 	
 	@AfterMethod(alwaysRun=true)
 	public void afterTestMethod(ITestResult result){
-		handleAfterMethod(getDriver(), result);
+		captureScreenShotOnTestFailure(result);
+		closeDriver();
 	}
 
 }
