@@ -1,17 +1,12 @@
 package com.olo.initiator;
 
-import java.io.File;
-
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.log4testng.Logger;
 
-import com.olo.propertyutil.ConfigProperties;
+import com.olo.util.CaptureScreenshot;
 import com.olo.util.Commons;
 import com.olo.util.TestProp;
 
@@ -23,7 +18,10 @@ public class InitiatorUtil {
 	
 	public void captureScreenShotOnTestFailure(ITestResult result){
 		if(result.getStatus()==ITestResult.FAILURE && result.getThrowable().getMessage()!=Commons.verificationFailuresMessage){
-			takeScreenShotForTest(getDriver(), result);
+			String screenShotFileName = CaptureScreenshot.takeScreenShotAndReturnFileName(getDriver(), result);
+			if(screenShotFileName!=null){
+				result.setAttribute(TestProp.SCREENSHOT, screenShotFileName);
+			}
 		}
 	}
 	
@@ -53,31 +51,6 @@ public class InitiatorUtil {
 	
 	public void setPropertyForTest(String propertyName, String propertyValue){
 		Reporter.getCurrentTestResult().setAttribute(propertyName, propertyValue);
-	}
-	
-	public void takeScreenShotForTest(WebDriver driver) {
-		ITestResult result = org.testng.Reporter.getCurrentTestResult();
-		takeScreenShotForTest(driver, result);
-	}
-	
-	public void takeScreenShotForTest(WebDriver driver, ITestResult result){
-		boolean takeScreenshot = true;
-		if(result.getTestContext().getSuite().getParallel().equals("true") && ConfigProperties.getRemoteExecution()){
-			takeScreenshot = false;
-		}
-		if(takeScreenshot && ConfigProperties.getCaptureScreenshot()){
-			try {
-				String screenShotFileName=System.currentTimeMillis()+".png";
-				String screenShotPath=result.getTestContext().getOutputDirectory()+File.separator+"screenshots"+File.separator+screenShotFileName;
-				File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-				FileUtils.copyFile(srcFile, new File(screenShotPath));
-				result.setAttribute(TestProp.SCREENSHOT, screenShotFileName);
-			} catch (Exception e) {
-				if(e != null){
-					LOGGER.warn("Could not take screenshot "+e.getMessage());
-				}
-			}
-		}
 	}
 	
 	public void openUrl(String url){

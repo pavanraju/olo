@@ -13,7 +13,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.testng.ITestContext;
-import org.testng.Reporter;
 import org.testng.SkipException;
 import org.testng.log4testng.Logger;
 
@@ -132,16 +131,12 @@ public class DriverConfiguration {
 		}
 	}
 	
-	public WebDriver getDriverBySetTimeOuts(){
-		return getDriverBySetTimeOuts(Reporter.getCurrentTestResult().getTestContext());
-	}
-	
 	public WebDriver getDriverBySetTimeOuts(ITestContext ctx){
 		try {
 			WebDriver driver = getWebDriver(ctx);
 			setWaitForPageToLoadInSec(driver);
 			setImplicitWaitInSec(driver);
-			windowMaximizeAndWindowFocus(driver);
+			windowMaximize(driver);
 			LOGGER.info("setting up browser preferences completed");
 			return driver;
 		} catch (Exception e) {
@@ -171,10 +166,9 @@ public class DriverConfiguration {
 		driver.manage().timeouts().implicitlyWait(sec, TimeUnit.SECONDS);
 	}
 	
-	public void windowMaximizeAndWindowFocus(WebDriver driver){
-		LOGGER.info("Trying to maximize and focus the window");
+	public void windowMaximize(WebDriver driver){
+		LOGGER.info("Trying to maximize window");
 		driver.manage().window().maximize();
-		driver.switchTo().window(driver.getWindowHandle());
 	}
 	
 }

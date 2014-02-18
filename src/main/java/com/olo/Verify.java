@@ -1,14 +1,10 @@
 package com.olo;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.ITestResult;
@@ -16,7 +12,7 @@ import org.testng.Reporter;
 import org.testng.internal.Utils;
 import org.testng.log4testng.Logger;
 
-import com.olo.propertyutil.ConfigProperties;
+import com.olo.util.CaptureScreenshot;
 import com.olo.util.VerificationError;
 import com.olo.util.VerificationErrorsInTest;
 
@@ -1159,16 +1155,9 @@ public class Verify {
 	static private void addVerificationError(AssertionError e, WebDriver driver) {
 		ITestResult testResult = Reporter.getCurrentTestResult();
 		VerificationError ve = new VerificationError();
-		if(ConfigProperties.getCaptureScreenshot()){
-			try {
-				String screenShotFileName = System.currentTimeMillis()+".png";
-				String screenShotPath = testResult.getTestContext().getOutputDirectory()+File.separator+"screenshots"+File.separator+screenShotFileName;
-				File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-				FileUtils.copyFile(srcFile, new File(screenShotPath));
-				ve.setScreenShotFileName(screenShotFileName);
-			} catch (Exception e2) {
-				LOGGER.error("Screen shot Problem "+e2.getMessage());
-			}
+		String screenShotFileName = CaptureScreenshot.takeScreenShotAndReturnFileName(driver, testResult);
+		if(screenShotFileName!=null){
+			ve.setScreenShotFileName(screenShotFileName);
 		}
 		ve.setAssertionError(e);
 		VerificationErrorsInTest.addError(testResult, ve);
