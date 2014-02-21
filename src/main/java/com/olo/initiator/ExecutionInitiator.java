@@ -28,10 +28,10 @@ public class ExecutionInitiator {
 			String[] suitsToRun=args[0].split(",");
 			
 			if ( args.length > 1){
-				ConfigProperties.setBrowser(args[1]);
+				ConfigProperties.setBrowserName(args[1]);
 			}
 			
-			String browser = ConfigProperties.getBrowser();
+			String browser = ConfigProperties.getBrowserName();
 			
 			List<String> suiteFiles = new ArrayList<String>();
 			for(int i=0;i<suitsToRun.length;i++){

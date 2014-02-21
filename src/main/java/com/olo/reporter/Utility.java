@@ -188,8 +188,13 @@ public class Utility {
 	    if(ConfigProperties.getApplicationUrl()!=null){
 	    	summaryTable.append("<tr><th>Application Url</th><td>"+ConfigProperties.getApplicationUrl()+"</td></tr>");
 	    }
-	    summaryTable.append("<tr><th>Browser</th><td>"+ConfigProperties.getBrowser()+"</td></tr>");
-	    
+	    summaryTable.append("<tr><th>Browser Name</th><td>"+ConfigProperties.getBrowserName()+"</td></tr>");
+	    if(ConfigProperties.getBrowserVersion()!=null){
+	    	summaryTable.append("<tr><th>Version</th><td>"+ConfigProperties.getBrowserVersion()+"</td></tr>");
+	    }
+	    if(ConfigProperties.getPlatform()!=null){
+	    	summaryTable.append("<tr><th>Platform</th><td>"+ConfigProperties.getPlatform()+"</td></tr>");
+	    }
 	    summaryTable.append("</table>");
 	    summaryTable.append("</div></div>");
 	    return summaryTable;

@@ -28,8 +28,8 @@ public class ConfigProperties {
 		return configProp.getProperty("applicationUrl");
 	}
 	
-	public static String getBrowser(){
-		return configProp.getProperty("browser");
+	public static String getBrowserName(){
+		return configProp.getProperty("browserName");
 	}
 	
 	public static int getImplicitWait(){
@@ -56,9 +56,9 @@ public class ConfigProperties {
 		}
 	}
 	
-	public static boolean getRemoteExecution(){
+	public static boolean getRunOnRemoteWebDriver(){
 		try {
-			return Boolean.parseBoolean(configProp.getProperty("remoteExecution"));
+			return Boolean.parseBoolean(configProp.getProperty("runOnRemoteWebDriver"));
 		} catch (Exception e) {
 			return false;
 		}
@@ -76,8 +76,24 @@ public class ConfigProperties {
 		}
 	}
 	
-	public static void setBrowser(String browser){
-		configProp.setProperty("browser", browser);
+	public static void setBrowserVersion(String version){
+		configProp.setProperty("version", version);
+	}
+	
+	public static String getBrowserVersion(){
+		return configProp.getProperty("version");
+	}
+	
+	public static void setPlatform(String platform){
+		configProp.setProperty("platform", platform);
+	}
+	
+	public static String getPlatform(){
+		return configProp.getProperty("platform");
+	}
+	
+	public static void setBrowserName(String browserName){
+		configProp.setProperty("browserName", browserName);
 	}
 	
 }

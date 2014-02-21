@@ -67,8 +67,19 @@ public class DriverConfiguration {
 		return capabilities;
 	}
 	
+	private void setBrowserVersion(WebDriver driver){
+		if(ConfigProperties.getBrowserVersion()==null){
+			try {
+				String version = ((RemoteWebDriver) driver).getCapabilities().getVersion();
+				ConfigProperties.setBrowserVersion(version);
+			} catch (Exception e) {
+				LOGGER.error(e);
+			}
+		}
+	}
+	
 	public WebDriver getInternetExplorerDriver(DesiredCapabilities capabilities){
-		System.setProperty("webdriver.ie.driver", System.getProperty("user.dir")+"/drivers/win/IEDriverServer.exe");
+		System.setProperty("webdriver.ie.driver", System.getProperty("user.dir")+"/drivers/"+Platform.WINDOWS.toString()+"/IEDriverServer.exe");
 		return new InternetExplorerDriver(capabilities);
 	}
 	
@@ -79,11 +90,9 @@ public class DriverConfiguration {
 	public WebDriver getChromeDriver(DesiredCapabilities capabilities){
 		String driverFolder=null;
 		if(Platform.getCurrent().is(Platform.WINDOWS)){
-			driverFolder="win";
-		}else if(Platform.getCurrent().is(Platform.MAC)){
-			driverFolder="mac";
+			driverFolder=Platform.WINDOWS.toString();
 		}else{
-			driverFolder="linux";
+			driverFolder=Platform.getCurrent().toString();
 		}
 		System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir")+"/drivers/"+driverFolder+"/chromedriver.exe");
 		return new ChromeDriver(capabilities);
@@ -107,27 +116,40 @@ public class DriverConfiguration {
 	}
 	
 	public WebDriver getWebDriver(ITestContext ctx) throws Exception{
-		String browser = ConfigProperties.getBrowser();
+		String browser = ConfigProperties.getBrowserName();
 		DesiredCapabilities capabilities =  getCapabilities(browser);
-		if(!ctx.getSuite().getParallel().equals("false") && ConfigProperties.getRemoteExecution()){
+		if(ConfigProperties.getRunOnRemoteWebDriver()){
 			String hubURL = ConfigProperties.getHubUrl();
 			return getRemoteWebDriverDriver(hubURL, capabilities);
 		}else{
-			if(browser.equals("firefox")){
-				return getFirefoxDriver(capabilities);
-			}else if(browser.equals("internet explorer")){
-				return getInternetExplorerDriver(capabilities);
-			}else if(browser.equals("chrome")){
-				return getChromeDriver(capabilities);
-			}else if(browser.equals("opera")){
-				return getOperaDriver(capabilities);
-			}else if(browser.equals("safari")){
-				return getSafariDriver(capabilities);
-			}else if(browser.equals("htmlunit")){
-				return getHtmlUnitDriver(capabilities);
-			}else{
-				throw new Exception("Unsupported Browser");
+			if(ConfigProperties.getPlatform()==null){
+				if(Platform.getCurrent().is(Platform.WINDOWS)){
+					ConfigProperties.setPlatform(Platform.WINDOWS.toString());
+				}else{
+					ConfigProperties.setPlatform(Platform.getCurrent().toString());
+				}
 			}
+			WebDriver driver = getBrowserDriver(browser, capabilities);
+			setBrowserVersion(driver);
+			return driver;
+		}
+	}
+	
+	private WebDriver getBrowserDriver(String browser, DesiredCapabilities capabilities) throws Exception{
+		if(browser.equals("firefox")){
+			return getFirefoxDriver(capabilities);
+		}else if(browser.equals("internet explorer")){
+			return getInternetExplorerDriver(capabilities);
+		}else if(browser.equals("chrome")){
+			return getChromeDriver(capabilities);
+		}else if(browser.equals("opera")){
+			return getOperaDriver(capabilities);
+		}else if(browser.equals("safari")){
+			return getSafariDriver(capabilities);
+		}else if(browser.equals("htmlunit")){
+			return getHtmlUnitDriver(capabilities);
+		}else{
+			throw new Exception("Unsupported Browser");
 		}
 	}
 	
