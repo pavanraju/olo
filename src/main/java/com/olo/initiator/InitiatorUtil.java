@@ -45,10 +45,6 @@ public class InitiatorUtil {
         return threadDriver.get();
     }
 	
-	public void setPropertyForTest(ITestResult result, String propertyName, String propertyValue){
-		result.setAttribute(propertyName, propertyValue);
-	}
-	
 	public void setPropertyForTest(String propertyName, String propertyValue){
 		Reporter.getCurrentTestResult().setAttribute(propertyName, propertyValue);
 	}

@@ -19,12 +19,11 @@ public class CaptureScreenshot {
 		String screenShotFileName = null;
 		if(ConfigProperties.getCaptureScreenshot()){
 			try {
+				byte[] screenshotBytes = ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);
 				screenShotFileName=System.currentTimeMillis()+".png";
 				String screenShotPath=result.getTestContext().getOutputDirectory()+File.separator+"screenshots"+File.separator+screenShotFileName;
-				File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-				FileUtils.copyFile(srcFile, new File(screenShotPath));
+				FileUtils.writeByteArrayToFile(new File(screenShotPath), screenshotBytes);
 			} catch (Exception e) {
-				screenShotFileName = null;
 				if(e != null){
 					LOGGER.warn("Could not take screenshot "+e.getMessage());
 				}
