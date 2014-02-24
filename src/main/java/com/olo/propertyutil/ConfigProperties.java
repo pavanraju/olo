@@ -56,9 +56,9 @@ public class ConfigProperties {
 		}
 	}
 	
-	public static boolean getRunOnRemoteWebDriver(){
+	public static boolean getRunOnGrid(){
 		try {
-			return Boolean.parseBoolean(configProp.getProperty("runOnRemoteWebDriver"));
+			return Boolean.parseBoolean(configProp.getProperty("runOnGrid"));
 		} catch (Exception e) {
 			return false;
 		}

@@ -118,7 +118,7 @@ public class DriverConfiguration {
 	public WebDriver getWebDriver(ITestContext ctx) throws Exception{
 		String browser = ConfigProperties.getBrowserName();
 		DesiredCapabilities capabilities =  getCapabilities(browser);
-		if(ConfigProperties.getRunOnRemoteWebDriver()){
+		if(ConfigProperties.getRunOnGrid()){
 			String hubURL = ConfigProperties.getHubUrl();
 			return getRemoteWebDriverDriver(hubURL, capabilities);
 		}else{
