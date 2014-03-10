@@ -35,6 +35,10 @@ public class BrowserBot{
 		this.driver = driver;
 	}
 	
+	public WebDriver getDriver(){
+		return driver;
+	}
+	
 	public BrowserBot Wait(int timeInSec) throws Exception {
 		Thread.sleep(timeInSec*1000);
 		return this;
@@ -836,6 +840,21 @@ public class BrowserBot{
 	
 	public void fireEvent(WebElement element, String eventName){
 		new JavascriptLibrary().callEmbeddedSelenium(driver, "triggerEvent", element, eventName);
+	}
+	
+	public BrowserBot switchToFrame(int index){
+		driver.switchTo().frame(index);
+		return this;
+	}
+	
+	public BrowserBot switchToFrame(String nameOrId){
+		driver.switchTo().frame(nameOrId);
+		return this;
+	}
+	
+	public BrowserBot switchToFrame(WebElement frameElement){
+		driver.switchTo().frame(frameElement);
+		return this;
 	}
 	
 	public BrowserBot switchToDefault(){

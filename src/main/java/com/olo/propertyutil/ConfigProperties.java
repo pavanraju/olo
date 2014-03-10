@@ -76,6 +76,14 @@ public class ConfigProperties {
 		}
 	}
 	
+	public static boolean getWindowMaximize(){
+		try {
+			return Boolean.parseBoolean(configProp.getProperty("windowMaximize"));
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
 	public static void setBrowserVersion(String version){
 		configProp.setProperty("version", version);
 	}

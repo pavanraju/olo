@@ -189,8 +189,10 @@ public class DriverConfiguration {
 	}
 	
 	public void windowMaximize(WebDriver driver){
-		LOGGER.info("Trying to maximize window");
-		driver.manage().window().maximize();
+		if(ConfigProperties.getWindowMaximize()){
+			LOGGER.info("Trying to maximize window");
+			driver.manage().window().maximize();
+		}
 	}
 	
 }
