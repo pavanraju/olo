@@ -2,6 +2,7 @@ package com.olo.bot;
 
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.By;
@@ -15,7 +16,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.interactions.internal.Coordinates;
-import org.openqa.selenium.internal.seleniumemulation.JavascriptLibrary;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -41,6 +41,11 @@ public class BrowserBot{
 	
 	public BrowserBot Wait(int timeInSec) throws Exception {
 		Thread.sleep(timeInSec*1000);
+		return this;
+	}
+	
+	public BrowserBot Wait(long arg,TimeUnit unit) throws Exception{
+		Thread.sleep(unit.toMillis(arg));
 		return this;
 	}
 	
@@ -836,10 +841,6 @@ public class BrowserBot{
 	
 	public String executeJavascript(WebElement webElement,String executeJavascript){
 		return (String) ((JavascriptExecutor)driver).executeScript(executeJavascript, webElement);
-	}
-	
-	public void fireEvent(WebElement element, String eventName){
-		new JavascriptLibrary().callEmbeddedSelenium(driver, "triggerEvent", element, eventName);
 	}
 	
 	public BrowserBot switchToFrame(int index){
