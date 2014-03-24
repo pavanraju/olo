@@ -19,10 +19,10 @@ PROJECT DIRECTORY STRUCTURE
           config/
             config.properties        Olo configurations.(Will be comming with default config placed in olo jar)
             mail.properties          Mail configurations for olo.(Will be comming with default config placed in olo jar)
-      drivers/             WebDrivers
-          win/           Windows drivers.
-          linux/         Linux drivers.
-          mac/           Mac drivers.
+      drivers/           WebDrivers
+          WINDOWS/       Windows drivers.
+          LINUX/         Linux drivers.
+          MAC/           Mac drivers.
 
 
 REQUIRED LIBRARIES BY OLO
