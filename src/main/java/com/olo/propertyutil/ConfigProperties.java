@@ -28,20 +28,8 @@ public class ConfigProperties {
 		return configProp.getProperty("applicationUrl");
 	}
 	
-	public static String getCapabilitiesFile(){
-		return configProp.getProperty("capabilitiesFile");
-	}
-	
-	public static boolean getRunOnGrid(){
-		try {
-			return Boolean.parseBoolean(configProp.getProperty("runOnGrid"));
-		} catch (Exception e) {
-			return false;
-		}
-	}
-	
-	public static String getHubUrl(){
-		return configProp.getProperty("hubURL");
+	public static String getBrowserName(){
+		return configProp.getProperty("browserName");
 	}
 	
 	public static int getImplicitWait(){
@@ -68,6 +56,26 @@ public class ConfigProperties {
 		}
 	}
 	
+	public static boolean getRunOnGrid(){
+		try {
+			return Boolean.parseBoolean(configProp.getProperty("runOnGrid"));
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public static String getHubUrl(){
+		return configProp.getProperty("hubURL");
+	}
+	
+	public static boolean getCaptureScreenshot(){
+		try {
+			return Boolean.parseBoolean(configProp.getProperty("captureScreenshot"));
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
 	public static boolean getWindowMaximize(){
 		try {
 			return Boolean.parseBoolean(configProp.getProperty("windowMaximize"));
@@ -90,6 +98,10 @@ public class ConfigProperties {
 	
 	public static String getPlatform(){
 		return configProp.getProperty("platform");
+	}
+	
+	public static void setBrowserName(String browserName){
+		configProp.setProperty("browserName", browserName);
 	}
 	
 }

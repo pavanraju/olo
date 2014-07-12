@@ -9,7 +9,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
@@ -18,12 +17,55 @@ import org.testng.SkipException;
 import org.testng.log4testng.Logger;
 
 import com.olo.propertyutil.ConfigProperties;
-import com.olo.propertyutil.DriverCapabilitiesProperties;
 import com.opera.core.systems.OperaDriver;
 
 public class DriverConfiguration {
 	
 	private static final Logger LOGGER = Logger.getLogger(DriverConfiguration.class);
+	
+	public DesiredCapabilities getInternetExplorerCapabilities(){
+		return DesiredCapabilities.internetExplorer();
+	}
+	
+	public DesiredCapabilities getFirefoxCapabilities(){
+		return DesiredCapabilities.firefox();
+	}
+	
+	public DesiredCapabilities getChromeCapabilities(){
+		return DesiredCapabilities.chrome();
+	}
+	
+	public DesiredCapabilities getOperaCapabilities(){
+		return DesiredCapabilities.opera();
+	}
+	
+	public DesiredCapabilities getSafariCapabilities(){
+		return DesiredCapabilities.safari();
+	}
+	
+	public DesiredCapabilities getHtmlUnitCapabilities(){
+		return DesiredCapabilities.htmlUnit();
+	}
+	
+	public DesiredCapabilities getCapabilities(String browser) throws Exception{
+		DesiredCapabilities capabilities = null;
+		if(browser.equals("firefox")){
+			capabilities = getFirefoxCapabilities();
+		}else if(browser.equals("internet explorer")){
+			capabilities = getInternetExplorerCapabilities();
+		}else if(browser.equals("chrome")){
+			capabilities = getChromeCapabilities();
+		}else if(browser.equals("opera")){
+			capabilities = getOperaCapabilities();
+		}else if(browser.equals("safari")){
+			capabilities = getSafariCapabilities();
+		}else if(browser.equals("htmlunit")){
+			capabilities = getHtmlUnitCapabilities();
+		}else{
+			throw new Exception("Un Supported Browser");
+		}
+		return capabilities;
+	}
 	
 	private void setBrowserVersion(WebDriver driver){
 		if(ConfigProperties.getBrowserVersion()==null){
@@ -74,7 +116,7 @@ public class DriverConfiguration {
 	}
 	
 	public WebDriver getWebDriver(ITestContext ctx) throws Exception{
-		String browser = DriverCapabilitiesProperties.getProperty(CapabilityType.BROWSER_NAME);
+		String browser = ConfigProperties.getBrowserName();
 		DesiredCapabilities capabilities =  getCapabilities(browser);
 		if(ConfigProperties.getRunOnGrid()){
 			String hubURL = ConfigProperties.getHubUrl();
