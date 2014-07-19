@@ -1,3 +1,11 @@
+0.19.0
+------------
+
+**Enhancements**
+
+* Support for opera browser
+* Updated selenium to 2.42
+
 0.18.0
 ------------
 

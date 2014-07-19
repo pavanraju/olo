@@ -189,7 +189,7 @@ public class DriverConfiguration {
 	}
 	
 	public void windowMaximize(WebDriver driver){
-		if(ConfigProperties.getWindowMaximize()){
+		if(ConfigProperties.getWindowMaximize() && !ConfigProperties.getBrowserName().equals("opera")){
 			LOGGER.info("Trying to maximize window");
 			driver.manage().window().maximize();
 		}
